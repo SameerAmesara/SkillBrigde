@@ -82,17 +82,23 @@ const Navigation = () => {
               gap: 1,
             }}
           >
-            <Button sx={{ color: "#19747E" }}>Login</Button>
-            <Button
-              type="button"
-              variant="contained"
-              sx={{
-                background: "#19747E",
-                maxHeight: "40px",
-              }}
-            >
-              SignUp
-            </Button>
+            <NavLink to="sign-in">
+              <Button sx={{ color: "#19747E" }}>Login</Button>
+            </NavLink>
+
+            <NavLink to="sign-up">
+              {" "}
+              <Button
+                type="button"
+                variant="contained"
+                sx={{
+                  background: "#19747E",
+                  maxHeight: "40px",
+                }}
+              >
+                SignUp
+              </Button>
+            </NavLink>
           </Box>
           <Box
             sx={{
