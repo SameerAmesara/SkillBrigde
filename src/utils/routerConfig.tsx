@@ -6,6 +6,7 @@ import FaqPage from "../pages/faq-page/FaqPage";
 import SignIn from "../components/SignIn/SignIn";
 import { NavigationItem } from "../models/NavigationItem.model";
 import SignUp from "../components/SignUp/SignUp";
+import ContactUsPage from "../pages/contact-us/ContactUsPage";
 
 export const router = createBrowserRouter([
   {
@@ -17,6 +18,10 @@ export const router = createBrowserRouter([
       {
         path: "/faqs",
         element: <FaqPage />,
+      },
+      {
+        path: "/contact-us",
+        element: <ContactUsPage />,
       },
     ],
   },

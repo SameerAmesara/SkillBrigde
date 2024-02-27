@@ -1,4 +1,4 @@
-import {  Container,  Toolbar } from "@mui/material";
+import { Container, Toolbar } from "@mui/material";
 import CssBaseline from "@mui/material/CssBaseline";
 import Box from "@mui/material/Box";
 import "./App.scss";
