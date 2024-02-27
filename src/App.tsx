@@ -1,4 +1,6 @@
-import { Box, Container, CssBaseline, Toolbar } from "@mui/material";
+import {  Container,  Toolbar } from "@mui/material";
+import CssBaseline from "@mui/material/CssBaseline";
+import Box from "@mui/material/Box";
 import "./App.scss";
 import { Outlet } from "react-router-dom";
 import Navigation from "./components/navigation/Navigation";
