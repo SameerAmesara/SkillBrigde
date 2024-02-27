@@ -1,6 +1,5 @@
 import { Box, Divider, Drawer, Typography } from "@mui/material";
 import { NavLink, useNavigate } from "react-router-dom";
-import { theme } from "../../utils/theme";
 import { navigationItems } from "../../utils/routerConfig";
 import { APP_TITLE } from "../../utils/constants";
 
@@ -28,7 +27,6 @@ const NavigationDrawer = ({
         "& .MuiDrawer-paper": {
           boxSizing: "border-box",
           width: 240,
-          background: theme.palette.primary.main,
         },
       }}
     >
@@ -36,11 +34,34 @@ const NavigationDrawer = ({
         <Typography
           variant="h6"
           sx={{ my: 2, px: 2 }}
-          color={"white"}
+          color={"#19747e"}
           onClick={() => navigate("")}
         >
           {APP_TITLE}
         </Typography>
+        <Divider />
+        <Box sx={{ mt: "20px", display: "flex", flexDirection: "column" }}>
+          <NavLink
+            to="sign-up"
+            className={({ isActive }) => {
+              return isActive
+                ? "app-nav-drawer-link app-nav-drawer-link--active"
+                : "app-nav-drawer-link";
+            }}
+          >
+            Sign Up
+          </NavLink>
+          <NavLink
+            to="sign-in"
+            className={({ isActive }) => {
+              return isActive
+                ? "app-nav-drawer-link app-nav-drawer-link--active"
+                : "app-nav-drawer-link";
+            }}
+          >
+            Login
+          </NavLink>
+        </Box>
         <Divider />
         <Box sx={{ mt: "20px", display: "flex", flexDirection: "column" }}>
           {navigationItems.map((item, index) => (

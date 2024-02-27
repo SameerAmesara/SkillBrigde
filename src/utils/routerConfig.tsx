@@ -18,21 +18,19 @@ export const router = createBrowserRouter([
         path: "/faqs",
         element: <FaqPage />,
       },
-      {
-        path: "/sign-up",
-        element: <SignUp />,
-      },
-      {
-        path: "/sign-in",
-        element: <SignIn />,
-      },
     ],
+  },
+  {
+    path: "/sign-up",
+    element: <SignUp />,
+  },
+  {
+    path: "/sign-in",
+    element: <SignIn />,
   },
 ]);
 
 export const navigationItems: NavigationItem[] = [
   { path: "contact-us", label: "Contact Us" },
   { path: "faqs", label: "FAQs" },
-  { path: "sign-in", label: "SignIn" },
-  { path: "sign-up", label: "SignUp" }
 ];

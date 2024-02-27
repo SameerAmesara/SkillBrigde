@@ -13,5 +13,22 @@ export const theme = responsiveFontSizes(
     typography: {
       fontSize: 14,
     },
+    components: {
+      MuiToolbar: {
+        styleOverrides: {
+          root: {
+            background: "#fff",
+            color: "#19747e",
+          },
+        },
+      },
+      MuiDrawer: {
+        styleOverrides: {
+          root: {
+            background: "#fff",
+          },
+        },
+      },
+    },
   })
 );

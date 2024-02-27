@@ -1,4 +1,13 @@
-import { AppBar, Box, IconButton, Toolbar, Typography } from "@mui/material";
+import {
+  AppBar,
+  Avatar,
+  Box,
+  Button,
+  IconButton,
+  Toolbar,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 import { useState } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
 import { NavLink, useNavigate } from "react-router-dom";
@@ -6,6 +15,7 @@ import NavigationDrawer from "./NavigationDrawer";
 import "./navigation.scss";
 import { navigationItems } from "../../utils/routerConfig";
 import { APP_TITLE } from "../../utils/constants";
+import { theme } from "../../utils/theme";
 
 const Navigation = () => {
   const navigate = useNavigate();
@@ -58,10 +68,43 @@ const Navigation = () => {
                     ? "app-nav-link app-nav-link--active"
                     : "app-nav-link";
                 }}
+                style={{ color: theme.palette.primary.main, fontWeight: 500 }}
               >
                 {item.label}
               </NavLink>
             ))}
+          </Box>
+          <Box
+            sx={{
+              display: { xs: "none", sm: "flex" },
+              marginLeft: "auto",
+              alignItems: "center",
+              gap: 1,
+            }}
+          >
+            <Button sx={{ color: "#19747E" }}>Login</Button>
+            <Button
+              type="button"
+              variant="contained"
+              sx={{
+                background: "#19747E",
+                maxHeight: "40px",
+              }}
+            >
+              SignUp
+            </Button>
+          </Box>
+          <Box
+            sx={{
+              display: { xs: "flex" },
+              marginLeft: { xs: "auto", sm: "20px" },
+            }}
+          >
+            <Tooltip title="Open settings">
+              <IconButton sx={{ p: 0 }}>
+                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+              </IconButton>
+            </Tooltip>
           </Box>
         </Toolbar>
       </AppBar>
