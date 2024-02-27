@@ -4,6 +4,7 @@ import NotFoundPage from "../pages/not-found-page/NotFoundPage";
 import LandingPage from "../pages/landing-page/LandingPage";
 import FaqPage from "../pages/faq-page/FaqPage";
 import { NavigationItem } from "../models/NavigationItem.model";
+import ContactUsPage from "../pages/contact-us/ContactUsPage";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -14,6 +15,10 @@ export const router = createBrowserRouter([
       {
         path: "/faqs",
         element: <FaqPage />,
+      },
+      {
+        path: "/contact-us",
+        element: <ContactUsPage />,
       },
     ],
   },
