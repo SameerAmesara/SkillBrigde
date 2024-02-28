@@ -1,11 +1,9 @@
 import {
   AppBar,
-  Avatar,
   Box,
   Button,
   IconButton,
   Toolbar,
-  Tooltip,
   Typography,
 } from "@mui/material";
 import { useState } from "react";
@@ -98,7 +96,7 @@ const Navigation = () => {
               </Button>
             </NavLink>
           </Box>
-          <Box
+          {/* <Box
             sx={{
               display: { xs: "flex" },
               marginLeft: { xs: "auto", sm: "20px" },
@@ -109,7 +107,7 @@ const Navigation = () => {
                 <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
               </IconButton>
             </Tooltip>
-          </Box>
+          </Box> */}
         </Toolbar>
       </AppBar>
       <nav>
