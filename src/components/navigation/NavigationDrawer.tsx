@@ -34,7 +34,6 @@ const NavigationDrawer = ({
         <Typography
           variant="h6"
           sx={{ my: 2, px: 2 }}
-          color={"#19747e"}
           onClick={() => navigate("")}
         >
           {APP_TITLE}

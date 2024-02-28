@@ -18,7 +18,7 @@ export const theme = responsiveFontSizes(
         styleOverrides: {
           root: {
             background: "#fff",
-            color: "#19747e",
+            color: "#071541",
           },
         },
       },
