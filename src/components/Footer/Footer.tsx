@@ -74,7 +74,7 @@ export default function Footer() {
               <Button
                 variant="contained"
                 color="primary"
-                sx={{ flexShrink: 0 }}
+                sx={{ flexShrink: 0, bgcolor: '#071541' }}
               >
                 Subscribe
               </Button>
