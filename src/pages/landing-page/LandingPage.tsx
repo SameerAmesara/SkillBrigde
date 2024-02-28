@@ -16,7 +16,6 @@ import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
 import DevicesRoundedIcon from "@mui/icons-material/DevicesRounded";
 import EdgesensorHighRoundedIcon from "@mui/icons-material/EdgesensorHighRounded";
 import ViewQuiltRoundedIcon from "@mui/icons-material/ViewQuiltRounded";
-import FAQ from "../../components/FAQ/FAQ";
 import dashboardImage from "../../assets/dashboard.png";
 import communityImage from "../../assets/community.png";
 import learningImage from "../../assets/learning.png";

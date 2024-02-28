@@ -1,11 +1,9 @@
 import {
   AppBar,
-  Avatar,
   Box,
   Button,
   IconButton,
   Toolbar,
-  Tooltip,
   Typography,
 } from "@mui/material";
 import { useState } from "react";
