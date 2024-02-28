@@ -100,7 +100,7 @@ export default function Footer() {
           <Link color="text.secondary" href="#">
             Highlights
           </Link>
-          <Link color="text.secondary" href="#">
+          <Link color="text.secondary" href="/faqs  ">
             FAQs
           </Link>
         </Box>
@@ -114,8 +114,8 @@ export default function Footer() {
           <Typography variant="body2" fontWeight={600}>
             Company
           </Typography>
-          <Link color="text.secondary" href="#">
-            About us
+          <Link color="text.secondary" href="/contact-us">
+            Contact us
           </Link>
           <Link color="text.secondary" href="#">
             Careers
