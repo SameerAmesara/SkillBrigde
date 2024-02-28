@@ -34,7 +34,7 @@ export default function LandingPage() {
       icon: <ViewQuiltRoundedIcon />,
       title: "Dashboard",
       description:
-        "This item could provide a snapshot of the most important metrics or data points related to the product.",
+        "Effortlessly maximize productivity and elevate your user experience with our intuitive User Dashboard, providing easy access to resources, curated content, and essential tools, all conveniently located in one place for seamless organization and enhanced efficiency.",
       imageLight: dashboardImage,
 
       imageDark: dashboardImage,
@@ -53,10 +53,9 @@ export default function LandingPage() {
       description:
         "Stay informed about upcoming webinars and live sessions. Interact with industry experts in real-time and enhance your knowledge. Celebrate your achievements and milestones. Earn badges and certificates to showcase your skills to your professional network.",
       imageLight: learningImage,
-      imageDark:learningImage,
+      imageDark: learningImage,
     },
   ];
-  console.log(dashboardImage, items[0].imageLight, items[0].imageDark)
   const [selectedItemIndex, setSelectedItemIndex] = React.useState(0);
 
   const handleItemClick = (index: number) => {
@@ -290,6 +289,7 @@ export default function LandingPage() {
                       flexDirection: { xs: "column", md: "row" },
                       alignItems: { md: "center" },
                       gap: 2.5,
+                      textTransform: 'none'
                     }}
                   >
                     <Box
