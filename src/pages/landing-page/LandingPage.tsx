@@ -33,9 +33,9 @@ export default function LandingPage() {
       description:
         "This item could provide a snapshot of the most important metrics or data points related to the product.",
       imageLight:
-        'url("/static/images/templates/templates-images/dash-light.png")',
+        'url("/public/dashboard.png")',
       imageDark:
-        'url("/static/images/templates/templates-images/dash-dark.png")',
+        'url("/public/dashboard.png")',
     },
     {
       icon: <EdgesensorHighRoundedIcon />,
@@ -43,9 +43,9 @@ export default function LandingPage() {
       description:
         "Build meaningful connections with professionals who share your interests, passions, and career goals. Our community is diverse, bringing together individuals from various industries and backgrounds.",
       imageLight:
-        'url("/static/images/templates/templates-images/mobile-light.png")',
+        'url("/public/community.png")',
       imageDark:
-        'url("/static/images/templates/templates-images/mobile-dark.png")',
+        'url("/public/community.png")',
     },
     {
       icon: <DevicesRoundedIcon />,
@@ -53,9 +53,9 @@ export default function LandingPage() {
       description:
         "Stay informed about upcoming webinars and live sessions. Interact with industry experts in real-time and enhance your knowledge. Celebrate your achievements and milestones. Earn badges and certificates to showcase your skills to your professional network.",
       imageLight:
-        'url("/static/images/templates/templates-images/devices-light.png")',
+        'url("/public/learning.png")',
       imageDark:
-        'url("/static/images/templates/templates-images/devices-dark.png")',
+        'url("/public/learning.png")',
     },
   ];
 
@@ -364,6 +364,11 @@ export default function LandingPage() {
                 width: "100%",
                 display: { xs: "none", sm: "flex" },
                 pointerEvents: "none",
+                backgroundSize: "cover",
+                backgroundImage: (theme) =>
+                  theme.palette.mode === "light"
+                    ? items[selectedItemIndex].imageLight
+                    : items[selectedItemIndex].imageDark,
               }}
             >
               <Box
@@ -371,11 +376,6 @@ export default function LandingPage() {
                   m: "auto",
                   width: 420,
                   height: 500,
-                  backgroundSize: "contain",
-                  backgroundImage: (theme) =>
-                    theme.palette.mode === "light"
-                      ? items[selectedItemIndex].imageLight
-                      : items[selectedItemIndex].imageDark,
                 }}
               />
             </Card>
