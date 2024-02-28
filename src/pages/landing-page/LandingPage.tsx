@@ -17,6 +17,9 @@ import DevicesRoundedIcon from "@mui/icons-material/DevicesRounded";
 import EdgesensorHighRoundedIcon from "@mui/icons-material/EdgesensorHighRounded";
 import ViewQuiltRoundedIcon from "@mui/icons-material/ViewQuiltRounded";
 import FAQ from "../../components/FAQ/FAQ";
+import dashboardImage from "../../assets/dashboard.png";
+import communityImage from "../../assets/community.png";
+import learningImage from "../../assets/learning.png";
 
 export default function LandingPage() {
   const decorative = "All-in-One";
@@ -32,33 +35,28 @@ export default function LandingPage() {
       title: "Dashboard",
       description:
         "This item could provide a snapshot of the most important metrics or data points related to the product.",
-      imageLight:
-        'url("/public/dashboard.png")',
-      imageDark:
-        'url("/public/dashboard.png")',
+      imageLight: dashboardImage,
+
+      imageDark: dashboardImage,
     },
     {
       icon: <EdgesensorHighRoundedIcon />,
       title: "Community Engagement",
       description:
         "Build meaningful connections with professionals who share your interests, passions, and career goals. Our community is diverse, bringing together individuals from various industries and backgrounds.",
-      imageLight:
-        'url("/public/community.png")',
-      imageDark:
-        'url("/public/community.png")',
+      imageLight: communityImage,
+      imageDark: communityImage,
     },
     {
       icon: <DevicesRoundedIcon />,
       title: "Professional Learning",
       description:
         "Stay informed about upcoming webinars and live sessions. Interact with industry experts in real-time and enhance your knowledge. Celebrate your achievements and milestones. Earn badges and certificates to showcase your skills to your professional network.",
-      imageLight:
-        'url("/public/learning.png")',
-      imageDark:
-        'url("/public/learning.png")',
+      imageLight: learningImage,
+      imageDark:learningImage,
     },
   ];
-
+  console.log(dashboardImage, items[0].imageLight, items[0].imageDark)
   const [selectedItemIndex, setSelectedItemIndex] = React.useState(0);
 
   const handleItemClick = (index: number) => {
@@ -209,8 +207,8 @@ export default function LandingPage() {
                 sx={{
                   backgroundImage: (theme) =>
                     theme.palette.mode === "light"
-                      ? items[selectedItemIndex].imageLight
-                      : items[selectedItemIndex].imageDark,
+                      ? `url(${selectedFeature.imageLight})`
+                      : `url(${selectedFeature.imageDark})`,
                   backgroundSize: "cover",
                   backgroundPosition: "center",
                   minHeight: 280,
@@ -367,8 +365,8 @@ export default function LandingPage() {
                 backgroundSize: "cover",
                 backgroundImage: (theme) =>
                   theme.palette.mode === "light"
-                    ? items[selectedItemIndex].imageLight
-                    : items[selectedItemIndex].imageDark,
+                    ? `url(${selectedFeature.imageLight})`
+                    : `url(${selectedFeature.imageDark})`,
               }}
             >
               <Box
