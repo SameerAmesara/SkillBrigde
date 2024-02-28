@@ -44,13 +44,13 @@ export default function Footer() {
           }}
         >
           <Box sx={{ width: { xs: "100%", sm: "60%" } }}>
-            <Box sx={{ ml: "-15px" }}>
+            {/* <Box sx={{ ml: "-15px" }}>
               <img
                 src={"src/assets/logo.png"}
                 style={logoStyle}
                 alt="logo of sitemark"
               />
-            </Box>
+            </Box> */}
             <Typography variant="body2" fontWeight={600} gutterBottom>
               Newsletter
             </Typography>
