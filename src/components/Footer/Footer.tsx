@@ -10,11 +10,6 @@ import FacebookIcon from "@mui/icons-material/GitHub";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import TwitterIcon from "@mui/icons-material/X";
 
-const logoStyle = {
-  width: "140px",
-  height: "auto",
-};
-
 export default function Footer() {
   return (
     <Container
@@ -74,7 +69,7 @@ export default function Footer() {
               <Button
                 variant="contained"
                 color="primary"
-                sx={{ flexShrink: 0, bgcolor: '#071541' }}
+                sx={{ flexShrink: 0, bgcolor: "#071541" }}
               >
                 Subscribe
               </Button>
