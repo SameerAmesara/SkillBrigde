@@ -380,9 +380,6 @@ export default function LandingPage() {
           </Grid>
         </Grid>
       </Container>
-      <Container component="section">
-        <FAQ />
-      </Container>
       <Footer />
     </Container >
   );
