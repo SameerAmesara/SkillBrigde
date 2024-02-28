@@ -1,19 +1,18 @@
 export const faqContentContact: { question: string; answer: string }[] = [
   {
-    question:
-      "How do I contact customer support if I have a question or issue?",
+    question: "How can I contact SkillBridge for support?",
     answer:
-      "You can reach our customer support team by emailing support@email.com or calling our toll-free number. We're here to assist you promptly.",
+      "For support, please email us at support@skillbridge.com or use the contact form on our website. Our team is available to assist you with any queries or issues you may encounter.",
   },
   {
-    question: "What is Lorem Ipsum?",
+    question: "Can I provide feedback on the SkillBridge platform?",
     answer:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
+      "Absolutely! We value your feedback. Please send your suggestions or feedback to feedback@skillbridge.com or through the feedback option in the app.",
   },
   {
-    question: "Why do we use it?",
+    question: "Is there a phone number I can call for immediate assistance?",
     answer:
-      "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. ",
+      "Currently, we offer support primarily via email and our faq page. We aim to respond to all inquiries within 24 hours.",
   },
   {
     question: "Where does it come from?",
@@ -24,46 +23,73 @@ export const faqContentContact: { question: string; answer: string }[] = [
 
 export const faqContentAbout: { question: string; answer: string }[] = [
   {
-    question: "The standard Lorem Ipsum passage, used since the 1500s",
+    question: "Who founded SkillBridge?",
     answer:
-      "You can reach our customer support team by emailing support@email.com or calling our toll-free number. We're here to assist you promptly.",
+      "SkillBridge was founded by a team of event management and technology experts passionate about simplifying event planning and enhancing professional networking.",
   },
   {
-    question: "What is Lorem Ipsum?",
+    question: "What is the mission of SkillBridge?",
     answer:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
+      "Our mission is to provide a seamless and integrated platform that facilitates the planning of events and fosters professional growth and networking opportunities for our users.",
   },
   {
-    question: "Why do we use it?",
+    question: "How long has SkillBridge been operating?",
     answer:
-      "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. ",
+      "SkillBridge has been serving its user community for a few months now, constantly evolving to incorporate new features and improvements based on user feedback.",
   },
   {
-    question: "Where does it come from?",
+    question:
+      "How does SkillBridge stand out from other event management platforms?",
     answer:
-      "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source.",
+      "SkillBridge distinguishes itself by offering a comprehensive suite of features that cater not just to event management but also to professional networking, job searching, and mentorship, all within a single platform.",
   },
 ];
 
 export const faqContentGetStarted: { question: string; answer: string }[] = [
   {
-    question: "The standard Lorem Ipsum passage, used since the 1500s",
+    question: "What is the SkillBridge application?",
     answer:
-      "You can reach our customer support team by emailing support@email.com or calling our toll-free number. We're here to assist you promptly.",
+      "SkillBridge is a comprehensive platform designed to facilitate event management and professional networking. It offers a range of features for organizing events, networking, job searching, and participating in mentorship programs, making it easier for users to manage events and enhance their professional connections.",
   },
   {
-    question: "What is Lorem Ipsum?",
+    question: "How do I sign up for SkillBridge?",
     answer:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
+      'Signing up is easy! Simply visit our website and click on the "Sign Up" button. Follow the instructions to create your account. You\'ll need to provide some basic information and confirm your email address to get started.',
   },
   {
-    question: "Why do we use it?",
+    question: "Is there a subscription fee to use SkillBridge?",
     answer:
-      "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. ",
+      "SkillBridge offers both free and premium subscription plans. The free plan includes basic access to most features, while the premium plan unlocks exclusive features and advanced functionalities for a monthly or yearly fee.",
   },
   {
-    question: "Where does it come from?",
+    question: "Can I use SkillBridge on my mobile device?",
     answer:
-      "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source.",
+      "Yes, SkillBridge is fully responsive and accessible on various devices, including smartphones and tablets. This ensures you can manage your activities and connect with others no matter where you are.",
+  },
+  {
+    question: "How secure is my personal information on SkillBridge?",
+    answer:
+      "We prioritize the security of our users' information. SkillBridge uses advanced encryption and security measures to protect your data and ensure your privacy and security are maintained.",
+  },
+  {
+    question: "How can I manage my event on SkillBridge?",
+    answer:
+      'You can manage your event by logging into your account, navigating to the "My Events" section, and selecting the event you wish to manage. Here, you can update event details, manage registrations, and communicate with attendees.',
+  },
+  {
+    question:
+      "What types of payment methods does SkillBridge accept for premium subscriptions?",
+    answer:
+      "SkillBridge accepts various payment methods, including major credit cards, and debit cards. All transactions are securely processed to ensure your financial information is protected.",
+  },
+  {
+    question: "How can I apply for jobs posted on the Job Board?",
+    answer:
+      "To apply for a job, navigate to the Job Board, select the job you're interested in, and click on the \"Apply Now\" button. You'll need to fill out your application and submit any required documents through the platform.",
+  },
+  {
+    question: "Can I use SkillBridge for finding a mentor?",
+    answer:
+      "Yes, our Mentorship Program feature enables you to connect with experienced professionals willing to provide guidance and support. You can apply to become a mentor or find a mentor by accessing the Mentorship Program section in the app.",
   },
 ];

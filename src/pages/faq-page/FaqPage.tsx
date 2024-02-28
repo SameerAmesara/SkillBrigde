@@ -6,7 +6,11 @@ import {
   Typography,
 } from "@mui/material";
 import { useState } from "react";
-import { faqContentAbout, faqContentContact } from "./faqContent";
+import {
+  faqContentAbout,
+  faqContentContact,
+  faqContentGetStarted,
+} from "./faqContent";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 const FaqPage = () => {
@@ -25,7 +29,7 @@ const FaqPage = () => {
       <Typography variant="h6" mt="20px" mb="10px">
         Get started
       </Typography>
-      {faqContentContact.map((faq, index) => {
+      {faqContentGetStarted.map((faq, index) => {
         return (
           <Accordion
             key={"faq-started" + index}
