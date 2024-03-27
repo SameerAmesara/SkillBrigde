@@ -9,6 +9,9 @@ export const theme = responsiveFontSizes(
       secondary: {
         main: "#78909c",
       },
+      background: {
+        default: "#fafafa",
+      },
     },
     typography: {
       fontSize: 14,
