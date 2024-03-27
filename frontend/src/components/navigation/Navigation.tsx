@@ -100,7 +100,7 @@ const Navigation = () => {
               )
             )}
           </Box>
-          {isLoggedIn ? (
+          {isLoggedIn === "true" ? (
             <Box
               sx={{
                 display: { xs: "none", sm: "flex" },
