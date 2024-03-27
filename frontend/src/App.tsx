@@ -11,7 +11,7 @@ function App() {
       <CssBaseline />
       <Navigation />
       <Container component="main" sx={{ paddingY: 3 }}>
-        <Toolbar />
+        <Toolbar sx={{ background: "transparent" }} />
         <Outlet />
       </Container>
     </Box>

@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router-dom";
+import { Outlet, createBrowserRouter } from "react-router-dom";
 import App from "../App";
 import NotFoundPage from "../pages/not-found-page/NotFoundPage";
 import LandingPage from "../pages/landing-page/LandingPage";
@@ -7,6 +7,7 @@ import SignIn from "../components/SignIn/SignIn";
 import { NavigationItem } from "../models/NavigationItem.model";
 import SignUp from "../components/SignUp/SignUp";
 import ContactUsPage from "../pages/contact-us/ContactUsPage";
+import ProtectedRoute from "../components/protected-route/ProtectedRoute";
 
 export const router = createBrowserRouter([
   {
@@ -23,6 +24,10 @@ export const router = createBrowserRouter([
         path: "/contact-us",
         element: <ContactUsPage />,
       },
+      {
+        element: <ProtectedRoute />,
+        children: [{ path: "/payment", element: <div>Payments</div> }],
+      },
     ],
   },
   {
@@ -36,6 +41,6 @@ export const router = createBrowserRouter([
 ]);
 
 export const navigationItems: NavigationItem[] = [
-  { path: "contact-us", label: "Contact Us" },
-  { path: "faqs", label: "FAQs" },
+  { path: "contact-us", label: "Contact Us", isProtected: false },
+  { path: "faqs", label: "FAQs", isProtected: false },
 ];

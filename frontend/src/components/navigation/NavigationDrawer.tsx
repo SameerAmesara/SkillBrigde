@@ -63,19 +63,21 @@ const NavigationDrawer = ({
         </Box>
         <Divider />
         <Box sx={{ mt: "20px", display: "flex", flexDirection: "column" }}>
-          {navigationItems.map((item, index) => (
-            <NavLink
-              key={item.path + index}
-              to={item.path}
-              className={({ isActive }) => {
-                return isActive
-                  ? "app-nav-drawer-link app-nav-drawer-link--active"
-                  : "app-nav-drawer-link";
-              }}
-            >
-              {item.label}
-            </NavLink>
-          ))}
+          {navigationItems.map((item, index) =>
+            item.isProtected ? null : (
+              <NavLink
+                key={item.path + index}
+                to={item.path}
+                className={({ isActive }) => {
+                  return isActive
+                    ? "app-nav-drawer-link app-nav-drawer-link--active"
+                    : "app-nav-drawer-link";
+                }}
+              >
+                {item.label}
+              </NavLink>
+            )
+          )}
         </Box>
       </Box>
     </Drawer>
