@@ -130,8 +130,11 @@ const Navigation = () => {
                 open={Boolean(anchorElProfile)}
                 onClose={handleCloseProfileMenu}
               >
-                {settings.map((setting) => (
-                  <MenuItem key={setting} onClick={handleCloseProfileMenu}>
+                {settings.map((setting, index) => (
+                  <MenuItem
+                    key={setting.label + index}
+                    onClick={handleCloseProfileMenu}
+                  >
                     <Typography textAlign="center">{setting.label}</Typography>
                   </MenuItem>
                 ))}
