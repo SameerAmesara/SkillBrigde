@@ -1,9 +1,13 @@
 import {
   AppBar,
+  Avatar,
   Box,
   Button,
   IconButton,
+  Menu,
+  MenuItem,
   Toolbar,
+  Tooltip,
   Typography,
 } from "@mui/material";
 import { useState } from "react";
@@ -15,13 +19,35 @@ import { navigationItems } from "../../utils/routerConfig";
 import { APP_TITLE } from "../../utils/constants";
 import { theme } from "../../utils/theme";
 
+type Setting = {
+  label: string;
+  path: string;
+};
+
+const settings: Setting[] = [
+  { label: "User profile", path: "user-profile" },
+  { label: "Saved Cards", path: "saved-cards" },
+];
+
 const Navigation = () => {
   const navigate = useNavigate();
+  const isLoggedIn = sessionStorage.getItem("isLoggedIn");
 
   const [isDrawerOpen, setDrawerOpen] = useState(false);
+  const [anchorElProfile, setAnchorElProfile] = useState<null | HTMLElement>(
+    null
+  );
 
   const handleDrawerToggle = () => {
     setDrawerOpen((prevState) => !prevState);
+  };
+
+  const handleOpenProfileMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorElProfile(event.currentTarget);
+  };
+
+  const handleCloseProfileMenu = () => {
+    setAnchorElProfile(null);
   };
 
   return (
@@ -57,57 +83,90 @@ const Navigation = () => {
               marginLeft: "50px",
             }}
           >
-            {navigationItems.map((item, index) => (
-              <NavLink
-                key={item.path + index}
-                to={item.path}
-                className={({ isActive }) => {
-                  return isActive
-                    ? "app-nav-link app-nav-link--active"
-                    : "app-nav-link";
+            {navigationItems.map((item, index) =>
+              item.isProtected && isLoggedIn !== "true" ? null : (
+                <NavLink
+                  key={item.path + index}
+                  to={item.path}
+                  className={({ isActive }) => {
+                    return isActive
+                      ? "app-nav-link app-nav-link--active"
+                      : "app-nav-link";
+                  }}
+                  style={{ color: theme.palette.primary.main, fontWeight: 500 }}
+                >
+                  {item.label}
+                </NavLink>
+              )
+            )}
+          </Box>
+          {isLoggedIn === "true" ? (
+            <Box
+              sx={{
+                display: { xs: "none", sm: "flex" },
+                marginLeft: "auto",
+                alignItems: "center",
+                gap: 1,
+              }}
+            >
+              <Tooltip title="Open settings">
+                <IconButton sx={{ p: 0 }} onClick={handleOpenProfileMenu}>
+                  <Avatar>P</Avatar>
+                </IconButton>
+              </Tooltip>
+              <Menu
+                sx={{ mt: "45px" }}
+                id="menu-appbar"
+                anchorEl={anchorElProfile}
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
                 }}
-                style={{ color: theme.palette.primary.main, fontWeight: 500 }}
+                keepMounted
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                open={Boolean(anchorElProfile)}
+                onClose={handleCloseProfileMenu}
               >
-                {item.label}
+                {settings.map((setting, index) => (
+                  <MenuItem
+                    key={setting.label + index}
+                    onClick={handleCloseProfileMenu}
+                  >
+                    <Typography textAlign="center">{setting.label}</Typography>
+                  </MenuItem>
+                ))}
+              </Menu>
+            </Box>
+          ) : (
+            <Box
+              sx={{
+                display: { xs: "none", sm: "flex" },
+                marginLeft: "auto",
+                alignItems: "center",
+                gap: 1,
+              }}
+            >
+              <NavLink to="sign-in">
+                <Button>Login</Button>
               </NavLink>
-            ))}
-          </Box>
-          <Box
-            sx={{
-              display: { xs: "none", sm: "flex" },
-              marginLeft: "auto",
-              alignItems: "center",
-              gap: 1,
-            }}
-          >
-            <NavLink to="sign-in">
-              <Button>Login</Button>
-            </NavLink>
 
-            <NavLink to="sign-up">
-              <Button
-                type="button"
-                variant="contained"
-                sx={{
-                  maxHeight: "40px",
-                }}
-              >
-                SignUp
-              </Button>
-            </NavLink>
-          </Box>
-          {/* <Box
-            sx={{
-              display: { xs: "flex" },
-              marginLeft: { xs: "auto", sm: "20px" },
-            }}
-          >
-            <Tooltip title="Open settings">
-              <IconButton sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-              </IconButton>
-            </Tooltip>
-          </Box> */}
+              <NavLink to="sign-up">
+                <Button
+                  type="button"
+                  variant="contained"
+                  sx={{
+                    maxHeight: "40px",
+                  }}
+                >
+                  SignUp
+                </Button>
+              </NavLink>
+            </Box>
+          )}
+          {/*  */}
         </Toolbar>
       </AppBar>
       <nav>
