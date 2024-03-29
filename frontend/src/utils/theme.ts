@@ -17,6 +17,19 @@ export const theme = responsiveFontSizes(
       fontSize: 14,
     },
     components: {
+      MuiInputBase: {
+        styleOverrides: {
+          root: {
+            "& input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button":
+              {
+                display: "none",
+              },
+            "& input[type=number]": {
+              MozAppearance: "textfield",
+            },
+          },
+        },
+      },
       MuiToolbar: {
         styleOverrides: {
           root: {

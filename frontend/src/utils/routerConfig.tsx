@@ -8,6 +8,7 @@ import { NavigationItem } from "../models/NavigationItem.model";
 import SignUp from "../components/SignUp/SignUp";
 import ContactUsPage from "../pages/contact-us/ContactUsPage";
 import ProtectedRoute from "../components/protected-route/ProtectedRoute";
+import CardDetailsForm from "../components/card-details-form/CardDetailsForm";
 
 export const router = createBrowserRouter([
   {
@@ -26,7 +27,7 @@ export const router = createBrowserRouter([
       },
       {
         element: <ProtectedRoute />,
-        children: [{ path: "/payment", element: <div>Payments</div> }],
+        children: [{ path: "/payment", element: <CardDetailsForm /> }],
       },
     ],
   },
