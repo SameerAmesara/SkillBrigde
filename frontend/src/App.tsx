@@ -4,8 +4,19 @@ import Box from "@mui/material/Box";
 import "./App.scss";
 import { Outlet } from "react-router-dom";
 import Navigation from "./components/navigation/Navigation";
+import { useContext, useEffect } from "react";
+import { appStoreContext } from "./mobx/store";
 
 function App() {
+  const appStore = useContext(appStoreContext);
+
+  useEffect(() => {
+    appStore.addMentor({ id: "a", name: "AAA" });
+    appStore.getMentors().map((mentor: { id: string; name: string }) => {
+      console.log(mentor.id, mentor.name);
+    });
+  }, [appStore]);
+
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
