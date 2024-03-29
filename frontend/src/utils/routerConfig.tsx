@@ -8,6 +8,9 @@ import { NavigationItem } from "../models/NavigationItem.model";
 import SignUp from "../components/SignUp/SignUp";
 import ContactUsPage from "../pages/contact-us/ContactUsPage";
 import ProtectedRoute from "../components/protected-route/ProtectedRoute";
+import ApplyMentor from "../pages/mentorship/ApplyMentor";
+import FindMentor from "../pages/mentorship/FindMentor";
+import RateMentor from "../pages/mentorship/RateMentor";
 
 export const router = createBrowserRouter([
   {
@@ -23,6 +26,18 @@ export const router = createBrowserRouter([
       {
         path: "/contact-us",
         element: <ContactUsPage />,
+      },
+      {
+        path: "/findmentor",
+        element: <FindMentor />,
+      },
+      {
+        path: "/applymentor",
+        element: <ApplyMentor />,
+      },
+      {
+        path: "/ratementor",
+        element: <RateMentor />,
       },
       {
         element: <ProtectedRoute />,
@@ -43,4 +58,7 @@ export const router = createBrowserRouter([
 export const navigationItems: NavigationItem[] = [
   { path: "contact-us", label: "Contact Us", isProtected: false },
   { path: "faqs", label: "FAQs", isProtected: false },
+  { path: "findmentor", label: "Find Mentor", isProtected: false },
+  { path: "applymentor", label: "Apply Mentor", isProtected: false },
+  { path: "ratementor", label: "Rate Mentor", isProtected: false },
 ];
