@@ -4,18 +4,16 @@ import Box from "@mui/material/Box";
 import "./App.scss";
 import { Outlet } from "react-router-dom";
 import Navigation from "./components/navigation/Navigation";
-import { useContext, useEffect } from "react";
-import { appStoreContext } from "./mobx/store";
+import { useStores } from "./mobx/RootStore";
+import { useEffect } from "react";
 
 function App() {
-  const appStore = useContext(appStoreContext);
+  const { paymentsStore } = useStores();
+  paymentsStore.addTransaction("Test 1");
 
   useEffect(() => {
-    appStore.addMentor({ id: "a", name: "AAA" });
-    appStore.getMentors().map((mentor: { id: string; name: string }) => {
-      console.log(mentor.id, mentor.name);
-    });
-  }, [appStore]);
+    console.log(paymentsStore.transactions);
+  }, [paymentsStore]);
 
   return (
     <Box sx={{ display: "flex" }}>
