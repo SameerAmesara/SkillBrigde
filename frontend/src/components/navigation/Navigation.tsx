@@ -50,6 +50,11 @@ const Navigation = () => {
     setAnchorElProfile(null);
   };
 
+  const handleProfileMenuItemClick = (setting: Setting) => {
+    navigate(setting.path);
+    handleCloseProfileMenu();
+  };
+
   return (
     <>
       <AppBar component="nav">
@@ -133,7 +138,7 @@ const Navigation = () => {
                 {settings.map((setting, index) => (
                   <MenuItem
                     key={setting.label + index}
-                    onClick={handleCloseProfileMenu}
+                    onClick={() => handleProfileMenuItemClick(setting)}
                   >
                     <Typography textAlign="center">{setting.label}</Typography>
                   </MenuItem>
