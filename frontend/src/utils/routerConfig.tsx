@@ -29,13 +29,15 @@ export const router = createBrowserRouter([
       },
       {
         element: <ProtectedRoute />,
-        children: [{ path: "/payment", element: <CardDetailsForm /> }],
+        children: [
+          { path: "/payment", element: <CardDetailsForm /> },
+          {
+            path: "/profile",
+            element: <ProfilePage uid={""} />,
+          },
+        ],
       },
     ],
-  },
-  {
-    path: "/profile",
-    element: <ProfilePage uid={""} />,
   },
   {
     path: "/sign-up",
