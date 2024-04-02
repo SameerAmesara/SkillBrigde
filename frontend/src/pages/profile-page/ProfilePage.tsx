@@ -8,20 +8,9 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-import CssBaseline from "@mui/material/CssBaseline";
-import Drawer from "@mui/material/Drawer";
-import Toolbar from "@mui/material/Toolbar";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Container, TextField } from "@mui/material";
-import { Link } from "react-router-dom";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
@@ -37,8 +26,6 @@ interface UserDetails {
   profession: string;
   companyName: string;
 }
-
-const drawerWidth = 240;
 
 export default function ProfilePage({
   uid,
@@ -66,17 +53,6 @@ export default function ProfilePage({
 
     fetchUserProfile();
   }, [uid]);
-
-  const getLink = (text: string) => {
-    switch (text) {
-      case "Profile":
-        return "/profile";
-      case "Logout":
-        return "/logout";
-      default:
-        return "/";
-    }
-  };
 
   const handleEdit = () => {
     setEditMode(true);
@@ -269,44 +245,6 @@ export default function ProfilePage({
                 <Divider />
               </Card>
             </Grid>
-          </Grid>
-          <Grid item xs="auto">
-            <Box sx={{ display: "flex" }}>
-              <CssBaseline />
-              <Drawer
-                variant="permanent"
-                sx={{
-                  width: drawerWidth,
-                  flexShrink: 0,
-                  [`& .MuiDrawer-paper`]: {
-                    width: drawerWidth,
-                    boxSizing: "border-box",
-                  },
-                }}
-              >
-                <Toolbar />
-                <Box sx={{ overflow: "auto" }}>
-                  <List>
-                    {["Profile", "Logout"].map((text, index) => (
-                      <ListItem key={text} disablePadding>
-                        <Link
-                          to={getLink(text)}
-                          style={{ textDecoration: "none", color: "inherit" }}
-                        >
-                          <ListItemButton>
-                            <ListItemIcon>
-                              {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                            </ListItemIcon>
-                            <ListItemText primary={text} />
-                          </ListItemButton>
-                        </Link>
-                      </ListItem>
-                    ))}
-                  </List>
-                  <Divider />
-                </Box>
-              </Drawer>
-            </Box>
           </Grid>
         </Grid>
       </Container>

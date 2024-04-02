@@ -136,7 +136,7 @@ export default function SignUp() {
                 });
                 sessionStorage.setItem("email", email);
                 sessionStorage.setItem("isLoggedIn", "true");
-                navigate("/profile");
+                navigate("/");
               } else {
                 toast.error(
                   "Unexpected response status code: " + response.status

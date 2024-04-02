@@ -25,8 +25,9 @@ type Setting = {
 };
 
 const settings: Setting[] = [
-  { label: "User profile", path: "user-profile" },
+  { label: "User profile", path: "profile" },
   { label: "Saved Cards", path: "saved-cards" },
+  { label: "Logout", path: "logout" },
 ];
 
 const Navigation = () => {
@@ -48,6 +49,16 @@ const Navigation = () => {
 
   const handleCloseProfileMenu = () => {
     setAnchorElProfile(null);
+  };
+
+  const handleSettingsItemClick = (setting: Setting) => {
+    if (setting.path === "logout") {
+      sessionStorage.clear();
+      navigate("/sign-in");
+    } else {
+      navigate(setting.path);
+    }
+    handleCloseProfileMenu();
   };
 
   return (
@@ -133,7 +144,7 @@ const Navigation = () => {
                 {settings.map((setting, index) => (
                   <MenuItem
                     key={setting.label + index}
-                    onClick={handleCloseProfileMenu}
+                    onClick={() => handleSettingsItemClick(setting)}
                   >
                     <Typography textAlign="center">{setting.label}</Typography>
                   </MenuItem>

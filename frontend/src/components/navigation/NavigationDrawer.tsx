@@ -15,6 +15,11 @@ const NavigationDrawer = ({
   const isLoggedIn = sessionStorage.getItem("isLoggedIn");
   const navigate = useNavigate();
 
+  const handleLogout = () => {
+    sessionStorage.clear();
+    navigate("/sign-in");
+  };
+
   return (
     <Drawer
       variant="temporary"
@@ -65,6 +70,15 @@ const NavigationDrawer = ({
             >
               Saved cards
             </NavLink>
+            <Typography
+              onClick={handleLogout}
+              padding="10px 10px"
+              ml="5px"
+              color="#071541"
+              fontWeight={500}
+            >
+              Logout
+            </Typography>
           </Box>
         ) : (
           <Box sx={{ mt: "20px", display: "flex", flexDirection: "column" }}>

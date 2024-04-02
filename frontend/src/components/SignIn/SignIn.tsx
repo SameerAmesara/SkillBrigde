@@ -41,7 +41,7 @@ export default function SignIn() {
           });
           sessionStorage.setItem("email", email);
           sessionStorage.setItem("isLoggedIn", "true");
-          navigate("/profile");
+          navigate("/");
 
           console.log("User signed in successfully!");
           toast.success("Signed in successfully!");
