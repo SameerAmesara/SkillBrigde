@@ -9,6 +9,8 @@ import SignUp from "../components/SignUp/SignUp";
 import ContactUsPage from "../pages/contact-us/ContactUsPage";
 import ProtectedRoute from "../components/protected-route/ProtectedRoute";
 import CardDetailsForm from "../components/card-details-form/CardDetailsForm";
+import ForgotPassword from "../components/ForgotPassword/ForgotPassword";
+import ProfilePage from "../pages/profile-page/ProfilePage";
 
 export const router = createBrowserRouter([
   {
@@ -32,12 +34,20 @@ export const router = createBrowserRouter([
     ],
   },
   {
+    path: "/profile",
+    element: <ProfilePage uid={""} />,
+  },
+  {
     path: "/sign-up",
     element: <SignUp />,
   },
   {
     path: "/sign-in",
     element: <SignIn />,
+  },
+  {
+    path: "/forgot-password",
+    element: <ForgotPassword />,
   },
 ]);
 

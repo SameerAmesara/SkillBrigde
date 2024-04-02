@@ -3,4 +3,15 @@ export interface User {
     name: string;
 }
 
-export type NewUser = Omit<User, 'id'>;
+export interface UserDetails {
+    uid: string;
+    email: string;
+    firstName: string;
+    lastName: string;
+    image: String; 
+    dob: Date; 
+    profession: string;
+    companyName: string;
+}
+
+export type NewUser = Omit<UserDetails, 'id'>;
