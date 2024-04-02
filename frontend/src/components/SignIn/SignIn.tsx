@@ -11,39 +11,42 @@ import Box from "@mui/material/Box";
 import PeopleAltSharpIcon from "@mui/icons-material/PeopleAltSharp";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import {
+  UserCredential,
+  getAuth,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 export default function SignIn() {
   const navigate = useNavigate();
 
-  let uid = "";
-
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
-
+  const handleSubmit = async (
+    event: React.FormEvent<HTMLFormElement>
+  ): Promise<void> => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
     try {
       const auth = getAuth();
-      await signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
+      await signInWithEmailAndPassword(auth, email, password).then(
+        (userCredential: UserCredential) => {
+          const user = userCredential.user;
+          sessionStorage.setItem("userId", user.uid);
+          user.getIdToken().then((accessToken) => {
+            sessionStorage.setItem("accessToken", accessToken);
+          });
+          sessionStorage.setItem("email", email);
+          sessionStorage.setItem("isLoggedIn", "true");
+          navigate("/profile");
 
-        const user = userCredential.user;
-        console.log(user.uid)
-        uid = user.uid;
-
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-      });
-      console.log("User signed in successfully!");
-      toast.success("Signed in successfully!");
-      navigate('/profile');
+          console.log("User signed in successfully!");
+          toast.success("Signed in successfully!");
+        }
+      );
     } catch (error) {
       let errorMessage = "Error signing in:";
       if (error instanceof Error) {
@@ -63,10 +66,10 @@ export default function SignIn() {
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          boxShadow: 1, 
+          boxShadow: 1,
           borderRadius: 4,
-          p: 3, 
-          px: 3
+          p: 3,
+          px: 3,
         }}
       >
         <Avatar sx={{ m: 2, bgcolor: "primary.main" }}>
