@@ -91,6 +91,7 @@ export const router = createBrowserRouter([
 ]);
 
 export const navigationItems: NavigationItem[] = [
+  { path: "discussions", label: "Discussions", isProtected: true },
   { path: "mentors", label: "Mentorship", isProtected: true },
   { path: "contact-us", label: "Contact Us", isProtected: false },
   { path: "faqs", label: "FAQs", isProtected: false },
