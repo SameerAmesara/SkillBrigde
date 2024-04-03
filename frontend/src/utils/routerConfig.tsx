@@ -10,6 +10,11 @@ import ContactUsPage from "../pages/contact-us/ContactUsPage";
 import ProtectedRoute from "../components/protected-route/ProtectedRoute";
 import PaymentPage from "../pages/payment-page/PaymentPage";
 import SavedCardsPage from "../pages/saved-cards-page/SavedCardsPage";
+import ForgotPassword from "../components/ForgotPassword/ForgotPassword";
+import ProfilePage from "../pages/profile-page/ProfilePage";
+import DiscussionsPage from "../pages/discussions/discussions";
+import DiscussionView from "../pages/discussions/discussionView";
+import NewDiscussion from "../pages/discussions/newDiscussion";
 
 export const router = createBrowserRouter([
   {
@@ -29,13 +34,28 @@ export const router = createBrowserRouter([
       {
         element: <ProtectedRoute />,
         children: [
-          { path: "/payment", element: <></> },
+          { path: "/pay", element: <PaymentPage /> },
           { path: "/saved-cards", element: <SavedCardsPage /> },
+          {
+            path: "/profile",
+            element: <ProfilePage uid={""} />,
+          },
+          {
+            path: "/discussions",
+            element: <DiscussionsPage />,
+          },
+          {
+            path: "/discussions/:discussionId",
+            element: <DiscussionView />,
+          },
+          {
+            path: "/discussions/new",
+            element: <NewDiscussion />,
+          },
         ],
       },
     ],
   },
-  { path: "/pay", element: <PaymentPage /> },
   {
     path: "/sign-up",
     element: <SignUp />,
@@ -43,6 +63,10 @@ export const router = createBrowserRouter([
   {
     path: "/sign-in",
     element: <SignIn />,
+  },
+  {
+    path: "/forgot-password",
+    element: <ForgotPassword />,
   },
 ]);
 
