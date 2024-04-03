@@ -3,6 +3,28 @@ export interface User {
   name: string;
 }
 
+export interface Comment {
+    id: string;
+    name: string;
+    image: string; 
+    comment: string;
+}
+
+export interface LikesData {
+    userIds: string[]; // Array of user IDs who liked the content
+    count: number; // Count of likes
+}
+
+export interface ContentFeed {
+    id: string;
+    name: string;
+    feed: string;
+    likes: LikesData; 
+    comments: Comment[]; 
+    datePublish: Date;
+    image: string; 
+}
+
 export interface Mentor {
   id: string;
   firstName: string;

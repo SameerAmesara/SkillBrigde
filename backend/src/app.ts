@@ -1,4 +1,5 @@
-import { connectToDatabase } from "./utils/config";
+import { connectToDatabase } from './utils/config'
+import contentFeedRouter from './routes/contentFeed'
 import express from "express";
 import cors from "cors";
 import middleware from "./utils/middleware";
@@ -16,6 +17,7 @@ app.use(express.json());
 app.use(middleware.morganMiddleWare);
 
 app.use("/user", userRouter);
+app.use("/contentfeed" , contentFeedRouter)
 app.use("/mentor", mentorRouter);
 app.use("/userDetails/", userRouter);
 app.use("/discussions", discussionRouter);
