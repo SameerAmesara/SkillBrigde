@@ -85,7 +85,7 @@ function SearchFilter({ setFilters }: SearchFilterProps) {
   };
 
   const handleRatingsChange = (
-    event: React.ChangeEvent<{}>,
+    _event: React.ChangeEvent<object>,
     newValue: number | null
   ) => {
     setRatings(newValue || 0);

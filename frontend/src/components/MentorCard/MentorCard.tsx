@@ -86,7 +86,7 @@ const MentorCard: React.FC<MentorCardProps> = ({
               value={parseFloat(ratings)}
               precision={0.5}
               readOnly
-              size="lmedium"
+              size="medium"
             />
             <Typography variant="h6">$ {parseFloat(pay)}/hr</Typography>
           </Box>

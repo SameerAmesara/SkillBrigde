@@ -162,7 +162,7 @@ const ApplyMentor = () => {
     try {
       const response = await axios({
         method: "post",
-        url: "http://localhost:8000/mentor",
+        url: `${import.meta.env.VITE_BASE_URL}/mentor`,
         data: mentorData,
       });
       console.log(response.data);

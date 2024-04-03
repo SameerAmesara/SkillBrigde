@@ -21,7 +21,7 @@ export interface Mentor {
   termsAccepted: string;
 }
 
-export type NewMentor = Omit<Mentor, "id">;
+export type NewMentor = Partial<Mentor>;
 export interface UserDetails {
   uid: string;
   email: string;

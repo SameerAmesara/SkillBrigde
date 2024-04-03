@@ -8,8 +8,8 @@ const getAll = async (): Promise<Array<Mentor>> => {
 
 const addMentor = async (entry: NewMentor): Promise<Mentor> => {
   const newUserEntry = {
-    id: uuidv4(),
     ...entry,
+    id: uuidv4(),
   };
   const mentor = new MentorModel(newUserEntry);
   await mentor.save();

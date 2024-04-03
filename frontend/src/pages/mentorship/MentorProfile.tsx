@@ -50,7 +50,9 @@ const MentorProfile = () => {
   useEffect(() => {
     const fetchMentor = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/mentor/" + id);
+        const response = await axios.get(
+          `${import.meta.env.VITE_BASE_URL}/mentor/${id}`
+        );
         setMentorData(response.data);
       } catch (err) {
         if (err instanceof Error) {

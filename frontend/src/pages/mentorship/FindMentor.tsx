@@ -34,7 +34,9 @@ const FindMentor = () => {
     const fetchMentors = async () => {
       setLoading(true);
       try {
-        const response = await axios.get("http://localhost:8000/mentor");
+        const response = await axios.get(
+          `${import.meta.env.VITE_BASE_URL}/mentor`
+        );
         setMentors(response.data);
       } catch (err) {
         if (err instanceof Error) {
