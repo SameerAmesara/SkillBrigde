@@ -15,7 +15,7 @@ const app = express();
 connectToDatabase();
 
 app.use(cors());
-app.use(bodyParser.json({ limit: "50mb" }));
+app.use(bodyParser.json({ limit: "10mb" }));
 app.use(express.json());
 app.use(middleware.morganMiddleWare);
 
