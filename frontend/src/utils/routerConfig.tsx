@@ -8,6 +8,10 @@ import { NavigationItem } from "../models/NavigationItem.model";
 import SignUp from "../components/SignUp/SignUp";
 import ContactUsPage from "../pages/contact-us/ContactUsPage";
 import ProtectedRoute from "../components/protected-route/ProtectedRoute";
+import ApplyMentor from "../pages/mentorship/ApplyMentor";
+import FindMentor from "../pages/mentorship/FindMentor";
+import RateMentor from "../pages/mentorship/RateMentor";
+import MentorProfile from "../pages/mentorship/MentorProfile";
 import PaymentPage from "../pages/payment-page/PaymentPage";
 import ForgotPassword from "../components/ForgotPassword/ForgotPassword";
 import ProfilePage from "../pages/profile-page/ProfilePage";
@@ -52,6 +56,22 @@ export const router = createBrowserRouter([
             element: <NewDiscussion />,
           },
           { path: "/payments", element: <PaymentCardsPage /> },
+          {
+            path: "/mentors",
+            element: <FindMentor />,
+          },
+          {
+            path: "/applymentor",
+            element: <ApplyMentor />,
+          },
+          {
+            path: "/mentorprofile/:id?",
+            element: <MentorProfile />,
+          },
+          {
+            path: "/ratementor",
+            element: <RateMentor />,
+          },
         ],
       },
     ],
@@ -71,7 +91,8 @@ export const router = createBrowserRouter([
 ]);
 
 export const navigationItems: NavigationItem[] = [
+  { path: "discussions", label: "Discussions", isProtected: true },
+  { path: "mentors", label: "Mentorship", isProtected: true },
   { path: "contact-us", label: "Contact Us", isProtected: false },
   { path: "faqs", label: "FAQs", isProtected: false },
-  { path: "discussions", label: "Discussions", isProtected: true },
 ];

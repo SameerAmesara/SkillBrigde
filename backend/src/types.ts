@@ -3,6 +3,25 @@ export interface User {
   name: string;
 }
 
+export interface Mentor {
+  id: string;
+  firstName: string;
+  lastName: string;
+  gender: string;
+  imageUrl: string;
+  ratings: string;
+  bio: string;
+  email: string;
+  phoneNumber: string;
+  experience: string;
+  pay: string;
+  expertise: string;
+  resume: string;
+  availability: string;
+  termsAccepted: string;
+}
+
+export type NewMentor = Partial<Mentor>;
 export interface UserDetails {
   uid: string;
   email: string;
