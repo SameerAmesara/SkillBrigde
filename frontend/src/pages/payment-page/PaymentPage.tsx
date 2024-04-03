@@ -1,4 +1,4 @@
-import { Button, Container, Grid, Typography } from "@mui/material";
+import { Button, Container, Grid, Paper, Typography } from "@mui/material";
 import PaymentForm from "../../components/payment-form/PaymentForm";
 import { observer } from "mobx-react";
 import { useStores } from "../../mobx/RootStore";
@@ -18,22 +18,15 @@ const PaymentPage = observer(() => {
 
   useEffect(() => {
     paymentsStore.fetchSavedCards();
-    paymentsStore.updatePaymentDetails({
-      amount: 10,
-      name: "Book Mentor",
-      paymentInfo: "Dec 25 2024, 10:00 AM to 11:00AM",
-      description:
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. ",
-      type: "BOOK_MENTOR",
-    });
-    paymentsStore.updatePayment({ amount: 10 * 1.15 });
   }, []);
 
   const handleSubmit = async () => {
     const response = await paymentsStore.pay();
     if (response.status === 201) {
       setPaymentSuccessful(true);
+
       setTimeout(() => {
+        paymentsStore.resetPayment();
         navigate(location?.state?.redirectUrl ?? "/");
       }, 1000);
     }
@@ -41,6 +34,7 @@ const PaymentPage = observer(() => {
   };
 
   const handleBack = () => {
+    paymentsStore.resetPayment();
     navigate(location.state?.prevUrl ?? "/");
   };
 
@@ -77,7 +71,9 @@ const PaymentPage = observer(() => {
           <Typography variant="body1">{paymentDetails.description}</Typography>
         </Grid>
         <Grid item xs={12} sm={5}>
-          <PaymentForm isPayment={true} onSubmit={handleSubmit} />
+          <Paper elevation={2} sx={{ px: 2, py: 3 }}>
+            <PaymentForm isPayment={true} onSubmit={handleSubmit} />
+          </Paper>
         </Grid>
       </Grid>
     </Container>

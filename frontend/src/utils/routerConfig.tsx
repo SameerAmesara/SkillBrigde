@@ -15,6 +15,7 @@ import DiscussionsPage from "../pages/discussions/discussions";
 import DiscussionView from "../pages/discussions/discussionView";
 import NewDiscussion from "../pages/discussions/newDiscussion";
 import PaymentCardsPage from "../pages/payments-cards-page/PaymentsCardsPage";
+import BookMentorPage from "../pages/book-mentor-page/BookMentorPage";
 
 export const router = createBrowserRouter([
   {
@@ -57,6 +58,10 @@ export const router = createBrowserRouter([
     ],
   },
   {
+    element: <ProtectedRoute />,
+    children: [{ path: "/book-mentor", element: <BookMentorPage /> }],
+  },
+  {
     path: "/sign-up",
     element: <SignUp />,
   },
@@ -71,7 +76,7 @@ export const router = createBrowserRouter([
 ]);
 
 export const navigationItems: NavigationItem[] = [
+  { path: "discussions", label: "Discussions", isProtected: true },
   { path: "contact-us", label: "Contact Us", isProtected: false },
   { path: "faqs", label: "FAQs", isProtected: false },
-  { path: "discussions", label: "Discussions", isProtected: true },
 ];
