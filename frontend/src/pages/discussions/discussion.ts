@@ -2,7 +2,8 @@ import axios from "axios";
 import { DiscussionModel, DiscussionSearchAndFilterModel, NewDiscussionReplyModel, NewDiscussionSubmitDataModel } from "../../models/discussions.model";
 import React from "react";
 
-const DISCUSSION_URL = `${import.meta.env.VITE_BASE_URL}/discussions`
+const BASE_URL = import.meta.env.VITE_BASE_URL
+const DISCUSSION_URL = `${BASE_URL}/discussions`
 
 /**
  * API call to fetch the discussions with search, sort by and pagination
