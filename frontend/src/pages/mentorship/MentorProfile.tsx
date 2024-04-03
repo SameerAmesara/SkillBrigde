@@ -9,8 +9,11 @@ import {
   Typography,
 } from "@mui/material";
 import axios from "axios";
+import { observer } from "mobx-react";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useStores } from "../../mobx/RootStore";
+import { Availability } from "../../models/BookMentor.model";
 
 type MentorDetails = {
   id: string;
@@ -23,6 +26,7 @@ type MentorDetails = {
   experience: string;
   pay: string;
   expertise: string;
+  availability: Availability[];
 };
 
 const DEFAULT_VALUES_FOR_MENTOR_DATA = {
@@ -36,16 +40,21 @@ const DEFAULT_VALUES_FOR_MENTOR_DATA = {
   experience: "",
   pay: "0",
   expertise: "",
+  availability: [],
 };
 
-const MentorProfile = () => {
+const MentorProfile = observer(() => {
   const { id } = useParams();
+  const navigate = useNavigate();
+  const location = useLocation();
+
   const [mentorData, setMentorData] = useState<MentorDetails>(
     DEFAULT_VALUES_FOR_MENTOR_DATA
   );
-
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  const { bookingStore } = useStores();
 
   useEffect(() => {
     const fetchMentor = async () => {
@@ -53,7 +62,11 @@ const MentorProfile = () => {
         const response = await axios.get(
           `${import.meta.env.VITE_BASE_URL}/mentor/${id}`
         );
-        setMentorData(response.data);
+        const mentorDetails = {
+          ...response.data,
+          availability: JSON.parse(response.data.availability),
+        };
+        setMentorData(mentorDetails);
       } catch (err) {
         if (err instanceof Error) {
           setError(err.message);
@@ -69,6 +82,17 @@ const MentorProfile = () => {
       fetchMentor();
     }
   }, [id]);
+
+  const handleBookNow = (mentorDetails: MentorDetails) => {
+    bookingStore.updateMentorDetails({
+      availability: [...mentorDetails.availability],
+      bio: mentorDetails.bio,
+      hourlyRate: +mentorDetails.pay,
+      name: `${mentorData.firstName} ${mentorData.lastName}`,
+      id: mentorData.id,
+    });
+    navigate("/book-mentor", { state: { prevUrl: location.pathname } });
+  };
 
   if (loading) {
     return <CircularProgress />;
@@ -140,6 +164,7 @@ const MentorProfile = () => {
                 maxWidth: 300,
                 m: "10px auto 0",
               }}
+              onClick={() => handleBookNow(mentorData)}
             >
               Book Now
             </Button>
@@ -203,6 +228,6 @@ const MentorProfile = () => {
       </Paper>
     </Grid>
   );
-};
+});
 
 export default MentorProfile;

@@ -18,7 +18,6 @@ router.get('/', async (_req: Request, res: Response) => {
 router.get('/:uid', async (req: Request, res: Response) => {
   try {
       const uid = req.params.uid;
-      console.log(uid)
       const user = await userService.getUserByUid(uid);
       if (!user) {
           res.status(404).json({ error: "User not found" });

@@ -5,11 +5,12 @@ import "./App.scss";
 import { Outlet } from "react-router-dom";
 import Navigation from "./components/navigation/Navigation";
 
+
 function App() {
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
-      <Navigation />
+      <Navigation/>
       <Container component="main" sx={{ paddingY: 3 }}>
         <Toolbar sx={{ background: "transparent" }} />
         <Outlet />
