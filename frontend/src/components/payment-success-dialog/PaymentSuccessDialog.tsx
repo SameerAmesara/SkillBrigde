@@ -1,7 +1,13 @@
 import { Box, Dialog, Typography } from "@mui/material";
 import SuccessIcon from "../../assets/circle-check-solid.svg";
 
-const PaymentSuccessDialog = ({ open }: { open: boolean }) => {
+const PaymentSuccessDialog = ({
+  open,
+  successText,
+}: {
+  open: boolean;
+  successText?: string;
+}) => {
   return (
     <Dialog open={open}>
       <Box
@@ -12,7 +18,7 @@ const PaymentSuccessDialog = ({ open }: { open: boolean }) => {
       >
         <img src={SuccessIcon} width={100} />
         <Typography variant="h5" mt={2}>
-          Payment Successful
+          {successText ?? "Payment Successful"}
         </Typography>
       </Box>
     </Dialog>

@@ -74,7 +74,7 @@ export const router = createBrowserRouter([
             element: <MentorProfile />,
           },
           {
-            path: "/ratementor",
+            path: "/ratementor/:id?",
             element: <RateMentor />,
           },
           {
