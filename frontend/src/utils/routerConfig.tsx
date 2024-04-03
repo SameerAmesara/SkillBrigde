@@ -8,12 +8,13 @@ import { NavigationItem } from "../models/NavigationItem.model";
 import SignUp from "../components/SignUp/SignUp";
 import ContactUsPage from "../pages/contact-us/ContactUsPage";
 import ProtectedRoute from "../components/protected-route/ProtectedRoute";
-import CardDetailsForm from "../components/card-details-form/CardDetailsForm";
+import PaymentPage from "../pages/payment-page/PaymentPage";
 import ForgotPassword from "../components/ForgotPassword/ForgotPassword";
 import ProfilePage from "../pages/profile-page/ProfilePage";
 import DiscussionsPage from "../pages/discussions/discussions";
 import DiscussionView from "../pages/discussions/discussionView";
 import NewDiscussion from "../pages/discussions/newDiscussion";
+import PaymentCardsPage from "../pages/payments-cards-page/PaymentsCardsPage";
 
 export const router = createBrowserRouter([
   {
@@ -33,14 +34,14 @@ export const router = createBrowserRouter([
       {
         element: <ProtectedRoute />,
         children: [
-          { path: "/payment", element: <CardDetailsForm /> },
+          { path: "/pay", element: <PaymentPage /> },
           {
             path: "/profile",
             element: <ProfilePage uid={""} />,
           },
           {
             path: "/discussions",
-            element: <DiscussionsPage />
+            element: <DiscussionsPage />,
           },
           {
             path: "/discussions/:discussionId",
@@ -49,9 +50,10 @@ export const router = createBrowserRouter([
           {
             path: "/discussions/new",
             element: <NewDiscussion />,
-          }
+          },
+          { path: "/payments", element: <PaymentCardsPage /> },
         ],
-      }
+      },
     ],
   },
   {
@@ -71,4 +73,5 @@ export const router = createBrowserRouter([
 export const navigationItems: NavigationItem[] = [
   { path: "contact-us", label: "Contact Us", isProtected: false },
   { path: "faqs", label: "FAQs", isProtected: false },
+  { path: "discussions", label: "Discussions", isProtected: true },
 ];
