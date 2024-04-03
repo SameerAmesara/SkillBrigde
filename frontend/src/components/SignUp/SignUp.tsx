@@ -30,7 +30,7 @@ interface SignUpFormData {
   confirmPassword: string;
   companyName: string;
   profession: string;
-  dateOfBirth: Date | null;
+  dob: Date | null;
   image: string;
 }
 
@@ -95,7 +95,7 @@ export default function SignUp() {
 
   const onSubmit = async (data: SignUpFormData) => {
     try {
-      const { firstName, lastName, email, password, companyName, profession, dateOfBirth } = data;
+      const { firstName, lastName, email, password, companyName, profession, dob } = data;
 
       await createUserWithEmailAndPassword(auth, email, password,)
         .then((userCredential) => {
@@ -107,7 +107,7 @@ export default function SignUp() {
             email: email,
             firstName: firstName,
             lastName: lastName,
-            dob: dateOfBirth,
+            dob: dob,
             profession: profession,
             companyName: companyName,
             image: imageB64,
@@ -284,7 +284,7 @@ export default function SignUp() {
                 </DemoContainer>
               </LocalizationProvider>
 
-              {errors.dateOfBirth && <Typography color="error">{errors.dateOfBirth.message}</Typography>}
+              {errors.dob && <Typography color="error">{errors.dob.message}</Typography>}
             </Grid>
             <Grid item xs={12}>
               <Typography variant="subtitle1" gutterBottom>
