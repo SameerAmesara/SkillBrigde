@@ -22,7 +22,7 @@ const SavedCardsPage = observer(() => {
   };
 
   return (
-    <Box maxWidth={500} m="0 auto">
+    <Box maxWidth={500} m="0 auto" pt={{ xs: 2, md: 0 }}>
       <AddCardDialog handleClose={handleModalClose} isOpen={isAddCardOpen} />
       <Box
         mb={3}

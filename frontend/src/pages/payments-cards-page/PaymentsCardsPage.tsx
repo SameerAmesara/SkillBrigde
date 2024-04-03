@@ -5,6 +5,7 @@ import CustomTabPanel from "../../components/custom-tab-panel/CustomTabPanel";
 import { observer } from "mobx-react";
 import { useStores } from "../../mobx/RootStore";
 import TransactionsPage from "../transactions-page/TransactionsPage";
+import { ToastContainer } from "react-toastify";
 
 const PaymentCardsPage = observer(() => {
   const [tab, setTab] = useState(0);
@@ -21,6 +22,7 @@ const PaymentCardsPage = observer(() => {
 
   return (
     <Box sx={{ width: "100%" }}>
+      <ToastContainer />
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs
           value={tab}

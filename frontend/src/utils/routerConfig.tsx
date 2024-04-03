@@ -12,6 +12,7 @@ import ApplyMentor from "../pages/mentorship/ApplyMentor";
 import FindMentor from "../pages/mentorship/FindMentor";
 import RateMentor from "../pages/mentorship/RateMentor";
 import MentorProfile from "../pages/mentorship/MentorProfile";
+import ContentFeed from "../components/ContentFeed/ContentFeed";
 import PaymentPage from "../pages/payment-page/PaymentPage";
 import ForgotPassword from "../components/ForgotPassword/ForgotPassword";
 import ProfilePage from "../pages/profile-page/ProfilePage";
@@ -19,6 +20,7 @@ import DiscussionsPage from "../pages/discussions/discussions";
 import DiscussionView from "../pages/discussions/discussionView";
 import NewDiscussion from "../pages/discussions/newDiscussion";
 import PaymentCardsPage from "../pages/payments-cards-page/PaymentsCardsPage";
+import BookMentorPage from "../pages/book-mentor-page/BookMentorPage";
 
 export const router = createBrowserRouter([
   {
@@ -38,11 +40,11 @@ export const router = createBrowserRouter([
       {
         element: <ProtectedRoute />,
         children: [
-          { path: "/pay", element: <PaymentPage /> },
           {
             path: "/profile",
             element: <ProfilePage uid={""} />,
           },
+          { path: "/contentfeed", element: <ContentFeed /> },
           {
             path: "/discussions",
             element: <DiscussionsPage />,
@@ -77,6 +79,13 @@ export const router = createBrowserRouter([
     ],
   },
   {
+    element: <ProtectedRoute />,
+    children: [
+      { path: "/book-mentor", element: <BookMentorPage /> },
+      { path: "/pay", element: <PaymentPage /> },
+    ],
+  },
+  {
     path: "/sign-up",
     element: <SignUp />,
   },
@@ -93,6 +102,7 @@ export const router = createBrowserRouter([
 export const navigationItems: NavigationItem[] = [
   { path: "discussions", label: "Discussions", isProtected: true },
   { path: "mentors", label: "Mentorship", isProtected: true },
+  { path: "contentfeed", label: "Content Feed", isProtected: true },
   { path: "contact-us", label: "Contact Us", isProtected: false },
   { path: "faqs", label: "FAQs", isProtected: false },
 ];
