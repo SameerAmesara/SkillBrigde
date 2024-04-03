@@ -45,7 +45,7 @@ export default function ProfilePage({ uid }: { uid: string }): React.ReactElemen
             try {
                 const userData = await axios.get<UserDetails>(`http://localhost:8000/userDetails/${data}`);
                 console.log(userData.data);
-                setUserDa({...userData.data});
+                setUserDa({ ...userData.data });
             } catch (error) {
                 console.error('Error fetching user profile:', error);
             }
@@ -77,12 +77,12 @@ export default function ProfilePage({ uid }: { uid: string }): React.ReactElemen
 
     const handleDelete = async () => {
         try {
-            auth.currentUser?.delete().then(()=>{
+            auth.currentUser?.delete().then(() => {
                 sessionStorage.clear()
                 navigate('/')
                 axios.delete(`http://localhost:8000/userDetails/${userDa?._id}`);
-              })
-              
+            })
+
         } catch (error) {
             console.error('Error updating user profile:', error);
         }
@@ -235,12 +235,12 @@ export default function ProfilePage({ uid }: { uid: string }): React.ReactElemen
                             <Divider />
                         </Card>
                         <Button
-                                                variant="contained"
-                                                color="error"
-                                                onClick={handleDelete}
-                                            >
-                                                Delete Account
-                                            </Button>
+                            variant="contained"
+                            color="error"
+                            onClick={handleDelete}
+                        >
+                            Delete Account
+                        </Button>
                     </Grid>
                 </Grid>
             </Container>
