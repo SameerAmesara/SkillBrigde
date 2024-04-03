@@ -131,9 +131,6 @@ export default function ProfilePage({ uid }: { uid: string }): React.ReactElemen
                                                 </span>
                                             </label>
                                         </Stack>
-
-
-
                                         <TextField
                                             name="firstName"
                                             fullWidth

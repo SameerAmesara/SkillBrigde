@@ -27,6 +27,7 @@ type Setting = {
 
 const settings: Setting[] = [
   { label: "User profile", path: "profile" },
+  { label: "Saved Cards", path: "saved-cards" },
   { label: "Logout", path: "logout" },
 ];
 

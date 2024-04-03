@@ -9,11 +9,18 @@ import { RouterProvider } from "react-router-dom";
 import { router } from "./utils/routerConfig.tsx";
 import { ThemeProvider } from "@mui/material";
 import { theme } from "./utils/theme.ts";
+import { loadStripe } from "@stripe/stripe-js";
+import { Elements } from "@stripe/react-stripe-js";
 
+const stripePromise = loadStripe(
+  "pk_test_51OzWAsCze0fcYUhcfQYrMghHwYyKUfWDtnXB9151uP8mQtEDMr9IjhrHFtiAxJqVYyUCAq3GNGrYL0fMfo1FXv3V00Zw8GUq9Q"
+);
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <ThemeProvider theme={theme}>
-      <RouterProvider router={router} />
-    </ThemeProvider>
+    <Elements stripe={stripePromise}>
+      <ThemeProvider theme={theme}>
+        <RouterProvider router={router} />
+      </ThemeProvider>
+    </Elements>
   </React.StrictMode>
 );
