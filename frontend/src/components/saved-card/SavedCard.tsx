@@ -1,11 +1,4 @@
-import {
-  Box,
-  Icon,
-  IconButton,
-  Paper,
-  Tooltip,
-  Typography,
-} from "@mui/material";
+import { Box, IconButton, Paper, Tooltip, Typography } from "@mui/material";
 import visaIcon from "../../assets/cc-visa.png";
 import mcIcon from "../../assets/cc-mastercard.svg";
 import { Delete } from "@mui/icons-material";
@@ -19,6 +12,8 @@ interface SavedCardProps {
   isClickable?: boolean;
   isActive?: boolean;
   handleClick?: (id: string) => void;
+  onDeleteCard?: (id: string) => void;
+  hideDelete?: boolean;
 }
 
 const SavedCard = ({
@@ -30,6 +25,8 @@ const SavedCard = ({
   isClickable,
   isActive,
   handleClick,
+  onDeleteCard,
+  hideDelete,
 }: SavedCardProps) => {
   return (
     <Paper
@@ -83,20 +80,22 @@ const SavedCard = ({
             {exp_month}/{exp_year}
           </Typography>
         </Box>
-        <Box m="0 auto" mr={0}>
-          <Tooltip title="Delete card">
-            <IconButton
-              aria-label="delete"
-              onClick={() => {}}
-              size="small"
-              sx={{
-                color: "red",
-              }}
-            >
-              <Delete />
-            </IconButton>
-          </Tooltip>
-        </Box>
+        {!hideDelete ? (
+          <Box m="0 auto" mr={0}>
+            <Tooltip title="Delete card">
+              <IconButton
+                aria-label="delete"
+                onClick={() => (onDeleteCard ? onDeleteCard(id) : null)}
+                size="small"
+                sx={{
+                  color: "red",
+                }}
+              >
+                <Delete />
+              </IconButton>
+            </Tooltip>
+          </Box>
+        ) : null}
       </Box>
     </Paper>
   );

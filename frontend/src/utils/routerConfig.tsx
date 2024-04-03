@@ -9,12 +9,12 @@ import SignUp from "../components/SignUp/SignUp";
 import ContactUsPage from "../pages/contact-us/ContactUsPage";
 import ProtectedRoute from "../components/protected-route/ProtectedRoute";
 import PaymentPage from "../pages/payment-page/PaymentPage";
-import SavedCardsPage from "../pages/saved-cards-page/SavedCardsPage";
 import ForgotPassword from "../components/ForgotPassword/ForgotPassword";
 import ProfilePage from "../pages/profile-page/ProfilePage";
 import DiscussionsPage from "../pages/discussions/discussions";
 import DiscussionView from "../pages/discussions/discussionView";
 import NewDiscussion from "../pages/discussions/newDiscussion";
+import PaymentCardsPage from "../pages/payments-cards-page/PaymentsCardsPage";
 
 export const router = createBrowserRouter([
   {
@@ -35,7 +35,6 @@ export const router = createBrowserRouter([
         element: <ProtectedRoute />,
         children: [
           { path: "/pay", element: <PaymentPage /> },
-          { path: "/saved-cards", element: <SavedCardsPage /> },
           {
             path: "/profile",
             element: <ProfilePage uid={""} />,
@@ -52,6 +51,7 @@ export const router = createBrowserRouter([
             path: "/discussions/new",
             element: <NewDiscussion />,
           },
+          { path: "/payments", element: <PaymentCardsPage /> },
         ],
       },
     ],
@@ -73,4 +73,5 @@ export const router = createBrowserRouter([
 export const navigationItems: NavigationItem[] = [
   { path: "contact-us", label: "Contact Us", isProtected: false },
   { path: "faqs", label: "FAQs", isProtected: false },
+  { path: "discussions", label: "Discussions", isProtected: true },
 ];

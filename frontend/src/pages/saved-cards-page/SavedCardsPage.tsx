@@ -1,18 +1,24 @@
-import { Box, Button, Grid, Icon, Typography } from "@mui/material";
+import { Box, Button, Skeleton, Typography } from "@mui/material";
 import { useState } from "react";
 import AddCardDialog from "../../components/add-card-dialog/AddCardDialog";
 import SavedCard from "../../components/saved-card/SavedCard";
 import { AddCircle } from "@mui/icons-material";
 import { useStores } from "../../mobx/RootStore";
+import { observer } from "mobx-react";
 
-const SavedCardsPage = () => {
+const SavedCardsPage = observer(() => {
   const [isAddCardOpen, setAddCardOpen] = useState(false);
 
   const { paymentsStore } = useStores();
-  const { cards } = paymentsStore;
+  const { cards, isCardsLoading } = paymentsStore;
 
   const handleModalClose = () => {
     setAddCardOpen(false);
+  };
+
+  const handleDeleteCard = async (paymentMethodId: string) => {
+    const response = await paymentsStore.deleteCard(paymentMethodId);
+    console.log(response);
   };
 
   return (
@@ -38,9 +44,23 @@ const SavedCardsPage = () => {
         </Button>
       </Box>
       <Box display="flex" flexDirection="column" gap={2}>
-        {cards.length > 0 ? (
+        {isCardsLoading ? (
+          [1, 2, 3].map((value) => (
+            <Skeleton
+              key={`skeleton-card-${value}`}
+              variant="rectangular"
+              width="100%"
+              height={70}
+              sx={{ maxWidth: 500 }}
+            />
+          ))
+        ) : cards.length > 0 ? (
           cards.map((card, index) => (
-            <SavedCard key={card.id + index} {...card} />
+            <SavedCard
+              key={card.id + index}
+              {...card}
+              onDeleteCard={handleDeleteCard}
+            />
           ))
         ) : (
           <Typography>No saved cards available!</Typography>
@@ -48,6 +68,6 @@ const SavedCardsPage = () => {
       </Box>
     </Box>
   );
-};
+});
 
 export default SavedCardsPage;

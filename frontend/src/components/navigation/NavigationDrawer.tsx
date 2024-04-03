@@ -61,14 +61,14 @@ const NavigationDrawer = ({
               </Box>
             </NavLink>
             <NavLink
-              to={"saved-cards"}
+              to={"payments"}
               className={({ isActive }) => {
                 return isActive
                   ? "app-nav-drawer-link app-nav-drawer-link--active"
                   : "app-nav-drawer-link";
               }}
             >
-              Saved cards
+              Payments
             </NavLink>
             <Typography
               onClick={handleLogout}

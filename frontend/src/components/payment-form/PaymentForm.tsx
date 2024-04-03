@@ -1,4 +1,11 @@
-import { Box, Button, FormControl, Grid, OutlinedInput } from "@mui/material";
+import {
+  Box,
+  FormControl,
+  Grid,
+  OutlinedInput,
+  Typography,
+} from "@mui/material";
+import LoadingButton from "@mui/lab/LoadingButton";
 import {
   useStripe,
   useElements,
@@ -6,14 +13,16 @@ import {
   CardExpiryElement,
   CardCvcElement,
 } from "@stripe/react-stripe-js";
-import { FormEvent, useEffect } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { useStores } from "../../mobx/RootStore";
 import SavedCard from "../saved-card/SavedCard";
 import { observer } from "mobx-react";
+import { AxiosError } from "axios";
+import { toast } from "react-toastify";
 
 interface PaymentFormProps {
   buttonText?: string;
-  onSubmit?: () => void;
+  onSubmit?: (paymentMethodId: string) => void;
   isPayment?: boolean;
 }
 
@@ -23,9 +32,38 @@ const PaymentForm = observer(
     const elements = useElements();
     const { paymentsStore } = useStores();
     const { cards, payment } = paymentsStore;
+    const [isLoading, setLoading] = useState(false);
+    const [formError, setFormError] = useState("");
+
+    useEffect(() => {
+      return () => paymentsStore.resetPayment();
+    }, []);
 
     const handleSubmit = async (e: FormEvent) => {
       e.preventDefault();
+
+      const form = e.target as HTMLFormElement;
+      const postalCode = form.elements.namedItem(
+        "postalCode"
+      ) as HTMLInputElement;
+
+      if (paymentsStore.payment.paymentMethodId) {
+        setFormError("");
+        if (onSubmit) {
+          try {
+            setLoading(true);
+            await onSubmit("");
+            setLoading(false);
+          } catch (error) {
+            const axiosError = error as AxiosError<{ message: string }>;
+            if (axiosError.response?.data) {
+              const { message } = axiosError.response.data;
+              toast.error(message);
+            }
+          }
+        }
+        return;
+      }
 
       if (!stripe || !elements) {
         return;
@@ -38,16 +76,20 @@ const PaymentForm = observer(
       });
 
       if (error) {
-        console.log("[error]", error);
+        setFormError(error.message ?? "Invalid card details");
       } else {
-        const payload = {
-          paymentMethodId: paymentMethod.id,
-          createdAt: new Date(),
-          userId: sessionStorage.getItem("userId") ?? "",
-        };
-        paymentsStore.updatePayment({ ...payload });
+        if (!postalCode.value) {
+          setFormError("Enter valid postal code.");
+          return;
+        }
+
+        setFormError("");
+
         if (onSubmit) {
-          onSubmit();
+          setLoading(true);
+          paymentsStore.updatePayment({ paymentMethodId: paymentMethod.id });
+          await onSubmit(paymentMethod.id);
+          setLoading(false);
         }
       }
     };
@@ -72,14 +114,20 @@ const PaymentForm = observer(
                 {...card}
                 isClickable={true}
                 isActive={payment.paymentMethodId === card.id}
-                handleClick={() =>
-                  paymentsStore.updatePayment({ paymentMethodId: card.id })
-                }
+                handleClick={() => {
+                  if (paymentsStore.payment.paymentMethodId === card.id) {
+                    paymentsStore.updatePayment({ paymentMethodId: "" });
+                  } else {
+                    paymentsStore.updatePayment({ paymentMethodId: card.id });
+                  }
+                }}
+                hideDelete={true}
               />
             ))
           : null}
         <Box sx={INPUT_WRAPPER_STYLE}>
           <CardNumberElement
+            onFocus={() => paymentsStore.updatePayment({ paymentMethodId: "" })}
             options={{ ...CARD_OPTIONS, showIcon: true, iconStyle: "solid" }}
           />
         </Box>
@@ -92,17 +140,22 @@ const PaymentForm = observer(
           </Grid>
         </Grid>
         <FormControl>
-          <OutlinedInput placeholder="Postal code" />
+          <OutlinedInput placeholder="Postal code" name="postalCode" />
         </FormControl>
-
-        <Button
+        {formError ? (
+          <Typography variant="subtitle1" color="red">
+            {formError}
+          </Typography>
+        ) : null}
+        <LoadingButton
           variant="contained"
           type="submit"
           fullWidth
           sx={{ maxWidth: "300px", m: "0 auto" }}
+          loading={isLoading}
         >
           {buttonText ?? "Pay"}
-        </Button>
+        </LoadingButton>
       </Box>
     );
   }
