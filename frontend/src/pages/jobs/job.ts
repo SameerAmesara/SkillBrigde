@@ -1,7 +1,7 @@
 import axios from "axios"
 import { NewJobData } from "../../models/jobs.model"
 
-const BASE_URL = 'http://localhost:8000'
+const BASE_URL = import.meta.env.VITE_BASE_URL
 const JOB_URL = `${BASE_URL}/job`
 
 export const createJob = async (newJobData: NewJobData) => {

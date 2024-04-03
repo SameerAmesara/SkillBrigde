@@ -99,7 +99,6 @@ export interface NewDiscussion {
 
 export type DiscussionSortByOptions = "newest" | "oldest" | "mostLiked";
 
-<<<<<<< Updated upstream
 export type NewUser = Omit<UserDetails, "id">;
 
 export interface Transaction {
@@ -111,8 +110,6 @@ export interface Transaction {
   description: string;
   createdAt: Date;
 }
-=======
-export type NewUser = Omit<UserDetails, 'id'>;
 
 export enum experienceLevels {
     internship = "Internship",
@@ -165,4 +162,3 @@ export type NewJobData = Omit<Job, 'id' >
 export type NewJobErrorData = {
     [P in keyof NewJobData]: string
 }
->>>>>>> Stashed changes

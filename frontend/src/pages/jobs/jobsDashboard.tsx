@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Job from '../../components/job/jobCard'
 import { useNavigate } from 'react-router-dom'
-import { AppBar, Box, Grid, SelectChangeEvent, Stack, TextField, Toolbar, Typography } from '@mui/material'
+import { Grid, SelectChangeEvent, Stack, Typography } from '@mui/material'
 import Search from '../../components/job/jobSearch'
 import { JobModel, experienceLevels, jobTypes, locationProvinces } from '../../models/jobs.model'
 import { getAllJobs } from './job'

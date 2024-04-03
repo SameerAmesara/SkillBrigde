@@ -8,7 +8,7 @@ import {
     SelectChangeEvent,
     Stack,
 } from "@mui/material"
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import Footer from "../../components/Footer/Footer"
 import { createJob } from "./job"
