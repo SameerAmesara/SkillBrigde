@@ -23,7 +23,7 @@ import { useNavigate } from "react-router-dom";
 import { useState } from 'react';
 
 export default function SignIn() {
-  const [email, setEmail] = useState('');
+  const [, setEmail] = useState('');
 
   const navigate = useNavigate();
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
-import TextField, { FilledTextFieldProps, OutlinedTextFieldProps, StandardTextFieldProps, TextFieldVariants } from "@mui/material/TextField";
+import TextField from "@mui/material/TextField";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
@@ -14,7 +14,7 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../utils/firebase";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import dayjs, { Dayjs } from 'dayjs';
+import dayjs from 'dayjs';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -37,15 +37,12 @@ interface SignUpFormData {
 
 export default function SignUp() {
   const [imageB64, setImageB64] = useState<string | ArrayBuffer>()
-  const [userFirstName, setUserFirstName] = useState<string>("");
 
   const navigate = useNavigate();
 
   const { register, handleSubmit, formState: { errors }, reset, getValues, } = useForm<SignUpFormData>({
     mode: "onChange",
   });
-
-  const [value] = useState<Dayjs | null>(null);
 
   const password = React.useRef({});
 
@@ -98,55 +95,65 @@ export default function SignUp() {
 
   const onSubmit = async (data: SignUpFormData) => {
     try {
-      const { firstName, lastName, email, password, companyName, profession, dateOfBirth, image } = data;
-      let uid;
+      const { firstName, lastName, email, password, companyName, profession, dateOfBirth } = data;
 
       await createUserWithEmailAndPassword(auth, email, password,)
         .then((userCredential) => {
           const user = userCredential.user;
-          uid = user.uid;
+          const uid = user.uid;
 
+          const userDetails = {
+            uid: uid,
+            email: email,
+            firstName: firstName,
+            lastName: lastName,
+            dob: dateOfBirth,
+            profession: profession,
+            companyName: companyName,
+            image: imageB64,
+          };
+
+          axios
+            .post(`${import.meta.env.VITE_BASE_URL}/userDetails/add`, userDetails)
+            .then((response) => {
+              if (response.status === 201) {
+                toast.success("User account has been created.");
+                sessionStorage.setItem("userId", uid);
+                user.getIdToken().then((accessToken) => {
+                  sessionStorage.setItem("accessToken", accessToken);
+                });
+                sessionStorage.setItem("email", email);
+                sessionStorage.setItem("isLoggedIn", "true");
+                navigate("/");
+              } else {
+                toast.error(
+                  "Unexpected response status code: " + response.status
+                );
+              }
+
+            })
+            .catch(error => {
+              if (error.response && error.response.status === 409) {
+                toast.error('Account with this email already exists');
+              } else {
+                console.error('Error:', error);
+              }
+            });
         })
         .catch((error) => {
-          const errorCode = error.code;
           const errorMessage = error.message;
+          toast.error(errorMessage);
         });
-
-      const userDetails = {
-        uid: uid,
-        email: email,
-        firstName: firstName,
-        lastName: lastName,
-        dob: dateOfBirth,
-        profession: profession,
-        companyName: companyName,
-        image: imageB64
-      };
-
-      axios.post('http://localhost:8000/userDetails/add', userDetails)
-      .then(response => {
-        if (response.status === 201) {
-          toast.success('User account has been created.');
-        } else {
-          toast.error('Unexpected response status code: ' + response.status);
-        }
-      })
-      .catch(error => {
-        if (error.response && error.response.status === 409) {
-          toast.error('Account with this email already exists');
-        } else {
-          console.error('Error:', error);
-        }
-      });
 
       reset();
       setTimeout(() => {
-        window.location.href = "/sign-in";
+        navigate('/')
       }, 3000);
     } catch (error) {
       let errorMessage = "Error signing up:";
       if (error instanceof Error) {
         errorMessage = error.message;
+        toast.error(errorMessage);
       }
     }
   };

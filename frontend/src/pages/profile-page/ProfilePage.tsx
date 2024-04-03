@@ -23,6 +23,7 @@ import { useNavigate } from 'react-router-dom';
 
 interface UserDetails {
     _id: string,
+    uid: string,
     email: string,
     firstName: string,
     lastName: string,
@@ -32,7 +33,7 @@ interface UserDetails {
     companyName: string
 }
 
-export default function ProfilePage({ uid }: { uid: string }): React.ReactElement {
+export default function ProfilePage({ }: { uid: string }): React.ReactElement {
     const [editMode, setEditMode] = useState(false);
     const [userDa, setUserDa] = useState<UserDetails | null>(null);
     const data = sessionStorage.getItem('userId');
@@ -43,7 +44,7 @@ export default function ProfilePage({ uid }: { uid: string }): React.ReactElemen
     useEffect(() => {
         const getById = async () => {
             try {
-                const userData = await axios.get<UserDetails>(`http://localhost:8000/userDetails/${data}`);
+                const userData = await axios.get<UserDetails>(`${import.meta.env.VITE_BASE_URL}/userDetails/${data}`);
                 console.log(userData.data);
                 setUserDa({ ...userData.data });
             } catch (error) {
@@ -80,7 +81,7 @@ export default function ProfilePage({ uid }: { uid: string }): React.ReactElemen
             auth.currentUser?.delete().then(() => {
                 sessionStorage.clear()
                 navigate('/')
-                axios.delete(`http://localhost:8000/userDetails/${userDa?._id}`);
+                axios.delete(`${import.meta.env.VITE_BASE_URL}/userDetails/${userDa?._id}`);
             })
 
         } catch (error) {
@@ -89,7 +90,7 @@ export default function ProfilePage({ uid }: { uid: string }): React.ReactElemen
     }
     const handleSave = async () => {
         try {
-            await axios.put(`http://localhost:8000/userDetails/${userDa?.uid}`, userDa);
+            await axios.put(`${import.meta.env.VITE_BASE_URL}/userDetails/${userDa?.uid}`, userDa);
             setEditMode(false);
         } catch (error) {
             console.error('Error updating user profile:', error);
