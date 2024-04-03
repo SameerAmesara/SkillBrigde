@@ -3,7 +3,6 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import {
   FormControl,
-  InputLabel,
   Select,
   MenuItem,
   FormGroup,
@@ -15,7 +14,7 @@ import {
   TextField,
   Rating,
 } from "@mui/material";
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -63,9 +62,10 @@ const subjects = [
 
 interface SearchFilterProps {
   setFilters: React.Dispatch<React.SetStateAction<Filters>>;
+  setSearchInput: React.Dispatch<React.SetStateAction<string>>;
 }
 
-function SearchFilter({ setFilters }: SearchFilterProps) {
+function SearchFilter({ setFilters, setSearchInput }: SearchFilterProps) {
   const [areaOfExpertise, setAreaOfExpertise] = useState<string[]>([]);
   const [experience, setExperience] = useState(0);
   const [ratings, setRatings] = useState(0);
@@ -82,6 +82,11 @@ function SearchFilter({ setFilters }: SearchFilterProps) {
     // console.log("experience: ", experience);
     // console.log("ratings: ", ratings);
     // console.log("gender:", gender);
+  };
+
+  const handleSearchInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    console.log(e.target.value);
+    setSearchInput(e.target.value);
   };
 
   const handleRatingsChange = (
@@ -113,40 +118,47 @@ function SearchFilter({ setFilters }: SearchFilterProps) {
         <Typography variant="h6">Filters</Typography>
         <Divider sx={{ mb: 2 }} />
         <FormGroup>
-          <FormControl fullWidth>
-            <InputLabel id="expertise-label">Area of Expertise</InputLabel>
-            <Select
-              labelId="expertise-label"
-              id="expertise"
-              name="expertise"
-              multiple
-              value={areaOfExpertise}
-              onChange={handleChange}
-              input={
-                <OutlinedInput
-                  id="select-multiple-chip"
-                  label="Area of Expertise"
-                />
-              }
-              renderValue={(selected) => (
-                <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
-                  {selected.map((value) => (
-                    <Chip key={value} label={value} />
-                  ))}
-                </Box>
-              )}
-              MenuProps={MenuProps}
-            >
-              {subjects.map((name) => (
-                <MenuItem key={name} value={name}>
-                  {name}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
+          <Typography id="searchText" gutterBottom sx={{ mb: 1 }}>
+            Search by Name
+          </Typography>
+          <TextField
+            fullWidth
+            id="searchName"
+            onChange={handleSearchInputChange}
+          />
 
           <Box sx={{ mt: 2 }}>
-            <Typography id="rating-slider" gutterBottom sx={{ mb: 1 }}>
+            <Typography id="AreaOfExpertiseText" gutterBottom sx={{ mb: 1 }}>
+              Area of Expertise
+            </Typography>
+            <FormControl fullWidth>
+              <Select
+                id="expertise"
+                name="expertise"
+                multiple
+                value={areaOfExpertise}
+                onChange={handleChange}
+                input={<OutlinedInput id="select-multiple-chip" />}
+                renderValue={(selected) => (
+                  <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+                    {selected.map((value) => (
+                      <Chip key={value} label={value} />
+                    ))}
+                  </Box>
+                )}
+                MenuProps={MenuProps}
+              >
+                {subjects.map((name) => (
+                  <MenuItem key={name} value={name}>
+                    {name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Box>
+
+          <Box sx={{ mt: 2 }}>
+            <Typography id="experienceText" gutterBottom sx={{ mb: 1 }}>
               Experience
             </Typography>
             <TextField
@@ -160,7 +172,7 @@ function SearchFilter({ setFilters }: SearchFilterProps) {
           </Box>
 
           <Box>
-            <Typography id="rating-slider" gutterBottom sx={{ mt: 2 }}>
+            <Typography id="GenderSelect" gutterBottom sx={{ mt: 2 }}>
               Gender
             </Typography>
             <FormControl fullWidth>
@@ -180,7 +192,7 @@ function SearchFilter({ setFilters }: SearchFilterProps) {
           </Box>
 
           <Box>
-            <Typography id="rating-slider" gutterBottom sx={{ mt: 2 }}>
+            <Typography id="RatingSelect" gutterBottom sx={{ mt: 2 }}>
               Ratings
             </Typography>
             <Rating
