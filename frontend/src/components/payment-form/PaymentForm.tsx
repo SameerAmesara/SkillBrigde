@@ -3,6 +3,7 @@ import {
   FormControl,
   Grid,
   OutlinedInput,
+  Skeleton,
   Typography,
 } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
@@ -31,13 +32,9 @@ const PaymentForm = observer(
     const stripe = useStripe();
     const elements = useElements();
     const { paymentsStore } = useStores();
-    const { cards, payment } = paymentsStore;
+    const { cards, payment, isCardsLoading } = paymentsStore;
     const [isLoading, setLoading] = useState(false);
     const [formError, setFormError] = useState("");
-
-    useEffect(() => {
-      return () => paymentsStore.resetPayment();
-    }, []);
 
     const handleSubmit = async (e: FormEvent) => {
       e.preventDefault();
@@ -107,8 +104,16 @@ const PaymentForm = observer(
         alignItems="stretch"
         gap={2}
       >
-        {isPayment
-          ? cards.map((card, index) => (
+        {isPayment ? (
+          isCardsLoading ? (
+            <Skeleton
+              variant="rectangular"
+              width="100%"
+              height={70}
+              sx={{ maxWidth: 500 }}
+            />
+          ) : (
+            cards.map((card, index) => (
               <SavedCard
                 key={card.id + index}
                 {...card}
@@ -124,7 +129,8 @@ const PaymentForm = observer(
                 hideDelete={true}
               />
             ))
-          : null}
+          )
+        ) : null}
         <Box sx={INPUT_WRAPPER_STYLE}>
           <CardNumberElement
             onFocus={() => paymentsStore.updatePayment({ paymentMethodId: "" })}

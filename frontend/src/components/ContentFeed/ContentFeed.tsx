@@ -733,7 +733,7 @@ export default function ContentFeed() {
         justifyContent: 'center'
       }} count={Math.ceil(filteredFeeds.length / itemsPerPage)} // Calculate total pages
         page={currentPage}
-        onChange={(page) => handlePageChange(page)} />
+        onChange={(_event ,page) => handlePageChange(page)} />
 
 
       <Card sx={{
