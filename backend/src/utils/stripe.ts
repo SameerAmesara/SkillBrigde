@@ -15,3 +15,4 @@ export const createStripeCustomer = async (email: string, name?: string) => {
 };
 
 export default stripe;
+
