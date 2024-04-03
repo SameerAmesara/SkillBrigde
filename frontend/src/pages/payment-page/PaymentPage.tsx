@@ -9,7 +9,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import PaymentSuccessDialog from "../../components/payment-success-dialog/PaymentSuccessDialog";
 
 const PaymentPage = observer(() => {
-  const { paymentsStore } = useStores();
+  const { paymentsStore, bookingStore } = useStores();
   const { payment, paymentDetails } = paymentsStore;
   const navigate = useNavigate();
   const location = useLocation();
@@ -27,6 +27,7 @@ const PaymentPage = observer(() => {
 
       setTimeout(() => {
         paymentsStore.resetPayment();
+        bookingStore.resetBookMentor();
         navigate(location?.state?.redirectUrl ?? "/");
       }, 1000);
     }
@@ -39,7 +40,7 @@ const PaymentPage = observer(() => {
   };
 
   return (
-    <Container>
+    <Container sx={{ pt: { xs: 1, sm: 3 } }}>
       <PaymentSuccessDialog open={isPaymentSuccessful} />
       <ToastContainer />
       <Grid container spacing={3}>
@@ -60,7 +61,7 @@ const PaymentPage = observer(() => {
             Amount: ${paymentDetails.amount}
           </Typography>
           <Typography variant="body1">
-            Tax: ${(paymentDetails.amount ?? 0) * 0.15}
+            Tax: ${((paymentDetails.amount ?? 0) * 0.15).toFixed(2)}
           </Typography>
           <Typography variant="body1" fontWeight={500}>
             Total: ${payment.amount}

@@ -13,6 +13,10 @@ export interface Availability {
 
 export interface MentorDetails {
   availability: Availability[];
+  hourlyRate: number;
+  name: string;
+  bio: string;
+  id: string;
 }
 
 export interface BookMentor {

@@ -3,7 +3,7 @@ import { Box, Dialog, IconButton, Typography } from "@mui/material";
 import PaymentForm from "../payment-form/PaymentForm";
 import { useStores } from "../../mobx/RootStore";
 import { observer } from "mobx-react";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 
 interface AddCardDialogProps {
   isOpen: boolean;
@@ -22,43 +22,40 @@ const AddCardDialog = observer(
     };
 
     return (
-      <>
-        <ToastContainer />
-        <Dialog
-          open={isOpen}
-          onClose={handleClose}
-          aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description"
-          fullWidth
-          PaperProps={{ sx: { maxWidth: 500 } }}
+      <Dialog
+        open={isOpen}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+        fullWidth
+        PaperProps={{ sx: { maxWidth: 500 } }}
+      >
+        <Box
+          sx={{
+            p: { xs: "10px 30px", sm: "30px" },
+            borderRadius: "6px",
+            width: "100%",
+            m: 0,
+          }}
         >
-          <Box
+          <IconButton
+            aria-label="close"
+            onClick={handleClose}
             sx={{
-              p: { xs: "10px 30px", sm: "30px" },
-              borderRadius: "6px",
-              width: "100%",
-              m: 0,
+              position: "absolute",
+              right: 8,
+              top: 8,
+              color: (theme) => theme.palette.grey[500],
             }}
           >
-            <IconButton
-              aria-label="close"
-              onClick={handleClose}
-              sx={{
-                position: "absolute",
-                right: 8,
-                top: 8,
-                color: (theme) => theme.palette.grey[500],
-              }}
-            >
-              <Close />
-            </IconButton>
-            <Typography variant="h6" mb={2}>
-              Add Card
-            </Typography>
-            <PaymentForm buttonText="Save card" onSubmit={onSubmit} />
-          </Box>
-        </Dialog>
-      </>
+            <Close />
+          </IconButton>
+          <Typography variant="h6" mb={2}>
+            Add Card
+          </Typography>
+          <PaymentForm buttonText="Save card" onSubmit={onSubmit} />
+        </Box>
+      </Dialog>
     );
   }
 );

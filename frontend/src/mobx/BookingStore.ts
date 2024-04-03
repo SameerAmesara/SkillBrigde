@@ -9,7 +9,13 @@ import { RootStore } from "./RootStore";
 export class BookingStore {
   rootStore: RootStore;
   bookMentor: BookMentor = {
-    mentorDetails: { availability: [] },
+    mentorDetails: {
+      availability: [],
+      bio: "",
+      hourlyRate: 0,
+      name: "",
+      id: "",
+    },
     bookingDetails: { date: null, time: "" },
   };
 
@@ -29,6 +35,19 @@ export class BookingStore {
     this.bookMentor.mentorDetails = {
       ...this.bookMentor.mentorDetails,
       ...mentorDetails,
+    };
+  }
+
+  resetBookMentor() {
+    this.bookMentor = {
+      mentorDetails: {
+        availability: [],
+        bio: "",
+        hourlyRate: 0,
+        name: "",
+        id: "",
+      },
+      bookingDetails: { date: null, time: "" },
     };
   }
 }

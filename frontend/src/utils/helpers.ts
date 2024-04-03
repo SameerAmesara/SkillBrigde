@@ -1,3 +1,6 @@
+import { Dayjs } from "dayjs";
+import { Availability } from "../models/BookMentor.model";
+
 export const formatDate = (dateValue: Date) => {
   const date = new Date(dateValue);
   const month = date.getMonth() + 1;
@@ -33,4 +36,36 @@ export const getDayNumber = (day: string) => {
     default:
       return -1;
   }
+};
+
+export const generateTimeSlots = (
+  date: Dayjs,
+  availabilities: Availability[]
+): string[] => {
+  const dayOfWeek = date.format("dddd");
+  const availability = availabilities.find((avail) => avail.day === dayOfWeek);
+
+  if (!availability) {
+    return [];
+  }
+
+  const startTimeParts = availability.startTime.split(":").map(Number);
+  const endTimeParts = availability.endTime.split(":").map(Number);
+
+  const startTime = date
+    .set("hour", startTimeParts[0])
+    .set("minute", startTimeParts[1]);
+  const endTime = date
+    .set("hour", endTimeParts[0])
+    .set("minute", endTimeParts[1]);
+
+  const timeSlots: string[] = [];
+  let currentTime = startTime;
+
+  while (currentTime < endTime) {
+    timeSlots.push(currentTime.format("HH:mm"));
+    currentTime = currentTime.add(1, "hour");
+  }
+
+  return timeSlots;
 };
