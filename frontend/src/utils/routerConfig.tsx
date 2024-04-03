@@ -19,8 +19,14 @@ import ProfilePage from "../pages/profile-page/ProfilePage";
 import DiscussionsPage from "../pages/discussions/discussions";
 import DiscussionView from "../pages/discussions/discussionView";
 import NewDiscussion from "../pages/discussions/newDiscussion";
+<<<<<<< Updated upstream
 import PaymentCardsPage from "../pages/payments-cards-page/PaymentsCardsPage";
 import BookMentorPage from "../pages/book-mentor-page/BookMentorPage";
+=======
+import NewJob from "../pages/jobs/newJob";
+import JobsDashboard from "../pages/jobs/jobsDashboard";
+import JobDetail from "../pages/jobs/jobDetail";
+>>>>>>> Stashed changes
 
 export const router = createBrowserRouter([
   {
@@ -57,6 +63,7 @@ export const router = createBrowserRouter([
             path: "/discussions/new",
             element: <NewDiscussion />,
           },
+<<<<<<< Updated upstream
           { path: "/payments", element: <PaymentCardsPage /> },
           {
             path: "/mentors",
@@ -74,6 +81,20 @@ export const router = createBrowserRouter([
             path: "/ratementor",
             element: <RateMentor />,
           },
+=======
+          {
+            path: "/jobs/new",
+            element: <NewJob />,
+          },
+          {
+            path: "/jobs",
+            element: <JobsDashboard />,
+          },
+          {
+            path: "/jobs/:jobId",
+            element: <JobDetail />,
+          }
+>>>>>>> Stashed changes
         ],
       },
     ],
