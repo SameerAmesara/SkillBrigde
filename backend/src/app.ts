@@ -6,12 +6,14 @@ import mentorRouter from "./routes/mentor";
 import userRouter from "./routes/userDetails";
 import discussionRouter from "./routes/discussion";
 import paymentsRouter from "./routes/payments";
+import bodyParser from "body-parser";
 
 const app = express();
 
 connectToDatabase();
 
 app.use(cors());
+app.use(bodyParser.json({ limit: "50mb" }));
 app.use(express.json());
 app.use(middleware.morganMiddleWare);
 
