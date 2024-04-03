@@ -40,6 +40,7 @@ contentFeedRouter.post('/likes', async (request, response) => {
     }
 });
 
+// POST to decrease likes by 1 for a content feed
 contentFeedRouter.post('/likesdecrement', async (request, response) => {
     const { contentFeedId , userId} = request.body;
     try {
@@ -51,11 +52,9 @@ contentFeedRouter.post('/likesdecrement', async (request, response) => {
     }
 });
 
-
 // POST to add a comment to a content feed
 contentFeedRouter.post('/comments', async (request, response) => {
     const { UserWhereIHaveToStoreId , UserWhoHasWritten , comment } = request.body;
-
     try {
         const updatedContentFeed = await contentFeedService.addComment(UserWhereIHaveToStoreId , UserWhoHasWritten, comment);
         response.json(updatedContentFeed);
@@ -65,6 +64,7 @@ contentFeedRouter.post('/comments', async (request, response) => {
     }
 });
 
+// Get comments
 contentFeedRouter.get('/comments', async (request, response) => {
     const { contentFeedId } = request.body;
     try {
@@ -76,6 +76,7 @@ contentFeedRouter.get('/comments', async (request, response) => {
     }
 });
 
+// delete feed
 contentFeedRouter.delete('/delete', async (request, response) => {
     const { contentFeedId } = request.body;
     try {
@@ -88,6 +89,7 @@ contentFeedRouter.delete('/delete', async (request, response) => {
     }
   });
 
+  //delete comment
   contentFeedRouter.delete('/commentdelete', async (request, response) => {
     const { contentFeedId , commentId } = request.body;
     try {
@@ -99,8 +101,5 @@ contentFeedRouter.delete('/delete', async (request, response) => {
       response.status(500).send({ error: "Unable to delete content feed" });
     }
   });
-
-
-
 
 export default contentFeedRouter;

@@ -5,6 +5,7 @@ export interface User {
 
 export interface Comment {
     id: string;
+    userId : string
     name: string;
     image: string; 
     comment: string;
@@ -108,4 +109,56 @@ export interface Transaction {
   paymentMethodId: string;
   description: string;
   createdAt: Date;
+}
+
+export enum experienceLevels {
+    internship = "Internship",
+    entry = "Entry",
+    associate = "Associate",
+    senior = "Senior",
+    director = "Director",
+    executive = "Executive",
+}
+
+export enum jobTypes {
+    partTime = "Part-time",
+    fullTime = "Full-time",
+    contract = "Contract",
+    internship = "Internship",
+}
+
+export enum locationProvinces {
+    ON = "Ontario",
+    BC = "British Columbia",
+    QC = "Quebec",
+    AB = "Alberta",
+    MB = "Manitoba",
+    SK = "Saskatchewan",
+    NS = "Nova Scotia",
+    NB = "New Brunswick",
+    NL = "Newfoundland and Labrador",
+    PE = "Prince Edward Island",
+    YT = "Yukon",
+    NT = "Northwest Territories",
+    NU = "Nunavut",
+}
+
+export interface Job {
+    id: string
+    title: string
+    description: string
+    companyDetails: string
+    startDate: Date
+    experienceLevel: experienceLevels
+    type: jobTypes
+    minimumSalary: Uint32Array
+    userId: string
+    city: string
+    province: locationProvinces
+}
+
+export type NewJobData = Omit<Job, 'id' >
+
+export type NewJobErrorData = {
+    [P in keyof NewJobData]: string
 }

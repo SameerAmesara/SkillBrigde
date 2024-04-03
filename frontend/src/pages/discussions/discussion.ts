@@ -2,7 +2,7 @@ import axios from "axios";
 import { DiscussionModel, DiscussionSearchAndFilterModel, NewDiscussionReplyModel, NewDiscussionSubmitDataModel } from "../../models/discussions.model";
 import React from "react";
 
-const BASE_URL = 'http://localhost:8000';
+const BASE_URL = import.meta.env.VITE_BASE_URL
 const DISCUSSION_URL = `${BASE_URL}/discussions`
 
 /**
@@ -90,6 +90,7 @@ export const deleteDiscussion = async (discussionId: string) => {
 
 /**
  * Function responsible to formate the content (new line/ empty line / list) before rendering it in frontend.
+ * Reference: https://stackoverflow.com/questions/35351706/how-to-render-a-multi-line-text-string-in-react
  * @param content - Content received from backend.
  * @returns Formated content to render.
  */

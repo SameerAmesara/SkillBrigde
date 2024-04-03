@@ -13,8 +13,9 @@ const contentFeedSchema: Schema<ContentFeed> = new Schema({
     comments: [
       {
         id: { type: String, required: true },
+        userId : { type: String, required: true } , 
         name: { type: String, required: true },
-        image: { type: String }, // Or string URL of the image
+        image: { type: String },
         comment: { type: String, required: true },
       },
     ],
