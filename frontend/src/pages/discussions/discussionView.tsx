@@ -26,7 +26,7 @@ import {
   deleteDiscussion,
   updateLikeDisLike,
   deleteReplyFromDiscussion,
-  formattedContent,
+  formatContent,
 } from "./discussion";
 import { useNavigate, useParams } from "react-router-dom";
 import ReplyCard from "../../components/Discussion/ReplyCard";
