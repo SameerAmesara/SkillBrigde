@@ -5,6 +5,7 @@ export interface User {
 
 export interface Comment {
     id: string;
+    userId : string
     name: string;
     image: string; 
     comment: string;
