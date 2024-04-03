@@ -11,6 +11,7 @@ import Box from "@mui/material/Box";
 import PeopleAltSharpIcon from "@mui/icons-material/PeopleAltSharp";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
+
 import {
   UserCredential,
   getAuth,
@@ -19,10 +20,15 @@ import {
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
+import { useState } from 'react';
 
 export default function SignIn() {
-  const navigate = useNavigate();
+  const [email, setEmail] = useState('');
 
+  const navigate = useNavigate();
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(e.target.value);
+};
   const handleSubmit = async (
     event: React.FormEvent<HTMLFormElement>
   ): Promise<void> => {
@@ -41,7 +47,7 @@ export default function SignIn() {
           });
           sessionStorage.setItem("email", email);
           sessionStorage.setItem("isLoggedIn", "true");
-          navigate("/");
+          navigate('/');
 
           console.log("User signed in successfully!");
           toast.success("Signed in successfully!");
@@ -60,6 +66,7 @@ export default function SignIn() {
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
+
       <Box
         sx={{
           marginTop: 8,
@@ -80,6 +87,7 @@ export default function SignIn() {
         </Typography>
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
           <TextField
+          onChange={handleEmailChange}
             margin="normal"
             required
             fullWidth

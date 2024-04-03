@@ -7,6 +7,7 @@ import Navigation from "./components/navigation/Navigation";
 import { useStores } from "./mobx/RootStore";
 import { useEffect } from "react";
 
+
 function App() {
   const { paymentsStore } = useStores();
   paymentsStore.addTransaction("Test 1");
@@ -18,7 +19,7 @@ function App() {
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
-      <Navigation />
+      <Navigation/>
       <Container component="main" sx={{ paddingY: 3 }}>
         <Toolbar sx={{ background: "transparent" }} />
         <Outlet />

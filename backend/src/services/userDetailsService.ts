@@ -80,18 +80,11 @@ const deleteUserById = async (_id: string): Promise<void> => {
     }
 };
 
-const getUserByEmail = async (email: string): Promise<UserDetails | null> => {
-    try {
-        return await UserDetailsModel.findOne({ email });
-    } catch (error: unknown) {
-        throw new Error("Unable to fetch user");
-    }
-};
+
 
 export default {
     getAllUsers,
     getUserByUid,
-    getUserByEmail,
     addUser,
     updateUser,
     deleteUserById

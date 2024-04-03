@@ -5,7 +5,7 @@ const userDetailsSchema = new Schema<UserDetails>({
     uid: { type: String },
     email: { type: String, required: true },
     firstName: { type: String, required: true },
-    lastName: { type: String, required: true },
+    lastName: { type: String,},
     image: { type: String}, 
     dob: { type: Date},
     profession: { type: String}, 

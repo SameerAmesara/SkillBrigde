@@ -19,7 +19,6 @@ import ViewQuiltRoundedIcon from "@mui/icons-material/ViewQuiltRounded";
 import dashboardImage from "../../assets/dashboard.png";
 import communityImage from "../../assets/community.png";
 import learningImage from "../../assets/learning.png";
-
 export default function LandingPage() {
   const decorative = "All-in-One";
   const title1 = "Connecting Minds, Empowering Futures";
@@ -62,9 +61,9 @@ export default function LandingPage() {
   };
 
   const selectedFeature = items[selectedItemIndex];
-
   return (
     <Container component="main" maxWidth="lg">
+
       <Container component="section" maxWidth="lg">
         <CssBaseline />
         <Box sx={{ bgcolor: "background.default" }}>
