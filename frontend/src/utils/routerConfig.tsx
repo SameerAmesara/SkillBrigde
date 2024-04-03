@@ -11,6 +11,9 @@ import ProtectedRoute from "../components/protected-route/ProtectedRoute";
 import CardDetailsForm from "../components/card-details-form/CardDetailsForm";
 import ForgotPassword from "../components/ForgotPassword/ForgotPassword";
 import ProfilePage from "../pages/profile-page/ProfilePage";
+import DiscussionsPage from "../pages/discussions/discussions";
+import DiscussionView from "../pages/discussions/discussionView";
+import NewDiscussion from "../pages/discussions/newDiscussion";
 
 export const router = createBrowserRouter([
   {
@@ -35,8 +38,20 @@ export const router = createBrowserRouter([
             path: "/profile",
             element: <ProfilePage uid={""} />,
           },
+          {
+            path: "/discussions",
+            element: <DiscussionsPage />
+          },
+          {
+            path: "/discussions/:discussionId",
+            element: <DiscussionView />,
+          },
+          {
+            path: "/discussions/new",
+            element: <NewDiscussion />,
+          }
         ],
-      },
+      }
     ],
   },
   {
