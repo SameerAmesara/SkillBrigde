@@ -12,6 +12,13 @@ import ApplyMentor from "../pages/mentorship/ApplyMentor";
 import FindMentor from "../pages/mentorship/FindMentor";
 import RateMentor from "../pages/mentorship/RateMentor";
 import MentorProfile from "../pages/mentorship/MentorProfile";
+import PaymentPage from "../pages/payment-page/PaymentPage";
+import ForgotPassword from "../components/ForgotPassword/ForgotPassword";
+import ProfilePage from "../pages/profile-page/ProfilePage";
+import DiscussionsPage from "../pages/discussions/discussions";
+import DiscussionView from "../pages/discussions/discussionView";
+import NewDiscussion from "../pages/discussions/newDiscussion";
+import PaymentCardsPage from "../pages/payments-cards-page/PaymentsCardsPage";
 
 export const router = createBrowserRouter([
   {
@@ -29,24 +36,43 @@ export const router = createBrowserRouter([
         element: <ContactUsPage />,
       },
       {
-        path: "/findmentor",
-        element: <FindMentor />,
-      },
-      {
-        path: "/applymentor",
-        element: <ApplyMentor />,
-      },
-      {
-        path: "/mentorprofile/:id?",
-        element: <MentorProfile />,
-      },
-      {
-        path: "/ratementor",
-        element: <RateMentor />,
-      },
-      {
         element: <ProtectedRoute />,
-        children: [{ path: "/payment", element: <div>Payments</div> }],
+        children: [
+          { path: "/pay", element: <PaymentPage /> },
+          {
+            path: "/profile",
+            element: <ProfilePage uid={""} />,
+          },
+          {
+            path: "/discussions",
+            element: <DiscussionsPage />,
+          },
+          {
+            path: "/discussions/:discussionId",
+            element: <DiscussionView />,
+          },
+          {
+            path: "/discussions/new",
+            element: <NewDiscussion />,
+          },
+          { path: "/payments", element: <PaymentCardsPage /> },
+          {
+            path: "/mentors",
+            element: <FindMentor />,
+          },
+          {
+            path: "/applymentor",
+            element: <ApplyMentor />,
+          },
+          {
+            path: "/mentorprofile/:id?",
+            element: <MentorProfile />,
+          },
+          {
+            path: "/ratementor",
+            element: <RateMentor />,
+          },
+        ],
       },
     ],
   },
@@ -58,11 +84,14 @@ export const router = createBrowserRouter([
     path: "/sign-in",
     element: <SignIn />,
   },
+  {
+    path: "/forgot-password",
+    element: <ForgotPassword />,
+  },
 ]);
 
 export const navigationItems: NavigationItem[] = [
+  { path: "mentors", label: "Mentorship", isProtected: true },
   { path: "contact-us", label: "Contact Us", isProtected: false },
   { path: "faqs", label: "FAQs", isProtected: false },
-  { path: "findmentor", label: "Find Mentor", isProtected: false },
-  { path: "ratementor", label: "Rate Mentor", isProtected: false },
 ];

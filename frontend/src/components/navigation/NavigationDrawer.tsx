@@ -15,6 +15,11 @@ const NavigationDrawer = ({
   const isLoggedIn = sessionStorage.getItem("isLoggedIn");
   const navigate = useNavigate();
 
+  const handleLogout = () => {
+    sessionStorage.clear();
+    navigate("/sign-in");
+  };
+
   return (
     <Drawer
       variant="temporary"
@@ -56,15 +61,24 @@ const NavigationDrawer = ({
               </Box>
             </NavLink>
             <NavLink
-              to={"saved-cards"}
+              to={"payments"}
               className={({ isActive }) => {
                 return isActive
                   ? "app-nav-drawer-link app-nav-drawer-link--active"
                   : "app-nav-drawer-link";
               }}
             >
-              Saved cards
+              Payments
             </NavLink>
+            <Typography
+              onClick={handleLogout}
+              padding="10px 10px"
+              ml="5px"
+              color="#071541"
+              fontWeight={500}
+            >
+              Logout
+            </Typography>
           </Box>
         ) : (
           <Box sx={{ mt: "20px", display: "flex", flexDirection: "column" }}>
