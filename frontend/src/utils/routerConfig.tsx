@@ -120,4 +120,5 @@ export const navigationItems: NavigationItem[] = [
   { path: "contentfeed", label: "Content Feed", isProtected: true },
   { path: "contact-us", label: "Contact Us", isProtected: false },
   { path: "faqs", label: "FAQs", isProtected: false },
+  { path: "jobs", label: "Jobs", isProtected: true },
 ];
