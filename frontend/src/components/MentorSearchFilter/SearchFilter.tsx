@@ -1,6 +1,5 @@
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import Slider from "@mui/material/Slider";
 import Button from "@mui/material/Button";
 import {
   FormControl,
@@ -9,48 +8,195 @@ import {
   MenuItem,
   FormGroup,
   Paper,
+  OutlinedInput,
+  SelectChangeEvent,
+  Chip,
+  Divider,
+  TextField,
+  Rating,
 } from "@mui/material";
+import { useState } from "react";
 
-function SearchFilter() {
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 250,
+    },
+  },
+};
+
+const subjects = [
+  "Data Science",
+  "Python",
+  "Machine Learning",
+  "Web Development",
+  "JavaScript",
+  "React",
+  "UI/UX Design",
+  "Figma",
+  "Adobe XD",
+  "Cloud Computing",
+  "AWS",
+  "Azure",
+  "Graphic Design",
+  "Illustrator",
+  "Photoshop",
+  "Cybersecurity",
+  "Network Security",
+  "Ethical Hacking",
+  "Mobile App Development",
+  "Flutter",
+  "React Native",
+  "Big Data",
+  "Hadoop",
+  "Spark",
+  "SEO",
+  "Digital Marketing",
+  "Content Writing",
+  "Project Management",
+  "Agile",
+  "Scrum",
+];
+
+interface SearchFilterProps {
+  setFilters: React.Dispatch<React.SetStateAction<Filters>>;
+}
+
+function SearchFilter({ setFilters }: SearchFilterProps) {
+  const [areaOfExpertise, setAreaOfExpertise] = useState<string[]>([]);
+  const [experience, setExperience] = useState(0);
+  const [ratings, setRatings] = useState(0);
+  const [gender, setGender] = useState("");
+
+  const handleSearch = () => {
+    setFilters({
+      areaOfExpertise,
+      experience,
+      ratings,
+      gender,
+    });
+    // console.log("areaOfExpertise : ", areaOfExpertise);
+    // console.log("experience: ", experience);
+    // console.log("ratings: ", ratings);
+    // console.log("gender:", gender);
+  };
+
+  const handleRatingsChange = (
+    event: React.ChangeEvent<{}>,
+    newValue: number | null
+  ) => {
+    setRatings(newValue || 0);
+  };
+
+  const handleChange = (event: SelectChangeEvent<typeof areaOfExpertise>) => {
+    const value = event.target.value;
+    setAreaOfExpertise(typeof value === "string" ? value.split(",") : value);
+  };
+
+  const handleExperienceChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setExperience(parseInt(event.target.value, 10));
+  };
+
   return (
-    <Paper>
-      <Box sx={{ p: 3, width: "100%", minWidth: 200 }}>
+    <Paper
+      sx={{
+        padding: 2,
+        borderRadius: "10px",
+      }}
+    >
+      <Box>
         <Typography variant="h6">Filters</Typography>
+        <Divider sx={{ mb: 2 }} />
         <FormGroup>
-          <FormControl variant="outlined" sx={{ mt: 2 }}>
-            <InputLabel>Area of Expertise</InputLabel>
-            <Select label="Area of Expertise">
-              <MenuItem value="Java">Java</MenuItem>
-              <MenuItem value="Python">Python</MenuItem>
-              <MenuItem value="JavaScript">JavaScript</MenuItem>
+          <FormControl fullWidth>
+            <InputLabel id="expertise-label">Area of Expertise</InputLabel>
+            <Select
+              labelId="expertise-label"
+              id="expertise"
+              name="expertise"
+              multiple
+              value={areaOfExpertise}
+              onChange={handleChange}
+              input={
+                <OutlinedInput
+                  id="select-multiple-chip"
+                  label="Area of Expertise"
+                />
+              }
+              renderValue={(selected) => (
+                <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+                  {selected.map((value) => (
+                    <Chip key={value} label={value} />
+                  ))}
+                </Box>
+              )}
+              MenuProps={MenuProps}
+            >
+              {subjects.map((name) => (
+                <MenuItem key={name} value={name}>
+                  {name}
+                </MenuItem>
+              ))}
             </Select>
           </FormControl>
 
-          <Typography id="experience-slider" gutterBottom sx={{ mt: 2 }}>
-            Professional Experience
-          </Typography>
-          <Slider
-            aria-labelledby="experience-slider"
-            valueLabelDisplay="auto"
-            step={1}
-            marks
-            min={0}
-            max={10}
-          />
+          <Box sx={{ mt: 2 }}>
+            <Typography id="rating-slider" gutterBottom sx={{ mb: 1 }}>
+              Experience
+            </Typography>
+            <TextField
+              fullWidth
+              name="experience"
+              type="number"
+              id="experience"
+              value={experience}
+              onChange={handleExperienceChange}
+            />
+          </Box>
 
-          <Typography id="rating-slider" gutterBottom sx={{ mt: 2 }}>
-            Ratings
-          </Typography>
-          <Slider
-            aria-labelledby="rating-slider"
-            valueLabelDisplay="auto"
-            step={1}
-            marks
-            min={0}
-            max={5}
-          />
+          <Box>
+            <Typography id="rating-slider" gutterBottom sx={{ mt: 2 }}>
+              Gender
+            </Typography>
+            <FormControl fullWidth>
+              <Select
+                labelId="gender-label"
+                id="gender"
+                value={gender}
+                onChange={(e) => setGender(e.target.value)}
+              >
+                <MenuItem value="">
+                  <em>None</em>
+                </MenuItem>
+                <MenuItem value={"Male"}>Male</MenuItem>
+                <MenuItem value={"Female"}>Female</MenuItem>
+              </Select>
+            </FormControl>
+          </Box>
 
-          <Button variant="contained" color="primary" sx={{ mt: 2 }}>
+          <Box>
+            <Typography id="rating-slider" gutterBottom sx={{ mt: 2 }}>
+              Ratings
+            </Typography>
+            <Rating
+              size="large"
+              name="simple-controlled"
+              value={ratings}
+              onChange={handleRatingsChange}
+            />
+          </Box>
+
+          <Button
+            variant="contained"
+            color="primary"
+            sx={{ mt: 2 }}
+            onClick={handleSearch}
+          >
             Search
           </Button>
         </FormGroup>

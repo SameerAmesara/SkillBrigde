@@ -11,6 +11,7 @@ import ProtectedRoute from "../components/protected-route/ProtectedRoute";
 import ApplyMentor from "../pages/mentorship/ApplyMentor";
 import FindMentor from "../pages/mentorship/FindMentor";
 import RateMentor from "../pages/mentorship/RateMentor";
+import MentorProfile from "../pages/mentorship/MentorProfile";
 
 export const router = createBrowserRouter([
   {
@@ -36,6 +37,10 @@ export const router = createBrowserRouter([
         element: <ApplyMentor />,
       },
       {
+        path: "/mentorprofile/:id?",
+        element: <MentorProfile />,
+      },
+      {
         path: "/ratementor",
         element: <RateMentor />,
       },
@@ -59,6 +64,5 @@ export const navigationItems: NavigationItem[] = [
   { path: "contact-us", label: "Contact Us", isProtected: false },
   { path: "faqs", label: "FAQs", isProtected: false },
   { path: "findmentor", label: "Find Mentor", isProtected: false },
-  { path: "applymentor", label: "Apply Mentor", isProtected: false },
   { path: "ratementor", label: "Rate Mentor", isProtected: false },
 ];

@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import express from "express";
 import mentorService from "../services/mentorService";
 import logger from "../utils/logger";
@@ -9,6 +11,22 @@ mentorRouter.get("/", (_request, response) => {
     .getAll()
     .then((mentors) => response.send(mentors))
     .catch((error) => logger.error("Unable to fetch mentors", error));
+});
+
+mentorRouter.get("/:id", (request, response) => {
+  const id = request.params.id;
+  mentorService
+    .getMentorById(id)
+    .then((mentor) => {
+      if (!mentor) {
+        return response.status(404).json({ message: "Mentor not found" });
+      }
+      return response.send(mentor);
+    })
+    .catch((error) => {
+      logger.error(`Failed to find mentor with ID ${id}`, error);
+      return response.status(500).json({ message: "Internal server error" });
+    });
 });
 
 mentorRouter.post("/", (request, response) => {

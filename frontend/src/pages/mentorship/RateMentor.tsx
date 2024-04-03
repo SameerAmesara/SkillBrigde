@@ -9,10 +9,29 @@ import {
   TextField,
 } from "@mui/material";
 import RatingTable from "../../components/RatingTable/RatingTable";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 
 const RateMentor = () => {
+  const { mentorId } = useParams();
+  const [averageRating, setAverageRating] = useState<number | null>(null);
+
+  useEffect(() => {
+    // Assuming you have a mentor ID in your URL route, e.g., /rate-mentor/:mentorId
+    console.log(mentorId); // Check if you are getting the ID here
+    // Now you can fetch the mentor's details using this ID
+    // ...
+  }, [mentorId]);
+
+  // Handle setting the average rating
+  const handleAverageRating = (average: number) => {
+    setAverageRating(average);
+  };
+
+  console.log("Average Ratings: ", averageRating);
+
   return (
-    <Grid component="main" xs={12}>
+    <Grid component="main">
       <Typography variant="h5">Rate a Mentor</Typography>
       <Divider />
       <Box
@@ -26,11 +45,11 @@ const RateMentor = () => {
             borderRadius: "10px",
           }}
         >
-          <Grid container spacing={1} alignItems="stretch">
-            <Grid item xs={12} sm={2} md={2}>
+          <Grid container spacing={2}>
+            <Grid item xs={12} sm={2}>
               <Box>
                 <img
-                  src="https://randomuser.me/api/portraits/men/56.jpg"
+                  src="https://randomuser.me/api/portraits/men/14.jpg"
                   alt="Profile Image"
                   width={"100%"}
                   height={"100%"}
@@ -39,35 +58,22 @@ const RateMentor = () => {
               </Box>
             </Grid>
             <Grid item xs={12} sm={7} md={8}>
-              <Box
-                display="flex"
-                justifyContent="space-between"
-                alignItems="flex-start"
-              >
-                <Typography variant="h5" component="h5">
-                  David Green
+              <Box>
+                <Typography variant="h4" fontWeight={600}>
+                  John Doe
                 </Typography>
-                <Rating
-                  name="read-only"
-                  value={3.5}
-                  precision={0.5}
-                  readOnly
-                  sx={{
-                    display: { xs: "inline-flex", md: "none", sm: "none" },
-                  }}
-                />
-              </Box>
-              <Typography variant="subtitle2">Experience : 10 years</Typography>
-              <Typography variant="subtitle2">
-                Area of Expertise : Cybersecurity, Network Security, Ethical
-                Hacking
-              </Typography>
-              <Box marginTop={2}>
-                <Typography variant="body2" component="p">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi
-                  molestie, metus quis blandit mattis, ligula augue molestie
-                  lectus, id volutpat sem diam nec arcu. Sed vel tincidunt
-                  lacus, a sodales nisi. Vestibulum ac enim felis.
+                <Box marginTop={1}>
+                  <Typography variant="h6">Experience : 10 years</Typography>
+                </Box>
+                <Typography variant="h6">
+                  Area of Expertise : Cybersecurity, Network Security, Ethical
+                  Hacking
+                </Typography>
+                <Typography variant="body1" sx={{ mt: 1 }}>
+                  Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+                  Corrupti quos voluptatum corporis doloremque repudiandae
+                  voluptatibus, blanditiis unde fugit odit sapiente. Iste
+                  accusantium velit natus quidem perspiciatis sint odit rem est
                 </Typography>
               </Box>
             </Grid>
@@ -76,27 +82,39 @@ const RateMentor = () => {
               xs={12}
               sm={3}
               md={2}
-              px={0}
-              mt={{ xs: 3, md: 0, sm: 0 }}
               display="flex"
               flexDirection="column"
               justifyContent="space-between"
-              alignItems={{ xs: "center" }}
+              alignItems={{ xs: "flex-start" }}
             >
-              <Rating
-                name="read-only"
-                value={3.5}
-                precision={0.5}
-                readOnly
+              <Box
                 sx={{
-                  display: { xs: "none", md: "inline-flex", sm: "inline-flex" },
+                  display: "flex",
+                  alignItems: "flex-end",
+                  justifyContent: "flex-end",
                 }}
-              />
-              <Box>
-                <Button size="small" variant="contained" color="primary">
-                  View Details
-                </Button>
+              >
+                <Rating
+                  name="read-only"
+                  value={3.5}
+                  precision={0.5}
+                  readOnly
+                  size="large"
+                />
               </Box>
+              <Button
+                variant="contained"
+                color="primary"
+                fullWidth
+                sx={{
+                  alignItems: "center",
+                  display: "flex",
+                  maxWidth: 300,
+                  m: "10px auto 0",
+                }}
+              >
+                View Details
+              </Button>
             </Grid>
           </Grid>
           <Divider sx={{ mt: 2, md: 2 }} />
@@ -109,7 +127,7 @@ const RateMentor = () => {
               alignItems: "center",
             }}
           >
-            <RatingTable />
+            <RatingTable onAverageRatingCalculated={handleAverageRating} />
           </Box>
           <Divider sx={{ mt: 2, md: 2 }} />
           <Box

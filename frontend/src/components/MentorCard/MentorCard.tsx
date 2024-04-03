@@ -1,7 +1,7 @@
 // MentorCard.tsx
 import React from "react";
 import { Typography, Button, Box, Grid, Paper, Rating } from "@mui/material";
-import LocalAtmRoundedIcon from "@mui/icons-material/LocalAtmRounded";
+import { useNavigate } from "react-router-dom";
 
 type MentorCardProps = {
   id: string;
@@ -16,6 +16,7 @@ type MentorCardProps = {
 };
 
 const MentorCard: React.FC<MentorCardProps> = ({
+  id,
   firstName,
   lastName,
   experience,
@@ -25,6 +26,12 @@ const MentorCard: React.FC<MentorCardProps> = ({
   pay,
   imageUrl,
 }) => {
+  const navigate = useNavigate();
+
+  const handleViewDetails = () => {
+    navigate(`/mentorprofile/${id}`);
+  };
+
   return (
     <Paper
       sx={{
@@ -32,7 +39,7 @@ const MentorCard: React.FC<MentorCardProps> = ({
         borderRadius: "10px",
       }}
     >
-      <Grid container spacing={1} alignItems="stretch">
+      <Grid container spacing={2}>
         <Grid item xs={12} sm={2} md={3}>
           <Box>
             <img
@@ -44,28 +51,17 @@ const MentorCard: React.FC<MentorCardProps> = ({
             />
           </Box>
         </Grid>
-        <Grid item xs={12} sm={10} md={7}>
-          <Box
-            display="flex"
-            justifyContent="space-between"
-            alignItems="flex-start"
-          >
-            <Typography variant="h5" component="h5">
+        <Grid item xs={12} sm={7} md={7}>
+          <Box>
+            <Typography variant="h4" fontWeight={600}>
               {firstName} {lastName}
             </Typography>
-            <Rating
-              name="read-only"
-              value={parseInt(ratings)}
-              precision={0.5}
-              readOnly
-              sx={{ display: { xs: "inline-flex", md: "none" } }}
-            />
           </Box>
 
-          <Typography variant="subtitle2">
+          <Typography variant="subtitle1">
             Experience : {experience} years
           </Typography>
-          <Typography variant="subtitle2">
+          <Typography variant="subtitle1">
             Area of Expertise : {expertise}
           </Typography>
           <Box marginTop={2}>
@@ -77,30 +73,38 @@ const MentorCard: React.FC<MentorCardProps> = ({
         <Grid
           item
           xs={12}
-          sm={12}
+          sm={3}
           md={2}
-          px={0}
-          mt={{ xs: 3, md: 0 }}
           display="flex"
           flexDirection="column"
           justifyContent="space-between"
-          alignItems={{ xs: "center" }}
+          alignItems={{ xs: "flex-start" }}
         >
-          <Rating
-            name="read-only"
-            value={parseInt(ratings)}
-            precision={0.5}
-            readOnly
-            sx={{
-              display: { xs: "none", md: "inline-flex" },
-            }}
-          />
-          <LocalAtmRoundedIcon /> $ {parseFloat(pay)}/hr
           <Box>
-            <Button size="small" variant="contained" color="primary">
-              View Details
-            </Button>
+            <Rating
+              name="read-only"
+              value={parseFloat(ratings)}
+              precision={0.5}
+              readOnly
+              size="lmedium"
+            />
+            <Typography variant="h6">$ {parseFloat(pay)}/hr</Typography>
           </Box>
+          <Button
+            variant="contained"
+            color="primary"
+            fullWidth
+            onClick={handleViewDetails}
+            sx={{
+              alignItems: "center",
+              display: "flex",
+              maxWidth: 300,
+              m: "10px auto 0",
+              fontSize: 12,
+            }}
+          >
+            View Details
+          </Button>
         </Grid>
       </Grid>
     </Paper>

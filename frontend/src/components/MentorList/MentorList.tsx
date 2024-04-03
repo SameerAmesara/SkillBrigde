@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Grid from "@mui/material/Grid";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
@@ -11,6 +11,7 @@ type Mentor = {
   lastName: string;
   imageUrl: string;
   ratings: string;
+  gender: string;
   bio: string;
   experience: string;
   pay: string;
@@ -19,11 +20,40 @@ type Mentor = {
 
 type MentorListProps = {
   mentors: Mentor[];
+  filters: Filters;
 };
 
-const MentorList: React.FC<MentorListProps> = ({ mentors }) => {
+const MentorList: React.FC<MentorListProps> = ({ mentors, filters }) => {
+  const itemsPerPage = 3;
   const [page, setPage] = useState(1);
-  const itemsPerPage = 3; // Set the number of items you want per page
+  const [filteredMentors, setFilteredMentors] = useState<Mentor[]>([]);
+  const [totalPages, setTotalPages] = useState(0);
+
+  useEffect(() => {
+    const newFilteredMentors = mentors.filter((mentor) => {
+      const mentorExpertiseArray = mentor.expertise
+        .split(", ")
+        .map((e) => e.trim());
+      const matchesExpertise =
+        filters.areaOfExpertise.length === 0 ||
+        filters.areaOfExpertise.some((expertise) =>
+          mentorExpertiseArray.includes(expertise)
+        );
+      const matchesExperience =
+        parseInt(mentor.experience) >= filters.experience;
+      const matchesRatings = parseFloat(mentor.ratings) >= filters.ratings;
+      const matchesGender =
+        filters.gender === "" || mentor.gender === filters.gender;
+
+      return (
+        matchesExpertise && matchesExperience && matchesRatings && matchesGender
+      );
+    });
+
+    setFilteredMentors(newFilteredMentors);
+    setPage(1); // Reset to first page when filters change
+    setTotalPages(Math.ceil(newFilteredMentors.length / itemsPerPage));
+  }, [mentors, filters, itemsPerPage]);
 
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     console.log(event);
@@ -31,7 +61,7 @@ const MentorList: React.FC<MentorListProps> = ({ mentors }) => {
   };
 
   // Calculate the current items to display
-  const currentItems = mentors.slice(
+  const currentItems = filteredMentors.slice(
     (page - 1) * itemsPerPage,
     page * itemsPerPage
   );
@@ -40,8 +70,8 @@ const MentorList: React.FC<MentorListProps> = ({ mentors }) => {
     <Box>
       <Box sx={{ overflowX: "auto" }}>
         <Grid container spacing={2}>
-          {currentItems.map((mentor, index) => (
-            <Grid item key={index} xs={12}>
+          {currentItems.map((mentor) => (
+            <Grid item key={mentor.id} xs={12}>
               <MentorCard {...mentor} />
             </Grid>
           ))}
@@ -49,7 +79,7 @@ const MentorList: React.FC<MentorListProps> = ({ mentors }) => {
       </Box>
       <Stack spacing={1} alignItems="center" marginTop={2}>
         <Pagination
-          count={Math.ceil(mentors.length / itemsPerPage)}
+          count={totalPages}
           page={page}
           onChange={handleChange}
           color="primary"

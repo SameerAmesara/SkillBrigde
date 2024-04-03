@@ -16,7 +16,12 @@ const addMentor = async (entry: NewMentor): Promise<Mentor> => {
   return mentor;
 };
 
+const getMentorById = async (id: string): Promise<Mentor | null> => {
+  return await MentorModel.findOne({ id: id });
+};
+
 export default {
   getAll,
   addMentor,
+  getMentorById,
 };
