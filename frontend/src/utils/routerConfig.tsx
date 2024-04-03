@@ -20,6 +20,7 @@ import DiscussionsPage from "../pages/discussions/discussions";
 import DiscussionView from "../pages/discussions/discussionView";
 import NewDiscussion from "../pages/discussions/newDiscussion";
 import PaymentCardsPage from "../pages/payments-cards-page/PaymentsCardsPage";
+import BookMentorPage from "../pages/book-mentor-page/BookMentorPage";
 
 export const router = createBrowserRouter([
   {
@@ -39,11 +40,10 @@ export const router = createBrowserRouter([
       {
         element: <ProtectedRoute />,
         children: [
-          { path: "/pay", element: <PaymentPage /> },
           {
             path: "/profile",
             element: <ProfilePage uid={""} />,
-          },  
+          },
           { path: "/contentfeed", element: <ContentFeed /> },
           {
             path: "/discussions",
@@ -76,6 +76,13 @@ export const router = createBrowserRouter([
           },
         ],
       },
+    ],
+  },
+  {
+    element: <ProtectedRoute />,
+    children: [
+      { path: "/book-mentor", element: <BookMentorPage /> },
+      { path: "/pay", element: <PaymentPage /> },
     ],
   },
   {
