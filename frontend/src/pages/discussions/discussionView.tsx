@@ -26,7 +26,7 @@ import {
   deleteDiscussion,
   updateLikeDisLike,
   deleteReplyFromDiscussion,
-  formateContent,
+  formatContent,
 } from "./discussion";
 import { useNavigate, useParams } from "react-router-dom";
 import ReplyCard from "../../components/Discussion/ReplyCard";
@@ -171,7 +171,7 @@ const DiscussionView = () => {
           )}
         </Box>
         <Typography variant="body1" gutterBottom>
-          {formateContent(discussion!.content ?? '')}
+          {formatContent(discussion!.content ?? '')}
         </Typography>
         {/* Discussion tags */}
         <Box sx={{ marginTop: 1, display: "flex", alignItems: "center" }}>

@@ -12,7 +12,7 @@ import { DiscussionReplyModel } from "../../models/discussions.model";
 import { theme } from "../../utils/theme";
 import { Delete } from "@mui/icons-material";
 import React from "react";
-import { formateContent } from "../../pages/discussions/discussion";
+import { formatContent } from "../../pages/discussions/discussion";
 
 const ReplyCard: React.FC<{
   discussionReply: DiscussionReplyModel;
@@ -83,7 +83,7 @@ const ReplyCard: React.FC<{
         </Box>
         {/* Reply text */}
         <Typography variant="body1" component="p" sx={{ marginBottom: "8px" }}>
-          {formateContent(discussionReply.replyText)}
+          {formatContent(discussionReply.replyText)}
         </Typography>
         {/* Timestamp */}
         <Box sx={{ display: "flex", justifyItems: "flex-end" }}>

@@ -12,7 +12,7 @@ import { DiscussionModel } from "../../models/discussions.model";
 import { ThumbUp, ThumbDown } from "@mui/icons-material";
 import { theme } from "../../utils/theme";
 import moment from "moment";
-import { formateContent } from "../../pages/discussions/discussion";
+import { formatContent } from "../../pages/discussions/discussion";
 
 const DiscussionCard: React.FC<{ discussion: DiscussionModel }> = ({ discussion }) => {
   const userId = sessionStorage.getItem('userId') ?? '';
@@ -48,7 +48,7 @@ const DiscussionCard: React.FC<{ discussion: DiscussionModel }> = ({ discussion 
           {/* Title of discussion */}
           <Typography variant="h6">{discussion.title}</Typography>
           {/* formatted content */}
-          <Typography>{formateContent(contentPreview)}</Typography>
+          <Typography>{formatContent(contentPreview)}</Typography>
            {/* Tags */}
           {discussion.tags.map((tag, index) => (
             <Chip
