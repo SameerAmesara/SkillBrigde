@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
+import TextField, { FilledTextFieldProps, OutlinedTextFieldProps, StandardTextFieldProps, TextFieldVariants } from "@mui/material/TextField";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
@@ -13,14 +14,13 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../utils/firebase";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import dayjs from "dayjs";
-import axios from "axios";
-import { TextField } from "@mui/material";
+import dayjs, { Dayjs } from 'dayjs';
+import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import axios from 'axios';
 import { useNavigate } from "react-router-dom";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
 interface SignUpFormData {
   firstName: string;
@@ -34,19 +34,18 @@ interface SignUpFormData {
   image: string;
 }
 
+
 export default function SignUp() {
-  const [imageB64, setImageB64] = useState<string | ArrayBuffer>();
+  const [imageB64, setImageB64] = useState<string | ArrayBuffer>()
+  const [userFirstName, setUserFirstName] = useState<string>("");
+
   const navigate = useNavigate();
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    reset,
-    getValues,
-  } = useForm<SignUpFormData>({
+  const { register, handleSubmit, formState: { errors }, reset, getValues, } = useForm<SignUpFormData>({
     mode: "onChange",
   });
+
+  const [value] = useState<Dayjs | null>(null);
 
   const password = React.useRef({});
 
@@ -79,92 +78,81 @@ export default function SignUp() {
     return true;
   };
 
-  const handleImage = (file: File) => {
+  const handleImage = (file: any) => {
+
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = function (e) {
       if (e.target !== null && e.target.result !== null) {
-        console.log(e.target.result);
-        setImageB64(e.target.result);
+        console.log(e.target.result)
+        setImageB64(e.target.result)
       }
 
-      console.log(typeof file);
+      console.log(typeof (file))
     };
 
     reader.onerror = function () {
       console.log(reader.error);
     };
-  };
+  }
 
   const onSubmit = async (data: SignUpFormData) => {
     try {
-      const {
-        firstName,
-        lastName,
-        email,
-        password,
-        companyName,
-        profession,
-        dateOfBirth,
-      } = data;
-      let uid: string;
+      const { firstName, lastName, email, password, companyName, profession, dateOfBirth, image } = data;
+      let uid;
 
-      await createUserWithEmailAndPassword(auth, email, password).then(
-        (userCredential) => {
+      await createUserWithEmailAndPassword(auth, email, password,)
+        .then((userCredential) => {
           const user = userCredential.user;
           uid = user.uid;
 
-          const userDetails = {
-            uid: uid,
-            email: email,
-            firstName: firstName,
-            lastName: lastName,
-            dob: dateOfBirth,
-            profession: profession,
-            companyName: companyName,
-            image: imageB64,
-          };
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+        });
 
-          axios
-            .post("http://localhost:8000/userDetails/add", userDetails)
-            .then((response) => {
-              if (response.status === 201) {
-                toast.success("User account has been created.");
-                sessionStorage.setItem("userId", uid);
-                user.getIdToken().then((accessToken) => {
-                  sessionStorage.setItem("accessToken", accessToken);
-                });
-                sessionStorage.setItem("email", email);
-                sessionStorage.setItem("isLoggedIn", "true");
-                navigate("/");
-              } else {
-                toast.error(
-                  "Unexpected response status code: " + response.status
-                );
-              }
-            })
-            .catch((error) => {
-              if (error.response && error.response.status === 409) {
-                toast.error("Account with this email already exists");
-              } else {
-                console.error("Error:", error);
-              }
-            });
+      const userDetails = {
+        uid: uid,
+        email: email,
+        firstName: firstName,
+        lastName: lastName,
+        dob: dateOfBirth,
+        profession: profession,
+        companyName: companyName,
+        image: imageB64
+      };
+
+      axios.post('http://localhost:8000/userDetails/add', userDetails)
+      .then(response => {
+        if (response.status === 201) {
+          toast.success('User account has been created.');
+        } else {
+          toast.error('Unexpected response status code: ' + response.status);
         }
-      );
+      })
+      .catch(error => {
+        if (error.response && error.response.status === 409) {
+          toast.error('Account with this email already exists');
+        } else {
+          console.error('Error:', error);
+        }
+      });
 
       reset();
+      setTimeout(() => {
+        window.location.href = "/sign-in";
+      }, 3000);
     } catch (error) {
       let errorMessage = "Error signing up:";
       if (error instanceof Error) {
         errorMessage = error.message;
-        toast.error(errorMessage);
       }
     }
   };
 
   return (
-    <Container component="main" maxWidth="xs">
+    <Container component="main" maxWidth="xs" >
       <CssBaseline />
       <Box
         sx={{
@@ -175,7 +163,7 @@ export default function SignUp() {
           boxShadow: 1,
           borderRadius: 4,
           p: 3,
-          px: 3,
+          px: 3
         }}
       >
         <Avatar sx={{ m: 2, bgcolor: "primary.main" }}>
@@ -184,18 +172,11 @@ export default function SignUp() {
         <Typography component="h1" variant="h5" align="center">
           Optimize Your Professional Life for Maximum Impact
         </Typography>
-        <Box
-          component="form"
-          noValidate
-          onSubmit={handleSubmit(onSubmit)}
-          sx={{ mt: 3 }}
-        >
+        <Box component="form" noValidate onSubmit={handleSubmit(onSubmit)} sx={{ mt: 3 }}>
           <Grid container spacing={2}>
             <Grid item xs={6}>
               <TextField
-                {...register("firstName", {
-                  required: "First name is required",
-                })}
+                {...register("firstName", { required: "First name is required" })}
                 autoComplete="given-name"
                 name="firstName"
                 required
@@ -204,11 +185,7 @@ export default function SignUp() {
                 label="First Name"
                 autoFocus
               />
-              {errors.firstName && (
-                <Typography color="error">
-                  {errors.firstName.message}
-                </Typography>
-              )}
+              {errors.firstName && <Typography color="error">{errors.firstName.message}</Typography>}
             </Grid>
             <Grid item xs={6}>
               <TextField
@@ -220,9 +197,7 @@ export default function SignUp() {
                 name="lastName"
                 autoComplete="family-name"
               />
-              {errors.lastName && (
-                <Typography color="error">{errors.lastName.message}</Typography>
-              )}
+              {errors.lastName && <Typography color="error">{errors.lastName.message}</Typography>}
             </Grid>
             <Grid item xs={12}>
               <TextField
@@ -230,8 +205,8 @@ export default function SignUp() {
                   required: "Email is required",
                   pattern: {
                     value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                    message: "Invalid email address",
-                  },
+                    message: "Invalid email address"
+                  }
                 })}
                 required
                 fullWidth
@@ -240,9 +215,7 @@ export default function SignUp() {
                 name="email"
                 autoComplete="email"
               />
-              {errors.email && (
-                <Typography color="error">{errors.email.message}</Typography>
-              )}
+              {errors.email && <Typography color="error">{errors.email.message}</Typography>}
             </Grid>
             <Grid item xs={12}>
               <TextField
@@ -255,9 +228,7 @@ export default function SignUp() {
                 id="password"
                 autoComplete="new-password"
               />
-              {errors.password && (
-                <Typography color="error">{errors.password.message}</Typography>
-              )}
+              {errors.password && <Typography color="error">{errors.password.message}</Typography>}
             </Grid>
             <Grid item xs={12}>
               <TextField
@@ -274,11 +245,7 @@ export default function SignUp() {
                 id="confirmPassword"
                 autoComplete="new-password"
               />
-              {errors.confirmPassword && (
-                <Typography color="error">
-                  {errors.confirmPassword.message}
-                </Typography>
-              )}
+              {errors.confirmPassword && <Typography color="error">{errors.confirmPassword.message}</Typography>}
             </Grid>
             <Grid item xs={6}>
               <TextField
@@ -302,16 +269,15 @@ export default function SignUp() {
             </Grid>
             <Grid item xs={12}>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DemoContainer components={["DatePicker", "DatePicker"]}>
-                  <DatePicker label="Date of Birth" defaultValue={dayjs()} />
+                <DemoContainer components={['DatePicker', 'DatePicker']}>
+                  <DatePicker
+                    label="Date of Birth"
+                    defaultValue={dayjs()}
+                  />
                 </DemoContainer>
               </LocalizationProvider>
 
-              {errors.dateOfBirth && (
-                <Typography color="error">
-                  {errors.dateOfBirth.message}
-                </Typography>
-              )}
+              {errors.dateOfBirth && <Typography color="error">{errors.dateOfBirth.message}</Typography>}
             </Grid>
             <Grid item xs={12}>
               <Typography variant="subtitle1" gutterBottom>
@@ -319,12 +285,13 @@ export default function SignUp() {
               </Typography>
               <input
                 {...register("image")}
+
                 type="file"
                 accept="image/*"
                 onChange={(event) => {
                   const files = event.target.files;
                   if (files && files.length > 0) {
-                    handleImage(files[0]);
+                    handleImage(files[0])
                     const selectedFile = files[0];
                     console.log(selectedFile);
                   }

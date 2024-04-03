@@ -17,31 +17,35 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import dayjs, { Dayjs } from 'dayjs';
 import { CameraAlt } from '@mui/icons-material';
+import { auth } from '../../utils/firebase';
+import { useNavigate } from 'react-router-dom';
 
 
 interface UserDetails {
-    email: String,
-    firstName: String,
-    lastName: String,
-    image: String,
-    dob: Date,
-    profession: String,
-    companyName: String
+    _id: string,
+    email: string,
+    firstName: string,
+    lastName: string,
+    image: string,
+    dob: Dayjs | null,
+    profession: string,
+    companyName: string
 }
 
 export default function ProfilePage({ uid }: { uid: string }): React.ReactElement {
     const [editMode, setEditMode] = useState(false);
     const [userDa, setUserDa] = useState<UserDetails | null>(null);
     const data = sessionStorage.getItem('userId');
+    const navigate = useNavigate();
 
     console.log(data)
 
     useEffect(() => {
         const getById = async () => {
             try {
-                const userData = await axios.get<UserDetails[]>(`http://localhost:8000/userDetails/${data}`);
+                const userData = await axios.get<UserDetails>(`http://localhost:8000/userDetails/${data}`);
                 console.log(userData.data);
-                setUserDa(userData.data);
+                setUserDa({...userData.data});
             } catch (error) {
                 console.error('Error fetching user profile:', error);
             }
@@ -59,10 +63,30 @@ export default function ProfilePage({ uid }: { uid: string }): React.ReactElemen
         }));
     };
 
+
+    const handleDateChange = (value: Dayjs | null) => {
+        setUserDa(prevData => ({
+            ...prevData!,
+            dob: value
+        }));
+    };
+
     const handleEdit = () => {
         setEditMode(true);
     };
 
+    const handleDelete = async () => {
+        try {
+            auth.currentUser?.delete().then(()=>{
+                sessionStorage.clear()
+                navigate('/')
+                axios.delete(`http://localhost:8000/userDetails/${userDa?._id}`);
+              })
+              
+        } catch (error) {
+            console.error('Error updating user profile:', error);
+        }
+    }
     const handleSave = async () => {
         try {
             await axios.put(`http://localhost:8000/userDetails/${userDa?.uid}`, userDa);
@@ -101,7 +125,7 @@ export default function ProfilePage({ uid }: { uid: string }): React.ReactElemen
                                 {userDa && (
                                     <Stack spacing={2} alignItems="center" sx={{ pt: 3 }}>
                                         <Stack direction="row" alignItems="center" spacing={2} position="relative">
-                                            <Avatar src={userDa.image.toString()} sx={{ width: 120, height: 120 }} />
+                                            <Avatar src={userDa.image} sx={{ width: 120, height: 120 }} />
                                             <input
                                                 type="file"
                                                 accept="image/*"
@@ -131,6 +155,9 @@ export default function ProfilePage({ uid }: { uid: string }): React.ReactElemen
                                                 </span>
                                             </label>
                                         </Stack>
+
+
+
                                         <TextField
                                             name="firstName"
                                             fullWidth
@@ -179,7 +206,7 @@ export default function ProfilePage({ uid }: { uid: string }): React.ReactElemen
                                                         label="Date of Birth"
                                                         defaultValue={dayjs()}
                                                         value={dayjs(userDa.dob)}
-                                                        onChange={handleChange}
+                                                        onChange={handleDateChange}
                                                         disabled={!editMode}
                                                     />
                                                 </DemoContainer>
@@ -207,6 +234,13 @@ export default function ProfilePage({ uid }: { uid: string }): React.ReactElemen
                             </CardContent>
                             <Divider />
                         </Card>
+                        <Button
+                                                variant="contained"
+                                                color="error"
+                                                onClick={handleDelete}
+                                            >
+                                                Delete Account
+                                            </Button>
                     </Grid>
                 </Grid>
             </Container>

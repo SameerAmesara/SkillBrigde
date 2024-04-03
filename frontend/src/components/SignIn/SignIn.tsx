@@ -52,7 +52,9 @@ export default function SignIn() {
           console.log("User signed in successfully!");
           toast.success("Signed in successfully!");
         }
-      );
+      ).catch(error => {
+        toast.error(error.message);
+      });
     } catch (error) {
       let errorMessage = "Error signing in:";
       if (error instanceof Error) {
