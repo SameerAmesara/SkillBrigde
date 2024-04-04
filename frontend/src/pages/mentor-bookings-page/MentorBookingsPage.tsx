@@ -8,7 +8,7 @@ import {
   Typography,
 } from "@mui/material";
 import { observer } from "mobx-react";
-import { useStores } from "../../mobx/RootStore";
+import { useStores } from "../../stores/RootStore";
 import { useEffect } from "react";
 import dayjs from "dayjs";
 import { useNavigate } from "react-router-dom";

@@ -3,7 +3,7 @@ import { useState } from "react";
 import AddCardDialog from "../../components/add-card-dialog/AddCardDialog";
 import SavedCard from "../../components/saved-card/SavedCard";
 import { AddCircle } from "@mui/icons-material";
-import { useStores } from "../../mobx/RootStore";
+import { useStores } from "../../stores/RootStore";
 import { observer } from "mobx-react";
 
 const SavedCardsPage = observer(() => {

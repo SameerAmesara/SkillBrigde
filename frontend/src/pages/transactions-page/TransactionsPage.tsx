@@ -1,5 +1,5 @@
 import { observer } from "mobx-react";
-import { useStores } from "../../mobx/RootStore";
+import { useStores } from "../../stores/RootStore";
 import { useEffect } from "react";
 import {
   Box,
@@ -14,6 +14,7 @@ import {
 } from "@mui/material";
 import { formatDate } from "../../utils/helpers";
 import { theme } from "../../utils/theme";
+import dayjs from "dayjs";
 
 const TransactionsPage = observer(() => {
   const { paymentsStore } = useStores();
@@ -71,7 +72,7 @@ const TransactionsPage = observer(() => {
                   {transaction.cardLast4 ? `**** ${transaction.cardLast4}` : ""}
                 </TableCell>
                 <TableCell align="left">
-                  {formatDate(transaction.createdAt)}
+                  {formatDate(dayjs(transaction.createdAt))}
                 </TableCell>
                 <TableCell
                   component="th"

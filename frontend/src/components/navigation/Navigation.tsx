@@ -10,7 +10,7 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
 import { NavLink, useNavigate } from "react-router-dom";
 import NavigationDrawer from "./NavigationDrawer";
@@ -18,8 +18,15 @@ import "./navigation.scss";
 import { Setting, navigationItems, settings } from "../../utils/routerConfig";
 import { APP_TITLE } from "../../utils/constants";
 import { theme } from "../../utils/theme";
+import { observer } from "mobx-react";
+import { useStores } from "../../stores/RootStore";
+import { toast } from "react-toastify";
 
-const Navigation = () => {
+const Navigation = observer(() => {
+  const { userStore } = useStores();
+  const { firstName, lastName, image } = userStore.userDetails;
+  const fullName = `${firstName} ${lastName}`;
+
   const navigate = useNavigate();
   const isLoggedIn = sessionStorage.getItem("isLoggedIn");
 
@@ -27,6 +34,14 @@ const Navigation = () => {
   const [anchorElProfile, setAnchorElProfile] = useState<null | HTMLElement>(
     null
   );
+
+  useEffect(() => {
+    try {
+      userStore.fetchUserDetails();
+    } catch (error) {
+      toast("Unable to fetch user details.");
+    }
+  }, []);
 
   const handleDrawerToggle = () => {
     setDrawerOpen((prevState) => !prevState);
@@ -111,7 +126,7 @@ const Navigation = () => {
             >
               <Tooltip title="Open settings">
                 <IconButton sx={{ p: 0 }} onClick={handleOpenProfileMenu}>
-                  <Avatar>P</Avatar>
+                  <Avatar src={image} alt={fullName} />
                 </IconButton>
               </Tooltip>
               <Menu
@@ -176,6 +191,6 @@ const Navigation = () => {
       </nav>
     </>
   );
-};
+});
 
 export default Navigation;

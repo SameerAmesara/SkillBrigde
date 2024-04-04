@@ -15,7 +15,7 @@ import {
   CardCvcElement,
 } from "@stripe/react-stripe-js";
 import { FormEvent, useEffect, useState } from "react";
-import { useStores } from "../../mobx/RootStore";
+import { useStores } from "../../stores/RootStore";
 import SavedCard from "../saved-card/SavedCard";
 import { observer } from "mobx-react";
 import { AxiosError } from "axios";

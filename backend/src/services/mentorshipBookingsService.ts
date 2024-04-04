@@ -4,6 +4,13 @@ import MentorshipBookingsModel from "../models/mentorshipBookings";
 import logger from "../utils/logger";
 import MentorModel from "../models/mentor";
 
+/**
+ * Adds a new mentorship booking to the database.
+ *
+ * @param booking - A mentorship booking object containing partial information of a MentorshipBooking.
+ * @returns A Promise resolving to the newly created mentorship booking object, with all fields populated, including the generated ID.
+ * @throws Will throw an error if saving to the database fails.
+ */
 const addBooking = async (booking: Partial<MentorshipBooking>) => {
   const newBooking = new MentorshipBookingsModel({
     ...booking,
@@ -13,6 +20,13 @@ const addBooking = async (booking: Partial<MentorshipBooking>) => {
   return newBooking;
 };
 
+/**
+ * Fetches mentorship bookings for a specific user, including details of the associated mentors.
+ *
+ * @param userId - The ID of the user for whom to fetch mentorship bookings.
+ * @returns A Promise resolving to an array of MentorshipBookingItem objects, each including the mentorship booking details along with the mentor's name and image URL.
+ * @throws Will throw a custom error message if the operation fails.
+ */
 const fetchBookings = async (
   userId: string
 ): Promise<MentorshipBookingItem[]> => {

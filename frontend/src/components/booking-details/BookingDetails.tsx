@@ -1,6 +1,6 @@
 import { Box, Typography } from "@mui/material";
 import { observer } from "mobx-react";
-import { useStores } from "../../mobx/RootStore";
+import { useStores } from "../../stores/RootStore";
 
 const BookingDetails = observer(() => {
   const { bookingStore } = useStores();
