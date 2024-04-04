@@ -93,6 +93,7 @@ const NewJob = () => {
     // function responsible to validate form details.
     const validateForm = () => {
         const errors: Partial<NewJobErrorData> = {}
+        console.log("Validating form", formData)
         if (formData.title.trim().length < 5 || formData.title.trim().length > 50) {
             errors.title = "Title must be at least 5 and up to 50 characters long."
         }
@@ -102,6 +103,16 @@ const NewJob = () => {
         ) {
             errors.description =
                 "Description must be at least 30 and up to 30000 characters long."
+        }
+        if (
+            formData.companyDetails.trim().length < 30 ||
+            formData.companyDetails.trim().length > 30000
+        ) {
+            errors.companyDetails =
+                "Company Details must be at least 30 and up to 30000 characters long."
+        }
+        if (formData.city.trim().length < 3 || formData.city.trim().length > 50) {
+            errors.city = "City name must be at least 3 and up to 50 characters long."
         }
         setValidationErrors(errors as NewJobErrorData)
         return Object.keys(errors).length === 0
