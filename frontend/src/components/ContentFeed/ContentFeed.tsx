@@ -472,7 +472,7 @@ export default function ContentFeed() {
           {userDetails && (
             <CardContent style={{ textAlign: 'center', padding: '0px 8px' }}>
               <img
-                src={userDetails.image || "src/assets/placeholder.svg"}
+                src={userDetails.image || "/src/assets/placeholder.svg"}
                 alt="Profile"
                 style={{ width: '40%', borderRadius: '40%', marginBottom: '10px' }}
               />
@@ -522,7 +522,7 @@ export default function ContentFeed() {
           <CardActionArea>
             <CardContent style={{ textAlign: 'center' }}>
               <img
-                 src={userDetails.image || "src/assets/placeholder.svg"}
+                 src={userDetails.image || "/src/assets/placeholder.svg"}
                 alt="Profile"
                 style={{ width: '100%', borderRadius: '50%', marginBottom: '10px' }}
               />
