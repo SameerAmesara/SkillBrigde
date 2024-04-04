@@ -30,10 +30,9 @@ const NewJob = () => {
         title: "",
         description: "",
         companyDetails: "",
-        startDate: new Date(),
+        createDate: new Date(),
         experienceLevel: experienceLevels.associate,
         type: jobTypes.fullTime,
-        minimumSalary: new Uint32Array(1),
         userId: userId!!,
         city: "",
         province: locationProvinces.ON
@@ -43,17 +42,16 @@ const NewJob = () => {
             title: "",
             description: "",
             companyDetails: "",
-            startDate: "",
+            createDate: "",
             experienceLevel: "",
             type: "",
-            minimumSalary: "",
             userId: "",
             city: "",
             province: ""
         })
 
     const navigateBackToJobs = () => {
-        navigate("/job")
+        navigate("/jobs")
     }
 
     // function to update the user inputs
@@ -80,21 +78,10 @@ const NewJob = () => {
         }))
     }
 
-    // function to update the user inputs
-    const handleNumberChange = (
-        event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | SelectChangeEvent<any>,
-        field: string
-    ) => {
-        const value = event.target.value
-        setFormData((prevFilter) => ({
-            ...prevFilter,
-            [field]: new Uint32Array(1)[value],
-        }))
-    }
-
     // function responsible to validate form details.
     const validateForm = () => {
         const errors: Partial<NewJobErrorData> = {}
+        console.log("Validating form", formData)
         if (formData.title.trim().length < 5 || formData.title.trim().length > 50) {
             errors.title = "Title must be at least 5 and up to 50 characters long."
         }
@@ -104,6 +91,16 @@ const NewJob = () => {
         ) {
             errors.description =
                 "Description must be at least 30 and up to 30000 characters long."
+        }
+        if (
+            formData.companyDetails.trim().length < 30 ||
+            formData.companyDetails.trim().length > 30000
+        ) {
+            errors.companyDetails =
+                "Company Details must be at least 30 and up to 30000 characters long."
+        }
+        if (formData.city.trim().length < 3 || formData.city.trim().length > 50) {
+            errors.city = "City name must be at least 3 and up to 50 characters long."
         }
         setValidationErrors(errors as NewJobErrorData)
         return Object.keys(errors).length === 0
@@ -121,6 +118,7 @@ const NewJob = () => {
                             navigateBackToJobs()
                         }, 2000)
                     } else {
+                        console.log("Error while saving ", formData)
                         setFeedbackMessage("Something went wrong. Please try again later.")
                     }
                 })
@@ -203,15 +201,15 @@ const NewJob = () => {
                             />
                         </Box>
                     </Stack>
-                    {/* Expected start date select */}
+                    {/* Expected creation date select */}
 
-                    <InputTitle title="Expected start date" description="" />
+                    <InputTitle title="Job creation date" description="" />
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <DatePicker
-                            label="Start Date"
+                            label="Create Date"
                             defaultValue={dayjs()}
-                            value={dayjs(formData.startDate)}
-                            onChange={(e) => handleDayChange(e, "startDate")}
+                            value={dayjs(formData.createDate)}
+                            onChange={(e) => handleDayChange(e, "createDate")}
                         />
                     </LocalizationProvider>
 
@@ -239,18 +237,6 @@ const NewJob = () => {
                             />
                         </Box>
                     </Stack>
-                    <InputTitle title="Minimum Salary" description="" />
-                    <TextField
-                        required
-                        placeholder="Enter a minimum salary greater than 0"
-                        value={formData.minimumSalary}
-                        error={!!validationErrors.minimumSalary}
-                        helperText={validationErrors.minimumSalary}
-                        sx={{ paddingTop: "10px" }}
-                        onChange={(e) => handleNumberChange(e, "minimumSalary")}
-                        inputProps={{ min: 0 }}
-                        type="number"
-                    />
                 </Box>
 
                 <Box sx={{ display: "flex", gap: "10px" }}>

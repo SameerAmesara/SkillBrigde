@@ -37,4 +37,22 @@ jobRouter.post('/create', (request, response) => {
         )
 })
 
+jobRouter.delete('/:id', (request, response) => {
+    jobService
+        .deleteJob(request.params.id)
+        .then(
+            deletedJob => {
+                if (deletedJob == undefined) {
+                    return response.status(404).send({ error: 'Not found!' })
+                }
+                return response.send({
+                    message: "Job deleted"
+                })
+            }
+        )
+        .catch(
+            error => console.error("Unable to delete job", request.params.id, error)
+        )
+})
+
 export default jobRouter

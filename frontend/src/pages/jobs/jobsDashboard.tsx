@@ -27,7 +27,6 @@ const JobsDashboard: React.FC = () => {
         getAllJobs()
             .then((response) => {
                 if (response.status === 200) {
-                    // console.log("JObs response", response.data)
                     setJobs(response.data)
                 }
             })
@@ -37,7 +36,6 @@ const JobsDashboard: React.FC = () => {
 
     useEffect(() => {
         getJobs()
-        console.log(filter, jobs)
     }, [])
 
 
@@ -51,7 +49,6 @@ const JobsDashboard: React.FC = () => {
         event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | SelectChangeEvent<any>,
         field: string
     ) => {
-        console.log("Change in ", field, event.target.value, filter)
         const value = event.target.value
         setFilter((prevFilter) => ({
             ...prevFilter,
@@ -107,28 +104,28 @@ const JobsDashboard: React.FC = () => {
                 </Grid>
                 <Grid item xs={12}>
 
-                        <Stack direction='column'>
+                    <Stack direction='column'>
 
-                            {filteredJobs.length === 0 &&
-                                
-                                    <Typography variant="h5" textAlign='center'>
-                                        No jobs found with given input "{searchTerm}".<br />
-                                        Please try again.
-                                    </Typography>
-                                }
+                        {filteredJobs.length === 0 &&
 
-                            {filteredJobs && filteredJobs.map(job => (
-                                
-                                    <Job key={job.id}
-                                        title={job.title}
-                                        province={job.province}
-                                        description={job.description.substring(0, 150) + "...."}
-                                        onButtonClick={() => handleJobClick(job.id)}
-                                    />
-                                
-                            ))}
-                        </Stack>
-                    
+                            <Typography variant="h5" textAlign='center'>
+                                No jobs found with given input "{searchTerm}".<br />
+                                Please try again.
+                            </Typography>
+                        }
+
+                        {filteredJobs && filteredJobs.map(job => (
+
+                            <Job key={job.id}
+                                title={job.title}
+                                province={job.province}
+                                description={job.description}
+                                onButtonClick={() => handleJobClick(job.id)}
+                            />
+
+                        ))}
+                    </Stack>
+
                 </Grid>
             </Grid>
 
