@@ -1,7 +1,7 @@
 import { Close } from "@mui/icons-material";
 import { Box, Dialog, IconButton, Typography } from "@mui/material";
 import PaymentForm from "../payment-form/PaymentForm";
-import { useStores } from "../../mobx/RootStore";
+import { useStores } from "../../stores/RootStore";
 import { observer } from "mobx-react";
 import { toast } from "react-toastify";
 

@@ -4,7 +4,7 @@ import { observer } from "mobx-react";
 import { useLocation, useNavigate } from "react-router-dom";
 import BookingDateTime from "../../components/booking-date-time/BookingDateTime";
 import BookingDetails from "../../components/booking-details/BookingDetails";
-import { useStores } from "../../mobx/RootStore";
+import { useStores } from "../../stores/RootStore";
 
 const BookMentorPage = observer(() => {
   const location = useLocation();

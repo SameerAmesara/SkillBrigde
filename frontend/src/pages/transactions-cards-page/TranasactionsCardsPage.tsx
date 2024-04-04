@@ -3,11 +3,11 @@ import { useEffect, useState } from "react";
 import SavedCardsPage from "../saved-cards-page/SavedCardsPage";
 import CustomTabPanel from "../../components/custom-tab-panel/CustomTabPanel";
 import { observer } from "mobx-react";
-import { useStores } from "../../mobx/RootStore";
+import { useStores } from "../../stores/RootStore";
 import TransactionsPage from "../transactions-page/TransactionsPage";
 import { ToastContainer } from "react-toastify";
 
-const PaymentCardsPage = observer(() => {
+const TranasactionsCardsPage = observer(() => {
   const [tab, setTab] = useState(0);
 
   const { paymentsStore } = useStores();
@@ -50,4 +50,4 @@ function a11yProps(index: number) {
   };
 }
 
-export default PaymentCardsPage;
+export default TranasactionsCardsPage;

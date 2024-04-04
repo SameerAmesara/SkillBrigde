@@ -19,6 +19,11 @@ const defaultPayment: Payment = {
 const BASE_URL = import.meta.env.VITE_BASE_URL || "http://localhost:8000";
 const PAYMENTS_URL = `${BASE_URL}/payments`;
 
+/**
+ * Manages payment-related operations, including card management and transactions, for the application.
+ * It interfaces with a backend API to save, fetch, and delete payment cards, as well as handle payments
+ * and fetch transaction histories.
+ */
 export class PaymentsStore {
   rootStore: RootStore;
 
@@ -36,6 +41,13 @@ export class PaymentsStore {
     makeAutoObservable(this);
   }
 
+  /**
+   * Saves a payment card for the current user.
+   *
+   * @param paymentMethodId - The Stripe payment method ID to be saved.
+   * @returns A promise that resolves with the API response.
+   * @throws An error if saving the card fails.
+   */
   async saveCard(paymentMethodId: string) {
     const userId = sessionStorage.getItem("userId");
     const response = await axios.post(
@@ -50,6 +62,11 @@ export class PaymentsStore {
     return response;
   }
 
+  /**
+   * Fetches saved payment cards for the current user.
+   *
+   * @throws An error if fetching cards fails.
+   */
   async fetchSavedCards() {
     const userId = sessionStorage.getItem("userId");
     this.isCardsLoading = true;
@@ -71,6 +88,13 @@ export class PaymentsStore {
     this.isCardsLoading = false;
   }
 
+  /**
+   * Deletes a saved payment card for the current user.
+   *
+   * @param paymentMethodId - The Stripe payment method ID to be deleted.
+   * @returns A promise that resolves with the API response.
+   * @throws An error if deleting the card fails.
+   */
   async deleteCard(paymentMethodId: string) {
     const userId = sessionStorage.getItem("userId");
     const response = await axios.delete(
@@ -80,6 +104,12 @@ export class PaymentsStore {
     return response;
   }
 
+  /**
+   * Initiates a payment with the saved payment details.
+   *
+   * @returns A promise that resolves with the API response.
+   * @throws An error if the payment operation fails.
+   */
   async pay() {
     const userId = sessionStorage.getItem("userId");
     const payload = {
@@ -99,6 +129,11 @@ export class PaymentsStore {
     return response;
   }
 
+  /**
+   * Fetches transaction history for the current user.
+   *
+   * @throws An error if fetching transactions fails.
+   */
   async fetchTransactions() {
     const userId = sessionStorage.getItem("userId");
     const { page, limit } = this.transactionsParams;
@@ -124,18 +159,36 @@ export class PaymentsStore {
     this.transactions = transactionsWithCards;
   }
 
+  /**
+   * Updates the payment details in the store.
+   *
+   * @param payment - Partial payment details to update the current payment information.
+   */
   updatePayment(payment: Partial<Payment>) {
     this.payment = { ...this.payment, ...payment };
   }
 
+  /**
+   * Updates the payment operation details in the store.
+   *
+   * @param paymentDetails - Partial payment details for the payment operation.
+   */
   updatePaymentDetails(paymentDetails: Partial<PaymentDetails>) {
     this.paymentDetails = { ...this.paymentDetails, ...paymentDetails };
   }
 
+  /**
+   * Updates the parameters for fetching transaction history.
+   *
+   * @param params - Partial transaction parameters to update the current transaction fetching parameters.
+   */
   updateTransactionParams(params: Partial<TransactionParams>) {
     this.transactionsParams = { ...this.transactionsParams, ...params };
   }
 
+  /**
+   * Resets the payment details in the store to default.
+   */
   resetPayment() {
     this.payment = { ...defaultPayment };
   }

@@ -19,7 +19,7 @@ import ProfilePage from "../pages/profile-page/ProfilePage";
 import DiscussionsPage from "../pages/discussions/discussions";
 import DiscussionView from "../pages/discussions/discussionView";
 import NewDiscussion from "../pages/discussions/newDiscussion";
-import PaymentCardsPage from "../pages/payments-cards-page/PaymentsCardsPage";
+import TranasactionsCardsPage from "../pages/transactions-cards-page/TranasactionsCardsPage";
 import BookMentorPage from "../pages/book-mentor-page/BookMentorPage";
 import NewJob from "../pages/jobs/newJob";
 import JobsDashboard from "../pages/jobs/jobsDashboard";
@@ -61,7 +61,7 @@ export const router = createBrowserRouter([
             path: "/discussions/new",
             element: <NewDiscussion />,
           },
-          { path: "/payments", element: <PaymentCardsPage /> },
+          { path: "/payments", element: <TranasactionsCardsPage /> },
           {
             path: "/mentors",
             element: <FindMentor />,
