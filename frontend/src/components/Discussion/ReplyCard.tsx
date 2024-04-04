@@ -48,7 +48,7 @@ const ReplyCard: React.FC<{
           {/* User information */}
           <Box sx={{ display: "flex", alignItems: "center", gap: "8px" }}>
           <img
-              src={discussionReply.userImage}
+              src={discussionReply.userImage || 'src/assests/placeholder.png'}
               alt="User Profile Image"
               style={{ marginRight: "3px", height: "40px", width: "40px", borderRadius: "50%" }}
             />

@@ -39,6 +39,7 @@ const DiscussionsPage = () => {
   // Fetch list of discussions based on search and sort criteria
   useEffect(() => {
     updateDiscussions();
+    window.scrollTo({ top: 0, behavior: 'smooth' })
   }, [sortBy, page]);
 
   // function responsible to update the discussions
