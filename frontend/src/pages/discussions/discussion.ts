@@ -1,3 +1,6 @@
+/**
+ * @author Tirth Bharatiya (B00955618)
+ */
 import axios from "axios";
 import { DiscussionModel, DiscussionSearchAndFilterModel, NewDiscussionReplyModel, NewDiscussionSubmitDataModel } from "../../models/discussions.model";
 import React from "react";

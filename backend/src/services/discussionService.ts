@@ -1,3 +1,6 @@
+/**
+ * @author Tirth Bharatiya (B00955618)
+ */
 import { ObjectId } from "mongodb";
 import DiscussionModel from "../models/discussion";
 import {
