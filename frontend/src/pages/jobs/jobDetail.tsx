@@ -45,7 +45,7 @@ const JobDetail: React.FC = () => {
                                 <Grid item xs={12}>
                                     <Typography component={'span'} variant="body1" gutterBottom>
                                         <strong>Start Date</strong>
-                                        <Box>{new Date(job.startDate).toLocaleDateString()}</Box>
+                                        <Box>{new Date(job.createDate).toLocaleDateString()}</Box>
                                     </Typography>
                                 </Grid>
                                 <Grid item xs={12}>

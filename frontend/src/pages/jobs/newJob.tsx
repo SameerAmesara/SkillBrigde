@@ -30,7 +30,7 @@ const NewJob = () => {
         title: "",
         description: "",
         companyDetails: "",
-        startDate: new Date(),
+        createDate: new Date(),
         experienceLevel: experienceLevels.associate,
         type: jobTypes.fullTime,
         minimumSalary: new Uint32Array(1),
@@ -43,7 +43,7 @@ const NewJob = () => {
             title: "",
             description: "",
             companyDetails: "",
-            startDate: "",
+            createDate: "",
             experienceLevel: "",
             type: "",
             minimumSalary: "",
@@ -203,15 +203,15 @@ const NewJob = () => {
                             />
                         </Box>
                     </Stack>
-                    {/* Expected start date select */}
+                    {/* Expected creation date select */}
 
-                    <InputTitle title="Expected start date" description="" />
+                    <InputTitle title="Job creation date" description="" />
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <DatePicker
-                            label="Start Date"
+                            label="Create Date"
                             defaultValue={dayjs()}
-                            value={dayjs(formData.startDate)}
-                            onChange={(e) => handleDayChange(e, "startDate")}
+                            value={dayjs(formData.createDate)}
+                            onChange={(e) => handleDayChange(e, "createDate")}
                         />
                     </LocalizationProvider>
 

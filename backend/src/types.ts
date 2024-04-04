@@ -151,7 +151,7 @@ export interface Job {
   title: string;
   description: string;
   companyDetails: string;
-  startDate: Date;
+  createDate: Date;
   experienceLevel: experienceLevels;
   type: jobTypes;
   minimumSalary: Uint32Array;
