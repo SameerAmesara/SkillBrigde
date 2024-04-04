@@ -703,7 +703,7 @@ export default function ContentFeed() {
                           <div style={{ display: 'flex', flex: 1 }}>
                             <Avatar alt="User Avatar" src={comment.image} />
                             <div style={{ marginLeft: '0.5rem', display: 'flex', flexDirection: 'column', alignItems: 'flex-start', overflowWrap: 'anywhere' }}>
-                              <p>{comment.name}</p>
+                              <p style={{marginTop:'7px'}}>{comment.name}</p>
                               <p>{comment.comment}</p>
                             </div>
 
