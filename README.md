@@ -1,4 +1,4 @@
-# Assignment3
+# Assignment 3
 
 - _Date Created_: 01 April 2024
 - _Last Modification Date_: 03 April 2024
@@ -32,6 +32,7 @@ Steps to Access the Feature:
 3. Go to Mentorship either by following the link: <https://cs5709-group11.netlify.app/mentors> or click on "Mentorship" from the navigation bar.
 4. It will display "Find a Mentor" Task, which will display a list of Mentors in the database and an option to view details about them using the "View Details" Button.
 5. When clicked on "View Details", users will redirected to the Profile of the Mentor which displays more details about them.
+6. Users can also filter the mentors as per their requirements on Area of Expertise, name, Ratings etc. using the Filter options on "Find Mentor" Page.
 
 ### Apply as a Mentor
 
