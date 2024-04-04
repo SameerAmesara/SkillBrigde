@@ -30,7 +30,7 @@ interface SignUpFormData {
   confirmPassword: string;
   companyName: string;
   profession: string;
-  dateOfBirth: Date | null;
+  dob: Date | null;
   image: string;
 }
 
@@ -107,7 +107,7 @@ export default function SignUp() {
         password,
         companyName,
         profession,
-        dateOfBirth,
+        dob,
       } = data;
       setLoading(true);
       await createUserWithEmailAndPassword(auth, email, password)
@@ -120,7 +120,7 @@ export default function SignUp() {
             email: email,
             firstName: firstName,
             lastName: lastName,
-            dob: dateOfBirth,
+            dob: dob,
             profession: profession,
             companyName: companyName,
             image: imageB64,
@@ -316,9 +316,9 @@ export default function SignUp() {
                 </DemoContainer>
               </LocalizationProvider>
 
-              {errors.dateOfBirth && (
+              {errors.dob && (
                 <Typography color="error">
-                  {errors.dateOfBirth.message}
+                  {errors.dob.message}
                 </Typography>
               )}
             </Grid>

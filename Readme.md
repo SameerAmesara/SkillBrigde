@@ -1,4 +1,4 @@
-# SkillBridge
+# [Project Name]
 
 The platform enables users to create detailed profiles that highlight their skills, work history, and accomplishments. By connecting professionals, the application facilitates meaningful networking opportunities, opening avenues for career growth and collaboration. Job seekers can explore employment opportunities, while recruiters can identify and evaluate potential candidates efficiently. Additionally, the platform serves as a knowledge-sharing hub, offering articles, courses, and industry insights to support continuous learning and development. The ultimate purpose is to create a dynamic and inclusive space that empowers individuals to thrive in their professional journeys.
 
