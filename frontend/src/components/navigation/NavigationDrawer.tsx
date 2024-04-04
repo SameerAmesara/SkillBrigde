@@ -1,6 +1,6 @@
 import { Avatar, Box, Divider, Drawer, Typography } from "@mui/material";
 import { NavLink, useNavigate } from "react-router-dom";
-import { navigationItems } from "../../utils/routerConfig";
+import { navigationItems, settings } from "../../utils/routerConfig";
 import { APP_TITLE } from "../../utils/constants";
 
 interface NavigationDrawerProps {
@@ -48,7 +48,7 @@ const NavigationDrawer = ({
         {isLoggedIn === "true" ? (
           <Box sx={{ mt: "20px", display: "flex", flexDirection: "column" }}>
             <NavLink
-              to={"user-profile"}
+              to={"profile"}
               className={({ isActive }) => {
                 return isActive
                   ? "app-nav-drawer-link app-nav-drawer-link--active"
@@ -60,16 +60,20 @@ const NavigationDrawer = ({
                 User profile
               </Box>
             </NavLink>
-            <NavLink
-              to={"payments"}
-              className={({ isActive }) => {
-                return isActive
-                  ? "app-nav-drawer-link app-nav-drawer-link--active"
-                  : "app-nav-drawer-link";
-              }}
-            >
-              Payments
-            </NavLink>
+            {settings.slice(1, -1).map((setting, index) => (
+              <NavLink
+                key={setting.path + index}
+                to={setting.path}
+                className={({ isActive }) => {
+                  return isActive
+                    ? "app-nav-drawer-link app-nav-drawer-link--active"
+                    : "app-nav-drawer-link";
+                }}
+              >
+                {setting.label}
+              </NavLink>
+            ))}
+
             <Typography
               onClick={handleLogout}
               padding="10px 10px"

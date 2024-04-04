@@ -14,8 +14,9 @@ const saveCardToStripe = async (paymentMethodId: string, userId: string) => {
       .then((card) => {
         return card;
       })
-      .catch((error) => {
-        throw new Error(error.message);
+      .catch((error: Error) => {
+        const errorMessage: string = error.message || "Unexpected error";
+        throw new Error(errorMessage);
       });
   } else {
     throw new Error("Invalid user id");
@@ -33,8 +34,9 @@ const fetchSavedCardsFromStripe = async (userId: string) => {
       .then((cards) => {
         return cards.data;
       })
-      .catch((error) => {
-        throw new Error(error.message);
+      .catch((error: Error) => {
+        const errorMessage: string = error.message || "Unexpected error";
+        throw new Error(errorMessage);
       });
   } else {
     throw new Error("Invalid card details");
@@ -52,8 +54,9 @@ const deleteSavedCardFromStripe = async (
       .then((response) => {
         return response;
       })
-      .catch((error) => {
-        throw new Error(error.message);
+      .catch((error: Error) => {
+        const errorMessage: string = error.message || "Unexpected error";
+        throw new Error(errorMessage);
       });
   } else {
     throw new Error("Invalid user id");
@@ -66,7 +69,7 @@ const payUsingStripe = async (transaction: Partial<Transaction>) => {
     const stripeCustomerId = await userService.fetchUserStripeCustomerId(
       userId
     );
-    if (stripeCustomerId) {
+    if (stripeCustomerId && paymentMethodId) {
       return stripe.paymentIntents
         .create({
           amount: Math.round(amount * 100),
@@ -79,23 +82,27 @@ const payUsingStripe = async (transaction: Partial<Transaction>) => {
             allow_redirects: "never",
           },
         })
-        .then((paymentIntent) => {
+        .then(async (paymentIntent) => {
+          await stripe.paymentMethods.attach(paymentMethodId, {
+            customer: stripeCustomerId.toString(),
+          });
           const newTransaction = new TransactionModel({
             ...transaction,
             id: new ObjectId(),
             stripeTransactionId: paymentIntent.id,
           });
-          newTransaction.save();
+          await newTransaction.save();
           return newTransaction;
         })
-        .catch((error) => {
-          throw new Error(error.message);
+        .catch((error: Error) => {
+          const errorMessage: string = error.message || "Unexpected error";
+          throw new Error(errorMessage);
         });
     } else {
       throw new Error("Invalid user id");
     }
   } else {
-    throw new Error("Invalid user id");
+    throw new Error("Invalid request. Amount and userId required.");
   }
 };
 

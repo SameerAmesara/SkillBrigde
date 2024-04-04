@@ -15,20 +15,9 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { NavLink, useNavigate } from "react-router-dom";
 import NavigationDrawer from "./NavigationDrawer";
 import "./navigation.scss";
-import { navigationItems } from "../../utils/routerConfig";
+import { Setting, navigationItems, settings } from "../../utils/routerConfig";
 import { APP_TITLE } from "../../utils/constants";
 import { theme } from "../../utils/theme";
-
-type Setting = {
-  label: string;
-  path: string;
-};
-
-const settings: Setting[] = [
-  { label: "User profile", path: "profile" },
-  { label: "Payments", path: "payments" },
-  { label: "Logout", path: "logout" },
-];
 
 const Navigation = () => {
   const navigate = useNavigate();
