@@ -1,6 +1,9 @@
 /**
  * @author Tirth Bharatiya (B00955618)
  */
+/**
+ * @author Tirth Bharatiya (B00955618)
+ */
 import {
   Box,
   Card,
@@ -15,6 +18,7 @@ import {
   useMediaQuery,
   Snackbar,
   SnackbarContent,
+  Avatar,
 } from "@mui/material";
 import { ThumbUp, ThumbDown, Delete } from "@mui/icons-material";
 import moment from "moment";
@@ -174,7 +178,7 @@ const DiscussionView = () => {
           )}
         </Box>
         <Typography variant="body1" gutterBottom>
-          {formatContent(discussion!.content ?? '')}
+          {formatContent(discussion!.content ?? "")}
         </Typography>
         {/* Discussion tags */}
         <Box sx={{ marginTop: 1, display: "flex", alignItems: "center" }}>
@@ -243,16 +247,25 @@ const DiscussionView = () => {
               Started {formattedDate}
             </Typography>
             <Box sx={{ display: "flex", alignItems: "center", gap: "8px" }}>
-              <img
-                src={discussion!.userImage || 'src/assests/placeholder.png'}
-                alt="User Profile Image"
-                style={{
-                  marginRight: "3px",
-                  height: "40px",
-                  width: "40px",
-                  borderRadius: "50%",
-                }}
-              />
+              {discussion!.userImage ? (
+                <img
+                  src={discussion!.userImage}
+                  alt="User Profile Image"
+                  style={{
+                    marginRight: "3px",
+                    height: "40px",
+                    width: "40px",
+                    borderRadius: "50%",
+                  }}
+                />
+              ) : (
+                <Avatar
+                  style={{ marginRight: "3px", height: "40px", width: "40px" }}
+                >
+                  {discussion!.userName.charAt(0)}
+                </Avatar>
+              )}
+
               <Typography
                 variant="subtitle1"
                 color="textSecondary"
