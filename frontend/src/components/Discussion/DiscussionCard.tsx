@@ -136,6 +136,7 @@ const DiscussionCard: React.FC<{ discussion: DiscussionModel }> = ({
                   />
                 ) : (
                   <Avatar
+                    alt="User Profile Avatar"
                     style={{
                       marginRight: "3px",
                       height: "40px",

@@ -1,3 +1,7 @@
+/**
+ * @author Suyash Jhawer B00968936
+ */
+
 import * as React from 'react';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -468,7 +472,7 @@ export default function ContentFeed() {
           {userDetails && (
             <CardContent style={{ textAlign: 'center', padding: '0px 8px' }}>
               <img
-                src={userDetails.image}
+                src={userDetails.image || "/src/assets/placeholder.svg"}
                 alt="Profile"
                 style={{ width: '40%', borderRadius: '40%', marginBottom: '10px' }}
               />
@@ -518,7 +522,7 @@ export default function ContentFeed() {
           <CardActionArea>
             <CardContent style={{ textAlign: 'center' }}>
               <img
-                src={userDetails.image}
+                 src={userDetails.image || "/src/assets/placeholder.svg"}
                 alt="Profile"
                 style={{ width: '100%', borderRadius: '50%', marginBottom: '10px' }}
               />
@@ -623,8 +627,8 @@ export default function ContentFeed() {
               </Button>
             </DialogActions>
           </Dialog>
-
         </div>
+
         {currentItems.map((feed, index) => (
           <div key={index} style={{ border: '2px solid rgb(204, 204, 204)', padding: '10px', marginLeft: '0%', width: '100%', textAlign: 'center', marginBottom: '3%', borderRadius: '10px' }}>
 
