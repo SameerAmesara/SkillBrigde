@@ -18,3 +18,8 @@ export const getJob = async (jobId: string) => {
     const url = `${JOB_URL}/${jobId}`
     return await axios.get(url)
 }
+
+export const deleteJob = async (jobId: string) => {
+    const url = `${JOB_URL}/${jobId}`
+    return await axios.delete(url)
+}

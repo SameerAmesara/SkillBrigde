@@ -11,17 +11,23 @@ const getJob = async (jobId: string): Promise<Job | null> => {
 }
 
 const addJob = async (entry: NewJobData): Promise<Job> => {
-    const newUserEntry = {
+    const newJobEntry = {
         id: uuidv4(),
         ...entry
     };
-    const user = new JobModel(newUserEntry)
-    await user.save()
-    return user
-};
+    const job = new JobModel(newJobEntry)
+    await job.save()
+    return job
+}
+
+const deleteJob = async (jobId: string): Promise<Job | null> => {
+    return await JobModel.findOneAndDelete({id: jobId})
+}
+
 
 export default {
     getAll,
     getJob,
-    addJob
+    addJob,
+    deleteJob
 }
