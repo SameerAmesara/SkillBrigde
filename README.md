@@ -2,8 +2,8 @@
 
 SkillBridge is a central hub for individuals to cultivate and showcase their professional identities, fostering dynamic platforms for career growth and collaboration. The application enables users to create comprehensive profiles, highlighting skills, work history, and accomplishments, facilitating meaningful networking opportunities.
 
-- _Date Created_: 27 February 2024
-- _Last Modification Date_: 28 February 2024
+- _Date Created_: 20 March 2024
+- _Last Modification Date_: 03 April 2024
 - _GitLab Project branch Drashti Navadiya_: https://git.cs.dal.ca/jhawer/csci-5709/-/tree/Drashti_Navadiya_B00948838?ref_type=heads
 - _Deployed application URL_: <https://cs5709-group11.netlify.app/>
 - _GIT URL_: <https://git.cs.dal.ca/jhawer/csci-5709.git>
@@ -169,3 +169,13 @@ NOTE: We need to have Node.js installed, which includes npm, in order to install
 
 ## References
 
+We have utilized some content of the following webpage templates as references for our user management system:
+
+1. Sign-In Template: https://mui.com/material-ui/getting-started/templates/sign-in/
+2. Sign-Up Template: https://mui.com/material-ui/getting-started/templates/sign-up/
+
+Changes Made:
+
+- Structural Adjustments: We retained the fundamental structure of the sign-in and sign-up forms provided in the referenced templates.
+- Color Palette Modification: We implemented major color changes across both templates to align with our branding guidelines. This involved adjusting primary and secondary colors to establish a cohesive visual identity for our user management system.
+- Customization: Beyond structural and color modifications, we tailored certain elements to meet our specific requirements, ensuring seamless integration with our existing system architecture.
