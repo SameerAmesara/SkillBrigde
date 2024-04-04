@@ -5,6 +5,7 @@ import {
   Box,
   Pagination,
   Paper,
+  Skeleton,
   Table,
   TableBody,
   TableCell,
@@ -18,7 +19,8 @@ import dayjs from "dayjs";
 
 const TransactionsPage = observer(() => {
   const { paymentsStore } = useStores();
-  const { transactions, transactionsParams } = paymentsStore;
+  const { transactions, transactionsParams, isTransactionsLoading } =
+    paymentsStore;
 
   console.log(transactions);
 
@@ -55,34 +57,57 @@ const TransactionsPage = observer(() => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {transactions.map((transaction) => (
-              <TableRow
-                key={transaction.id}
-                sx={{
-                  "&:last-child td, &:last-child th": { border: 0 },
-                  "&:nth-of-type(odd)": {
-                    backgroundColor: theme.palette.action.hover,
-                  },
-                }}
-              >
-                <TableCell component="th" sx={{ fontWeight: 500 }}>
-                  {transaction.description.slice(0, 20)}
-                </TableCell>
-                <TableCell align="left">
-                  {transaction.cardLast4 ? `**** ${transaction.cardLast4}` : ""}
-                </TableCell>
-                <TableCell align="left">
-                  {formatDate(dayjs(transaction.createdAt))}
-                </TableCell>
-                <TableCell
-                  component="th"
-                  align="right"
-                  sx={{ fontWeight: 500 }}
+            {isTransactionsLoading ? (
+              [1, 2].map((value, index) => (
+                <TableRow key={value + index}>
+                  <TableCell
+                    colSpan={4}
+                    align="center"
+                    component="th"
+                    padding="none"
+                  >
+                    <Skeleton height={60}></Skeleton>
+                  </TableCell>
+                </TableRow>
+              ))
+            ) : transactions.length > 0 ? (
+              transactions.map((transaction) => (
+                <TableRow
+                  key={transaction.id}
+                  sx={{
+                    "&:last-child td, &:last-child th": { border: 0 },
+                    "&:nth-of-type(odd)": {
+                      backgroundColor: theme.palette.action.hover,
+                    },
+                  }}
                 >
-                  ${transaction.amount}
+                  <TableCell component="th" sx={{ fontWeight: 500 }}>
+                    {transaction.description.slice(0, 20)}
+                  </TableCell>
+                  <TableCell align="left">
+                    {transaction.cardLast4
+                      ? `**** ${transaction.cardLast4}`
+                      : ""}
+                  </TableCell>
+                  <TableCell align="left">
+                    {formatDate(dayjs(transaction.createdAt))}
+                  </TableCell>
+                  <TableCell
+                    component="th"
+                    align="right"
+                    sx={{ fontWeight: 500 }}
+                  >
+                    ${transaction.amount}
+                  </TableCell>
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell colSpan={4} align="center" component="th">
+                  No transactions found.
                 </TableCell>
               </TableRow>
-            ))}
+            )}
           </TableBody>
         </Table>
       </TableContainer>
@@ -90,6 +115,7 @@ const TransactionsPage = observer(() => {
         count={transactionsParams.totalPages}
         page={transactionsParams.page}
         onChange={handlePageChange}
+        color="primary"
       />
     </Box>
   );
