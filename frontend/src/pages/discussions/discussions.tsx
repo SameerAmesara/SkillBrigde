@@ -1,3 +1,6 @@
+/**
+ * @author Tirth Bharatiya (B00955618)
+ */
 import React, { useEffect, useState } from "react";
 import {
   Box,
