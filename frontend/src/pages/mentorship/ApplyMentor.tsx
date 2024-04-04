@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import {
   TextField,
@@ -15,12 +15,24 @@ import {
   Chip,
   OutlinedInput,
   SelectChangeEvent,
-  Input,
   Checkbox,
   FormControlLabel,
+  FormHelperText,
 } from "@mui/material";
 import { CloudUploadOutlined } from "@mui/icons-material";
 import AvailabilityComponent from "../../components/AvailabilityComponent/AvailabilityComponent";
+import {
+  validateAreaOfExpertise,
+  validateEmail,
+  validateExperience,
+  validateFile,
+  validateFirstName,
+  validateLastName,
+  validatePhoneNumber,
+  validateTerms,
+} from "../../utils/MentorFormValidations";
+import PaymentSuccessDialog from "../../components/payment-success-dialog/PaymentSuccessDialog";
+import { useNavigate } from "react-router-dom";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -77,6 +89,8 @@ const initialSchedule: DaySchedule[] = [
 ];
 
 const ApplyMentor = () => {
+  const navigate = useNavigate();
+
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -85,94 +99,191 @@ const ApplyMentor = () => {
   const [pay, setPay] = useState(0);
   const [areaOfExpertise, setAreaOfExpertise] = useState<string[]>([]);
   const [checked, setChecked] = useState(false);
-  const [file, setFile] = useState<File | null>(null);
+  const [file, setFile] = useState<string | ArrayBuffer>();
+  const [fileDisplayName, setFileDisplayName] = useState<string>("");
   const [gender, setGender] = useState("");
   const [availability, setAvailability] =
     useState<DaySchedule[]>(initialSchedule);
+  const [register, setRegister] = useState(false);
 
-  const handleTermsChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setChecked(event.target.checked);
+  const [formErrors, setFormErrors] = useState<FormErrors>({
+    firstName: "",
+    lastName: "",
+    email: "",
+    phoneNumber: "",
+    experience: "",
+    areaOfExpertise: "",
+    availability: "",
+    file: "",
+    terms: "",
+  });
+
+  const handleFirstNameChange = (newValue: string) => {
+    setFirstName(newValue);
+    setFormErrors((errors) => ({
+      ...errors,
+      firstName: validateFirstName(newValue),
+    }));
   };
 
-  const handleExperienceChange = (
-    event: React.ChangeEvent<HTMLInputElement>
+  const handleLastNameChange = (newValue: string) => {
+    setLastName(newValue);
+    setFormErrors((errors) => ({
+      ...errors,
+      lastName: validateLastName(newValue),
+    }));
+  };
+
+  const handleEmailChange = (newValue: string) => {
+    setEmail(newValue);
+    setFormErrors((errors) => ({ ...errors, email: validateEmail(newValue) }));
+  };
+
+  const handlePhoneNumberChange = (value: string) => {
+    const newValue = parseInt(value, 10);
+    setPhoneNumber(newValue);
+    setFormErrors((errors) => ({
+      ...errors,
+      phoneNumber: validatePhoneNumber(newValue),
+    }));
+  };
+
+  const handleExperienceChange = (value: string) => {
+    const newValue = parseFloat(value);
+    setExperience(newValue);
+    setPay(newValue * 3.5);
+    setFormErrors((errors) => ({
+      ...errors,
+      experience: validateExperience(newValue),
+    }));
+  };
+
+  const handleTermsChange = (isChecked: boolean) => {
+    setChecked(isChecked);
+    setFormErrors((errors) => ({
+      ...errors,
+      terms: validateTerms(isChecked),
+    }));
+  };
+
+  const handleAreaOfExpertiseChange = (
+    event: SelectChangeEvent<typeof areaOfExpertise> | null,
+    newValue: string[]
   ) => {
-    setExperience(parseInt(event.target.value, 10));
-    setPay(parseFloat(event.target.value) * 3.5);
+    if (event) {
+      let newValue = event.target.value as string[];
+      newValue =
+        newValue && typeof newValue === "string"
+          ? (newValue as string).split(",")
+          : newValue;
+      setAreaOfExpertise(newValue);
+    }
+    setFormErrors((errors) => ({
+      ...errors,
+      areaOfExpertise: validateAreaOfExpertise(newValue),
+    }));
   };
 
-  const handleChange = (event: SelectChangeEvent<typeof areaOfExpertise>) => {
-    const value = event.target.value;
-    setAreaOfExpertise(typeof value === "string" ? value.split(",") : value);
-  };
+  const handlePDF = (file: File | null) => {
+    const fileError = validateFile(file);
+    if (fileError !== "") {
+      console.error(fileError);
+      setFormErrors((errors) => ({ ...errors, file: fileError }));
+      return;
+    }
+    if (file != null) {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = function (e) {
+        if (e.target !== null && e.target.result !== null) {
+          console.log(e.target.result);
+          setFile(e.target.result.toString());
+        }
+      };
 
-  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const files = event.target.files;
-    if (files) {
-      setFile(files[0]);
+      reader.onerror = function (error) {
+        console.log("Error reading file:", error);
+      };
     }
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const formattedAvailability = availability
-      .filter((a) => a.isActive)
-      .map((a) => ({
-        day: a.day,
-        startTime: a.from,
-        endTime: a.to,
-      }));
 
-    let imageURL = "";
-    if (gender == "Male") {
-      imageURL =
-        "https://randomuser.me/api/portraits/men/" +
-        (Math.floor(Math.random() * 100) + 1) +
-        ".jpg";
-    } else if (gender == "Female") {
-      imageURL =
-        "https://randomuser.me/api/portraits/women/" +
-        (Math.floor(Math.random() * 100) + 1) +
-        ".jpg";
-    }
+    const hasErrors = Object.values(formErrors).some(
+      (errorMessage) => errorMessage !== ""
+    );
 
-    const ratings = "0";
-    const bio =
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi molestie, metus quis blandit mattis, ligula augue molestie lectus, id volutpat sem diam nec arcu. Sed vel tincidunt lacus, a sodales nisi. Vestibulum ac enim felis.";
+    if (!hasErrors) {
+      const formattedAvailability = availability
+        .filter((a) => a.isActive)
+        .map((a) => ({
+          day: a.day,
+          startTime: a.from,
+          endTime: a.to,
+        }));
 
-    const mentorData = {
-      firstName: firstName,
-      lastName: lastName,
-      gender: gender,
-      imageUrl: imageURL,
-      ratings: ratings,
-      bio: bio,
-      email: email,
-      phoneNumber: phoneNumber.toString(),
-      experience: experience.toString(),
-      pay: pay.toString(),
-      expertise: areaOfExpertise.join(", "),
-      resume: file?.name,
-      availability: JSON.stringify(formattedAvailability),
-      termsAccepted: checked.toString(),
-    };
+      let imageURL = "";
+      if (gender == "Male") {
+        imageURL =
+          "https://randomuser.me/api/portraits/men/" +
+          (Math.floor(Math.random() * 100) + 1) +
+          ".jpg";
+      } else if (gender == "Female") {
+        imageURL =
+          "https://randomuser.me/api/portraits/women/" +
+          (Math.floor(Math.random() * 100) + 1) +
+          ".jpg";
+      }
 
-    console.log(mentorData);
+      const ratings = "0";
+      const bio =
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi molestie, metus quis blandit mattis, ligula augue molestie lectus, id volutpat sem diam nec arcu. Sed vel tincidunt lacus, a sodales nisi. Vestibulum ac enim felis.";
 
-    try {
-      const response = await axios({
-        method: "post",
-        url: `${import.meta.env.VITE_BASE_URL}/mentor`,
-        data: mentorData,
-      });
-      console.log(response.data);
-    } catch (error) {
-      console.error("Error submitting form", error);
+      const mentorData = {
+        firstName: firstName,
+        lastName: lastName,
+        gender: gender,
+        imageUrl: imageURL,
+        ratings: ratings,
+        bio: bio,
+        email: email,
+        phoneNumber: phoneNumber.toString(),
+        experience: experience.toString(),
+        pay: pay.toString(),
+        expertise: areaOfExpertise.join(", "),
+        resume: file,
+        availability: JSON.stringify(formattedAvailability),
+        termsAccepted: checked.toString(),
+      };
+
+      console.log(mentorData);
+
+      try {
+        const response = await axios({
+          method: "post",
+          url: `${import.meta.env.VITE_BASE_URL}/mentor`,
+          data: mentorData,
+        });
+        if (response.status === 200) {
+          setRegister(true);
+          setTimeout(() => {
+            navigate("/mentors");
+          }, 1000);
+        }
+        console.log(response.data);
+      } catch (error) {
+        console.error("Error submitting form", error);
+      }
     }
   };
 
   return (
     <Grid container component="main">
+      <PaymentSuccessDialog
+        open={register}
+        successText="Mentor Registration Successful"
+      />
       <Typography variant="h5">Apply as a Mentor</Typography>
       <Divider />
       <Box
@@ -199,7 +310,10 @@ const ApplyMentor = () => {
                   id="firstName"
                   label="First Name"
                   value={firstName}
-                  onChange={(e) => setFirstName(e.target.value)}
+                  onChange={(e) => handleFirstNameChange(e.target.value)}
+                  onBlur={(e) => handleFirstNameChange(e.target.value)}
+                  error={Boolean(formErrors.firstName)}
+                  helperText={formErrors.firstName}
                 />
               </Grid>
               <Grid item xs={12} sm={4}>
@@ -209,7 +323,10 @@ const ApplyMentor = () => {
                   id="lastName"
                   label="Last Name"
                   value={lastName}
-                  onChange={(e) => setLastName(e.target.value)}
+                  onChange={(e) => handleLastNameChange(e.target.value)}
+                  onBlur={(e) => handleLastNameChange(e.target.value)}
+                  error={Boolean(formErrors.lastName)}
+                  helperText={formErrors.lastName}
                 />
               </Grid>
               <Grid item xs={12} sm={4}>
@@ -234,7 +351,10 @@ const ApplyMentor = () => {
                   id="email"
                   label="Email Address"
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={(e) => handleEmailChange(e.target.value)}
+                  onBlur={(e) => handleEmailChange(e.target.value)}
+                  error={Boolean(formErrors.email)}
+                  helperText={formErrors.email}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -246,7 +366,10 @@ const ApplyMentor = () => {
                   type="number"
                   id="phone_number"
                   value={phoneNumber}
-                  onChange={(e) => setPhoneNumber(parseInt(e.target.value, 10))}
+                  onChange={(e) => handlePhoneNumberChange(e.target.value)}
+                  onBlur={(e) => handlePhoneNumberChange(e.target.value)}
+                  error={Boolean(formErrors.phoneNumber)}
+                  helperText={formErrors.phoneNumber}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -258,7 +381,10 @@ const ApplyMentor = () => {
                   type="number"
                   id="experience"
                   value={experience}
-                  onChange={handleExperienceChange}
+                  onChange={(e) => handleExperienceChange(e.target.value)}
+                  onBlur={(e) => handleExperienceChange(e.target.value)}
+                  error={Boolean(formErrors.experience)}
+                  helperText={formErrors.experience}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -272,7 +398,13 @@ const ApplyMentor = () => {
                     name="expertise"
                     multiple
                     value={areaOfExpertise}
-                    onChange={handleChange}
+                    onChange={(e) =>
+                      handleAreaOfExpertiseChange(e, areaOfExpertise)
+                    }
+                    onBlur={() =>
+                      handleAreaOfExpertiseChange(null, areaOfExpertise)
+                    }
+                    error={Boolean(formErrors.areaOfExpertise)}
                     input={
                       <OutlinedInput
                         id="select-multiple-chip"
@@ -294,29 +426,48 @@ const ApplyMentor = () => {
                       </MenuItem>
                     ))}
                   </Select>
+                  <FormHelperText color="error">
+                    {formErrors.areaOfExpertise}
+                  </FormHelperText>
                 </FormControl>
               </Grid>
               <Grid item xs={12}>
-                <AvailabilityComponent
-                  availability={availability}
-                  setAvailability={setAvailability}
-                />
+                <FormControl fullWidth>
+                  <AvailabilityComponent
+                    availability={availability}
+                    setAvailability={setAvailability}
+                    setFormErrors={setFormErrors}
+                  />
+                  <FormHelperText color="error">
+                    {formErrors.availability}
+                  </FormHelperText>
+                </FormControl>
               </Grid>
               <Grid item xs={12}>
                 <Box sx={{ display: "flex", justifyContent: "space-between" }}>
                   <TextField
                     disabled
                     fullWidth
-                    value={file ? file.name : "No file chosen"}
+                    value={fileDisplayName ? fileDisplayName : "No file chosen"}
+                    error={Boolean(formErrors.file)}
+                    helperText={formErrors.file}
                     sx={{ mr: 2 }}
                   />
+                  <input
+                    id="upload-button-file"
+                    type="file"
+                    accept="application/pdf"
+                    onChange={(event) => {
+                      const files = event.target.files;
+                      if (files && files.length > 0) {
+                        handlePDF(files[0]);
+                        const selectedFile = files[0];
+                        setFileDisplayName(selectedFile.name);
+                      }
+                    }}
+                    style={{ display: "none" }}
+                  />
                   <label htmlFor="upload-button-file">
-                    <Input
-                      id="upload-button-file"
-                      type="file"
-                      onChange={handleFileChange}
-                      sx={{ display: "none" }}
-                    />
                     <Button
                       variant="contained"
                       component="span"
@@ -333,12 +484,16 @@ const ApplyMentor = () => {
                   control={
                     <Checkbox
                       checked={checked}
-                      onChange={handleTermsChange}
+                      onChange={(e) => handleTermsChange(e.target.checked)}
+                      onBlur={() => handleTermsChange(checked)}
                       color="primary"
                     />
                   }
                   label="I agree to the Terms and Conditions*"
                 />
+                {formErrors.terms && (
+                  <Typography color="error">{formErrors.terms}</Typography>
+                )}
               </Grid>
               <Grid item xs={12}>
                 <Button

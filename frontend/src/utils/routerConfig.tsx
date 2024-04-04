@@ -21,6 +21,9 @@ import DiscussionView from "../pages/discussions/discussionView";
 import NewDiscussion from "../pages/discussions/newDiscussion";
 import PaymentCardsPage from "../pages/payments-cards-page/PaymentsCardsPage";
 import BookMentorPage from "../pages/book-mentor-page/BookMentorPage";
+import NewJob from "../pages/jobs/newJob";
+import JobsDashboard from "../pages/jobs/jobsDashboard";
+import JobDetail from "../pages/jobs/jobDetail";
 
 export const router = createBrowserRouter([
   {
@@ -71,9 +74,21 @@ export const router = createBrowserRouter([
             element: <MentorProfile />,
           },
           {
-            path: "/ratementor",
+            path: "/ratementor/:id?",
             element: <RateMentor />,
           },
+          {
+            path: "/jobs/new",
+            element: <NewJob />,
+          },
+          {
+            path: "/jobs",
+            element: <JobsDashboard />,
+          },
+          {
+            path: "/jobs/:jobId",
+            element: <JobDetail />,
+          }
         ],
       },
     ],
@@ -105,4 +120,5 @@ export const navigationItems: NavigationItem[] = [
   { path: "contentfeed", label: "Content Feed", isProtected: true },
   { path: "contact-us", label: "Contact Us", isProtected: false },
   { path: "faqs", label: "FAQs", isProtected: false },
+  { path: "jobs", label: "Jobs", isProtected: true },
 ];

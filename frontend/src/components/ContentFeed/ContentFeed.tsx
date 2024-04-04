@@ -36,10 +36,10 @@ export default function ContentFeed() {
   const BASE_URL = import.meta.env.VITE_BASE_URL
 
   // State to store user details
-  const [userDetails, setUserDetails] = useState<any>(null); // Change `any` to match your user details type
-
+  const [userDetails, setUserDetails] = useState<any>(null);
   const [userId, setUserId] = useState('')
 
+  //Getting user details
   useEffect(() => {
     // Function to fetch user details
     const fetchUserDetails = async () => {
@@ -56,6 +56,7 @@ export default function ContentFeed() {
           const data = await response.json();
           console.log(data)
           setUserDetails(data);
+          window.scrollTo({ top: 0, behavior: 'smooth' });
         } else {
           console.log("User ID not found in sessionStorage.");
         }
@@ -63,12 +64,11 @@ export default function ContentFeed() {
         console.error('There was a problem fetching user details:', error);
       }
     };
-
     // Call the fetch function when the component mounts
     fetchUserDetails();
-  }, []); // Empty dependency array means this effect runs only once after the initial render
+  }, []);
 
-
+  //Adding Themes and breakpoints
   const theme = useTheme();
   const isMobileSize = useMediaQuery(theme.breakpoints.down(800));
   const evenMoreSmall = useMediaQuery(theme.breakpoints.down(500));
@@ -157,8 +157,8 @@ export default function ContentFeed() {
     let textareaValue = textareaElement.value;
 
     const contentFeedData = {
-      id: userId, // Leave empty for automatic generation on the server side
-      name: userDetails.firstName + " " + userDetails.lastName, // Default name
+      id: userId,
+      name: userDetails.firstName + " " + userDetails.lastName,
       feed: textareaValue,
       likes: {
         userIds: [], // Initialize with an empty array of user IDs
@@ -166,7 +166,7 @@ export default function ContentFeed() {
       },
       comments: [], // Default comments array
       datePublish: new Date().toISOString(), // Current date in ISO format
-      image: userDetails.image, // Leave image empty for now
+      image: userDetails.image,
     };
 
     fetch(`${BASE_URL}/contentfeed`, {
@@ -268,7 +268,6 @@ export default function ContentFeed() {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
-          // Add any additional headers as needed
         },
         body: JSON.stringify({
           contentFeedId: feedId,
@@ -299,7 +298,6 @@ export default function ContentFeed() {
   };
   const handleAddComment = async (idWhereThishasToStore: string, idWhoHasWrittenIt: string) => {
     try {
-      console.log(idWhereThishasToStore , idWhoHasWrittenIt)
       const response = await fetch(`${BASE_URL}/contentfeed/comments`, {
         method: 'POST',
         headers: {
@@ -344,7 +342,6 @@ export default function ContentFeed() {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
-          // Add any additional headers as needed
         },
         body: JSON.stringify({
           contentFeedId: feedId,
@@ -447,7 +444,7 @@ export default function ContentFeed() {
   };
 
 
-  //Pagonation
+  //Pagination
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5; // Set items per page
   const [currentItems, setCurrentItems] = useState<any[]>([]);
@@ -465,6 +462,7 @@ export default function ContentFeed() {
 
   return (
     <>
+      {/* Conditionally rendering User Info */}
       {isMobileSize ? (
         <Card sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '2%', width: '88%', marginLeft: '6%' }}>
           {userDetails && (
@@ -536,6 +534,7 @@ export default function ContentFeed() {
         </Card>
       )}
 
+      {/* COntent feed , searching and sorting bars */}
       <div style={{
         width: isMobileSize ? '90%' : '70%',
         marginLeft: isMobileSize ? '5%' : '15%',
@@ -603,7 +602,7 @@ export default function ContentFeed() {
             onClose={handleClose}
             PaperProps={{
               style: {
-                minWidth: '30%', 
+                minWidth: '30%',
               },
             }}
           >
@@ -641,7 +640,7 @@ export default function ContentFeed() {
                   style={{
                     zIndex: 1,
                   }}
-                  onClick={() => handleDeleteFeed(feed.id)}
+                  onClick={() => handleDeleteFeed(feed._id)}
                   aria-label="delete-feed"
                 >
                   <DeleteIcon style={{ color: 'primary' }} />
@@ -657,7 +656,7 @@ export default function ContentFeed() {
                   cursor: 'pointer',
                   color: feed.likes.userIds.includes(userId) ? '#071541' : 'grey', // Check if tempId is in the user likes
                 }}
-                onClick={() => handleThumbClick(feed.id, userId, index)} // Pass necessary parameters to handleThumbClick
+                onClick={() => handleThumbClick(feed._id, userId, index)} // Pass necessary parameters to handleThumbClick
               />
               <span style={{ marginLeft: evenMoreSmall ? '-32%' : isMobileSize ? '-41%' : '-43%' }}>{feed.likes.count}</span>
               <CommentIcon style={{ margin: '0 10px', cursor: 'pointer' }} onClick={() => handleCommentClick(index)} />
@@ -684,7 +683,7 @@ export default function ContentFeed() {
                       right: 0,
                       padding: '2.5%'
                     }}
-                    onClick={() => handleAddComment(feed.id, userId)}
+                    onClick={() => handleAddComment(feed._id, userId)}
                     aria-label="add-comment"
                   >
                     <PostAddIcon />
@@ -695,29 +694,26 @@ export default function ContentFeed() {
                 {feed.comments.length > 0 ? (
                   <div style={{ padding: '1%', margin: '2% 0%' }}>
                     {feed.comments.map((comment: any) => (
-                      <div style={{ border: '1px solid #ccc' , padding:'1%' }}>
+                      <div style={{ border: '1px solid #ccc', padding: '1%', position: 'relative' }}>
                         <div key={comment.id} style={{ display: 'flex' }}>
-                          <div style={{ display: 'flex' }}>
-                          <Avatar alt="User Avatar" src={comment.image} />
-                            <div style={{ marginLeft: '5%' }}>
-                              <p style={{whiteSpace:'nowrap' , marginTop:'1%'}}>{comment.name}</p>
+                          <div style={{ display: 'flex', flex: 1 }}>
+                            <Avatar alt="User Avatar" src={comment.image} />
+                            <div style={{ marginLeft: '0.5rem', display: 'flex', flexDirection: 'column', alignItems: 'flex-start', overflowWrap: 'anywhere' }}>
+                              <p>{comment.name}</p>
                               <p>{comment.comment}</p>
                             </div>
+
                           </div>
-                          <div style={{ marginLeft: 'auto' }}>
-                            {comment.id === userId && (
-                              <IconButton
-                                style={{
-                                  zIndex: 1,
-                                }}
-                                onClick={() => handleDelete(feed.id, comment.id)}
-                              >
+                          <div style={{ position: 'absolute', top: 0, right: 0 }}>
+                            {comment.userId === userId && (
+                              <IconButton onClick={() => handleDelete(feed._id, comment.id)}>
                                 <DeleteIcon style={{ color: 'primary' }} />
                               </IconButton>
                             )}
                           </div>
                         </div>
                       </div>
+
                     ))}
 
                   </div>
@@ -728,14 +724,16 @@ export default function ContentFeed() {
         ))}
       </div>
 
+      {/* Pagination */}
       <Pagination style={{
         display: 'flex',
         justifyContent: 'center'
       }} count={Math.ceil(filteredFeeds.length / itemsPerPage)} // Calculate total pages
         page={currentPage}
-        onChange={(_event ,page) => handlePageChange(page)} />
+        onChange={(_event, page) => handlePageChange(page)} />
 
 
+      {/* News content */}
       <Card sx={{
         width: '14%', right: '1.5%', position: 'absolute', top: theme.spacing(15), display: isMobileSize ? 'none' : 'block',
         boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
@@ -760,7 +758,7 @@ export default function ContentFeed() {
       </Card>
 
 
-      {/* Your component JSX */}
+      {/* SnackBar */}
       <div style={{ display: 'flex', justifyContent: 'center' }}>
         <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleCloseSnackbar}>
           <MuiAlert onClose={handleCloseSnackbar} severity="success" sx={{ width: '100%' }}>
