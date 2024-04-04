@@ -22,6 +22,7 @@ type MentorDetails = {
   gender: string;
   imageUrl: string;
   ratings: string;
+  dateOfBirth: string;
   bio: string;
   experience: string;
   pay: string;
@@ -35,6 +36,7 @@ const DEFAULT_VALUES_FOR_MENTOR_DATA = {
   lastName: "",
   gender: "",
   imageUrl: "",
+  dateOfBirth: "",
   ratings: "0",
   bio: "",
   experience: "",
@@ -194,7 +196,7 @@ const MentorProfile = observer(() => {
           </Grid>
           <Grid item xs={12} sm={4} marginTop={2} justifyContent={"center"}>
             <Typography variant="subtitle1">Date of Birth</Typography>
-            <Typography variant="h6">01 - 02 - 2000</Typography>
+            <Typography variant="h6">{mentorData.dateOfBirth}</Typography>
           </Grid>
           <Grid item xs={12} sm={4} marginTop={2} justifyContent={"center"}>
             <Typography variant="subtitle1">

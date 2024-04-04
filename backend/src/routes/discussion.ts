@@ -1,3 +1,6 @@
+/**
+ * @author Tirth Bharatiya (B00955618)
+ */
 import express from 'express';
 import discussionService from '../services/discussionService';
 import { toDiscussionReply, toDiscussionSearchAndFilter, toNewDiscussionEntry } from '../utils/parser';

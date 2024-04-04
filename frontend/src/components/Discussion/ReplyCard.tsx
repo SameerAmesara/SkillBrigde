@@ -1,3 +1,9 @@
+/**
+ * @author Tirth Bharatiya (B00955618)
+ */
+/**
+ * @author Tirth Bharatiya (B00955618)
+ */
 import {
   Card,
   CardContent,
@@ -6,6 +12,7 @@ import {
   useMediaQuery,
   IconButton,
   Tooltip,
+  Avatar,
 } from "@mui/material";
 import moment from "moment";
 import { DiscussionReplyModel } from "../../models/discussions.model";
@@ -18,7 +25,7 @@ const ReplyCard: React.FC<{
   discussionReply: DiscussionReplyModel;
   onDelete: (replyId: string) => void;
 }> = ({ discussionReply, onDelete }) => {
-  const userId = sessionStorage.getItem('userId') ?? '';
+  const userId = sessionStorage.getItem("userId") ?? "";
   const userCanDelete = discussionReply.userId === userId;
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const formattedDate = moment(discussionReply.timestamp).format(
@@ -44,11 +51,28 @@ const ReplyCard: React.FC<{
         >
           {/* User information */}
           <Box sx={{ display: "flex", alignItems: "center", gap: "8px" }}>
-          <img
-              src={discussionReply.userImage}
-              alt="User Profile Image"
-              style={{ marginRight: "3px", height: "40px", width: "40px", borderRadius: "50%" }}
-            />
+            {discussionReply.userImage ? (
+              <img
+                src={discussionReply.userImage}
+                alt="User Profile Image"
+                style={{
+                  marginRight: "3px",
+                  height: "40px",
+                  width: "40px",
+                  borderRadius: "50%",
+                }}
+              />
+            ) : (
+              <Avatar
+                style={{
+                  marginRight: "3px",
+                  height: "40px",
+                  width: "40px",
+                }}
+              >
+                {discussionReply.userName.charAt(0)}
+              </Avatar>
+            )}
             <Typography
               variant="subtitle1"
               color="textSecondary"

@@ -33,6 +33,7 @@ export interface Mentor {
   firstName: string;
   lastName: string;
   gender: string;
+  dateOfBirth: string;
   imageUrl: string;
   ratings: string;
   bio: string;

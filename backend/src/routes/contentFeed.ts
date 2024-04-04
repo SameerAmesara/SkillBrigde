@@ -1,3 +1,7 @@
+/**
+ * @author Suyash Jhawer B00968936
+ */
+
 import express from 'express';
 import contentFeedService from '../services/contentFeed';
 import { ContentFeed } from '../types';
