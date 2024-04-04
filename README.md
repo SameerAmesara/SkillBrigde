@@ -100,6 +100,16 @@ To deploy the project environment, We have used Netlify. The steps we followed f
 4. Set up the site configurations, including naming the site, among other settings.
 5. Initiated the site deployment by clicking on the "Deploy site" button. The site went live in just a few minutes. Links to both the source code and the live site are provided above.
 
+# Backend
+
+To deploy the project environment, We have used Render. The steps we followed for the deployment are as follows:
+
+1. Mirrored our code into a private GitHub repository from GitLab.
+2. Accessed our Render account using GitHub credentials.
+3. Chose the repository to be deployed.
+4. Set up the ci/cd configurations, including naming the site, and automated build with main branch.
+5. Initiated the site deployment by clicking on the "Deploy site" button. The site went live in just a few minutes. Links to both the source code and the live site are provided above.
+
 ## Testing
 
 In the context of my application, the end-to-end tests & coding style tests which I went through are described below:
