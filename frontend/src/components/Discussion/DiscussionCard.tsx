@@ -119,7 +119,7 @@ const DiscussionCard: React.FC<{ discussion: DiscussionModel }> = ({ discussion 
             </Typography>
             <Box sx={{ display: "flex", alignItems: "center", gap: "8px" }}>
             <img
-              src={discussion.userImage}
+              src={discussion.userImage || 'src/assests/placeholder.png'}
               alt="User Profile Image"
               style={{ marginRight: "3px", height: "40px", width: "40px", borderRadius: "50%" }}
             />
