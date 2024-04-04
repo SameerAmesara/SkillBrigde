@@ -115,6 +115,7 @@ const TransactionsPage = observer(() => {
         count={transactionsParams.totalPages}
         page={transactionsParams.page}
         onChange={handlePageChange}
+        color="primary"
       />
     </Box>
   );
