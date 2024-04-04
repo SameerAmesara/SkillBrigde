@@ -157,8 +157,6 @@ export default function ProfilePage({ }: { uid: string }): React.ReactElement {
                                             </label>
                                         </Stack>
 
-
-
                                         <TextField
                                             name="firstName"
                                             fullWidth
@@ -208,7 +206,7 @@ export default function ProfilePage({ }: { uid: string }): React.ReactElement {
                                                         defaultValue={dayjs()}
                                                         value={dayjs(userDa.dob)}
                                                         onChange={handleDateChange}
-                                                        disabled={!editMode}
+                                                        disabled={!editMode}    
                                                     />
                                                 </DemoContainer>
                                             </LocalizationProvider>
@@ -235,13 +233,15 @@ export default function ProfilePage({ }: { uid: string }): React.ReactElement {
                             </CardContent>
                             <Divider />
                         </Card>
-                        <Button
+                        <Grid sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: 5 }}>
+                        <Button sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
                             variant="contained"
                             color="error"
                             onClick={handleDelete}
                         >
                             Delete Account
                         </Button>
+                        </Grid>
                     </Grid>
                 </Grid>
             </Container>
