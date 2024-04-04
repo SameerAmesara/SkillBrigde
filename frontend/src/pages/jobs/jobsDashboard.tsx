@@ -122,7 +122,7 @@ const JobsDashboard: React.FC = () => {
                                     <Job key={job.id}
                                         title={job.title}
                                         province={job.province}
-                                        description={job.description.substring(0, 150) + "...."}
+                                        description={job.description}
                                         onButtonClick={() => handleJobClick(job.id)}
                                     />
                                 
