@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { Button, Typography, Grid, Box, Paper, Container, Dialog, DialogActions, DialogContent, DialogTitle, Snackbar } from '@mui/material'
 import { deleteJob, getJob } from './job'
-import { JobModel } from '../../models/jobs.model'
+import { JobModel, experienceLevels, jobTypes, locationProvinces } from '../../models/jobs.model'
 
 type JobDetailParams = {
     jobId: string
@@ -53,6 +53,28 @@ const JobDetail: React.FC = () => {
                             <Typography component={'span'} variant="h6" gutterBottom align="center">
                                 {job.title}
                             </Typography>
+                            <Grid item xs={12} >
+                                    <Grid container justifyContent="space-evenly" display="flex" alignItems="center">
+                                        <Grid item >
+                                            <Typography component={'span'} variant="body1" gutterBottom style={{ wordWrap: "break-word" }}>
+                                                <strong>Location</strong>
+                                                <Box>{job.city},{locationProvinces[job.province as unknown as keyof typeof locationProvinces]}</Box>
+                                            </Typography>
+                                        </Grid>
+                                        <Grid item >
+                                            <Typography component={'span'} variant="body1" gutterBottom style={{ wordWrap: "break-word" }}>
+                                                <strong>Experience</strong>
+                                                <Box>{experienceLevels[job.experienceLevel as unknown as keyof typeof experienceLevels]}</Box>
+                                            </Typography>
+                                        </Grid>
+                                        <Grid item>
+                                            <Typography component={'span'} variant="body1" gutterBottom style={{ wordWrap: "break-word" }}>
+                                                <strong>Type</strong>
+                                                <Box>{jobTypes[job.type as unknown as keyof typeof jobTypes]}</Box>
+                                            </Typography>
+                                        </Grid>
+                                    </Grid>
+                                </Grid>
                             <Grid container spacing={2}>
                                 <Grid item xs={12} >
                                     <Typography component={'span'} variant="body1" gutterBottom style={{ wordWrap: "break-word" }}>
@@ -62,7 +84,7 @@ const JobDetail: React.FC = () => {
                                 </Grid>
                                 <Grid item xs={12}>
                                     <Typography component={'span'} variant="body1" gutterBottom>
-                                        <strong>Start Date</strong>
+                                        <strong>Create Date</strong>
                                         <Box>{new Date(job.createDate).toLocaleDateString()}</Box>
                                     </Typography>
                                 </Grid>
@@ -79,7 +101,7 @@ const JobDetail: React.FC = () => {
                                         </Button>
                                         {userId === job.userId && (
                                             <>
-                                                <Button variant="contained" style={{ backgroundColor: 'red', color: 'white' }}  onClick={() => setConfirmDeleteOpen(true)}>
+                                                <Button variant="contained" style={{ backgroundColor: 'red', color: 'white' }} onClick={() => setConfirmDeleteOpen(true)}>
                                                     Delete Job
                                                 </Button>
                                                 <Dialog open={confirmDeleteOpen} onClose={() => setConfirmDeleteOpen(false)}>
@@ -91,7 +113,7 @@ const JobDetail: React.FC = () => {
                                                         <Button onClick={() => setConfirmDeleteOpen(false)} color="primary">
                                                             Cancel
                                                         </Button>
-                                                        <Button  color="primary" autoFocus onClick={handleDeleteJob} >
+                                                        <Button color="primary" autoFocus onClick={handleDeleteJob} >
                                                             Delete
                                                         </Button>
                                                     </DialogActions>
@@ -102,7 +124,7 @@ const JobDetail: React.FC = () => {
                                 </Grid>
                             </Grid>
                         </Paper>
-                        
+
                     }
                 </Container>
             </Box>
