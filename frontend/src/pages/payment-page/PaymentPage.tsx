@@ -81,7 +81,11 @@ const PaymentPage = observer(() => {
         </Grid>
         <Grid item xs={12} sm={5}>
           <Paper elevation={2} sx={{ px: 2, py: 3 }}>
-            <PaymentForm isPayment={true} onSubmit={handleSubmit} />
+            <PaymentForm
+              isPayment={true}
+              onSubmit={handleSubmit}
+              clearErrors={!!payment.paymentMethodId}
+            />
           </Paper>
         </Grid>
       </Grid>
