@@ -35,6 +35,7 @@ export class PaymentsStore {
   transactions: Transaction[] = [];
   isCardsLoading = false;
   transactionsParams: TransactionParams = { page: 1, limit: 10, totalPages: 1 };
+  isTransactionsLoading = false;
 
   constructor(rootStore: RootStore) {
     this.rootStore = rootStore;
@@ -135,6 +136,7 @@ export class PaymentsStore {
    * @throws An error if fetching transactions fails.
    */
   async fetchTransactions() {
+    this.isTransactionsLoading = true;
     const userId = sessionStorage.getItem("userId");
     const { page, limit } = this.transactionsParams;
     const response = await axios.get<TransactionResponse>(
@@ -157,6 +159,7 @@ export class PaymentsStore {
       totalPages: response.data.pages,
     };
     this.transactions = transactionsWithCards;
+    this.isTransactionsLoading = false;
   }
 
   /**
