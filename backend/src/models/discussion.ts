@@ -1,3 +1,6 @@
+/**
+ * @author Tirth Bharatiya (B00955618)
+ */
 import { Schema, model } from 'mongoose';
 import { Discussion } from '../types';
 

@@ -1,3 +1,6 @@
+/**
+ * @author Tirth Bharatiya (B00955618)
+ */
 import { Link } from "react-router-dom";
 import {
   Box,
