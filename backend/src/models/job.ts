@@ -9,7 +9,6 @@ const jobSchema = new Schema<Job>({
     createDate: { type: Date, required: true },
     experienceLevel: { type: String, required: true },
     type: { type: String, required: true },
-    minimumSalary: { type: String, required: true },
     userId: { type: String, required: true },
     city: { type: String, required: true },
     province: { type: String, required: true },

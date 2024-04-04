@@ -38,7 +38,6 @@ export interface JobModel {
     createDate: Date
     experienceLevel: experienceLevels
     type: jobTypes
-    minimumSalary: Uint32Array
     userId: string
     city: string
     province: locationProvinces

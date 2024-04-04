@@ -33,7 +33,6 @@ const NewJob = () => {
         createDate: new Date(),
         experienceLevel: experienceLevels.associate,
         type: jobTypes.fullTime,
-        minimumSalary: new Uint32Array(1),
         userId: userId!!,
         city: "",
         province: locationProvinces.ON
@@ -46,14 +45,13 @@ const NewJob = () => {
             createDate: "",
             experienceLevel: "",
             type: "",
-            minimumSalary: "",
             userId: "",
             city: "",
             province: ""
         })
 
     const navigateBackToJobs = () => {
-        navigate("/job")
+        navigate("/jobs")
     }
 
     // function to update the user inputs
@@ -121,6 +119,7 @@ const NewJob = () => {
                             navigateBackToJobs()
                         }, 2000)
                     } else {
+                        console.log("Error while saving ", formData)
                         setFeedbackMessage("Something went wrong. Please try again later.")
                     }
                 })
@@ -239,18 +238,6 @@ const NewJob = () => {
                             />
                         </Box>
                     </Stack>
-                    <InputTitle title="Minimum Salary" description="" />
-                    <TextField
-                        required
-                        placeholder="Enter a minimum salary greater than 0"
-                        value={formData.minimumSalary}
-                        error={!!validationErrors.minimumSalary}
-                        helperText={validationErrors.minimumSalary}
-                        sx={{ paddingTop: "10px" }}
-                        onChange={(e) => handleNumberChange(e, "minimumSalary")}
-                        inputProps={{ min: 0 }}
-                        type="number"
-                    />
                 </Box>
 
                 <Box sx={{ display: "flex", gap: "10px" }}>
