@@ -62,7 +62,9 @@ const BookingDateTime = observer(() => {
     paymentsStore.updatePayment({
       amount: +(mentorDetails.hourlyRate * 1.15).toFixed(2),
     });
-    navigate("/pay", { state: { prevUrl: location.pathname } });
+    navigate("/pay", {
+      state: { prevUrl: location.pathname, redirectUrl: "/bookings" },
+    });
   };
 
   return (

@@ -13,6 +13,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 const FindMentor = () => {
+  const [searchInput, setSearchInput] = useState("");
   const [mentors, setMentors] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -87,10 +88,17 @@ const FindMentor = () => {
       <Box marginTop={3}>
         <Grid container spacing={2}>
           <Grid item xs={12} sm={12} md={3}>
-            <SearchFilter setFilters={setFilters} />
+            <SearchFilter
+              setFilters={setFilters}
+              setSearchInput={setSearchInput}
+            />
           </Grid>
           <Grid item xs={12} sm={12} md={9}>
-            <MentorList mentors={mentors} filters={filters} />
+            <MentorList
+              mentors={mentors}
+              filters={filters}
+              searchInput={searchInput}
+            />
           </Grid>
         </Grid>
       </Box>

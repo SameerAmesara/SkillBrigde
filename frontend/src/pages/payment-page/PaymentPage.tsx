@@ -24,10 +24,10 @@ const PaymentPage = observer(() => {
     const response = await paymentsStore.pay();
     if (response.status === 201) {
       setPaymentSuccessful(true);
-
+      await bookingStore.addMentorBooking(response.data.id);
+      paymentsStore.resetPayment();
+      bookingStore.resetBookMentor();
       setTimeout(() => {
-        paymentsStore.resetPayment();
-        bookingStore.resetBookMentor();
         navigate(location?.state?.redirectUrl ?? "/");
       }, 1000);
     }

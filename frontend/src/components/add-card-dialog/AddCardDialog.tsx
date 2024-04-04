@@ -18,6 +18,8 @@ const AddCardDialog = observer(
       if (response.status === 201) {
         handleClose();
         toast.success("Saved card successfully!", { autoClose: 3000 });
+      } else {
+        toast.error("Failed to save called");
       }
     };
 

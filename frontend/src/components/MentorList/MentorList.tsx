@@ -21,9 +21,14 @@ type Mentor = {
 type MentorListProps = {
   mentors: Mentor[];
   filters: Filters;
+  searchInput: string;
 };
 
-const MentorList: React.FC<MentorListProps> = ({ mentors, filters }) => {
+const MentorList: React.FC<MentorListProps> = ({
+  mentors,
+  filters,
+  searchInput,
+}) => {
   const itemsPerPage = 3;
   const [page, setPage] = useState(1);
   const [filteredMentors, setFilteredMentors] = useState<Mentor[]>([]);
@@ -31,6 +36,10 @@ const MentorList: React.FC<MentorListProps> = ({ mentors, filters }) => {
 
   useEffect(() => {
     const newFilteredMentors = mentors.filter((mentor) => {
+      const name = mentor.firstName + " " + mentor.lastName;
+      const matchesName = name
+        .toLowerCase()
+        .includes(searchInput.toLowerCase());
       const mentorExpertiseArray = mentor.expertise
         .split(", ")
         .map((e) => e.trim());
@@ -46,14 +55,18 @@ const MentorList: React.FC<MentorListProps> = ({ mentors, filters }) => {
         filters.gender === "" || mentor.gender === filters.gender;
 
       return (
-        matchesExpertise && matchesExperience && matchesRatings && matchesGender
+        matchesExpertise &&
+        matchesExperience &&
+        matchesRatings &&
+        matchesGender &&
+        matchesName
       );
     });
 
     setFilteredMentors(newFilteredMentors);
     setPage(1); // Reset to first page when filters change
     setTotalPages(Math.ceil(newFilteredMentors.length / itemsPerPage));
-  }, [mentors, filters, itemsPerPage]);
+  }, [mentors, filters, searchInput, itemsPerPage]);
 
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     console.log(event);

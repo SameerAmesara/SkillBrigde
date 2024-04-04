@@ -9,33 +9,56 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import { validateAvailability } from "../../utils/MentorFormValidations";
 
 interface AvailabilityComponentProps {
   availability: DaySchedule[];
-  setAvailability: (newAvailability: DaySchedule[]) => void;
+  setAvailability: React.Dispatch<React.SetStateAction<DaySchedule[]>>;
+  setFormErrors: React.Dispatch<React.SetStateAction<FormErrors>>;
 }
 
 const AvailabilityComponent: React.FC<AvailabilityComponentProps> = ({
   availability,
   setAvailability,
+  setFormErrors,
 }) => {
-  const handleCheckboxChange = (index: number) => {
-    const newSchedule = availability.map((item, i) =>
-      i === index ? { ...item, isActive: !item.isActive } : item
-    );
-    setAvailability(newSchedule);
-  };
-
-  const handleTimeChange = (
+  const handleDayChange = (
     index: number,
-    type: "from" | "to",
-    time: string
+    field: keyof DaySchedule,
+    value: string | boolean
   ) => {
-    const newSchedule = availability.map((item, i) =>
-      i === index ? { ...item, [type]: time } : item
-    );
-    setAvailability(newSchedule);
+    setAvailability((currentAvailability) => {
+      const updatedAvailability = currentAvailability.map((schedule, i) =>
+        i === index ? { ...schedule, [field]: value } : schedule
+      );
+
+      // Validate the availability on every change
+      const validationError = validateAvailability(updatedAvailability);
+      setFormErrors((prevErrors) => ({
+        ...prevErrors,
+        availability: validationError,
+      }));
+
+      return updatedAvailability;
+    });
   };
+  // const handleCheckboxChange = (index: number) => {
+  //   const newSchedule = availability.map((item, i) =>
+  //     i === index ? { ...item, isActive: !item.isActive } : item
+  //   );
+  //   setAvailability(newSchedule);
+  // };
+
+  // const handleTimeChange = (
+  //   index: number,
+  //   type: "from" | "to",
+  //   time: string
+  // ) => {
+  //   const newSchedule = availability.map((item, i) =>
+  //     i === index ? { ...item, [type]: time } : item
+  //   );
+  //   setAvailability(newSchedule);
+  // };
 
   return (
     <Paper elevation={2} sx={{ p: 2 }}>
@@ -49,7 +72,13 @@ const AvailabilityComponent: React.FC<AvailabilityComponentProps> = ({
                 control={
                   <Checkbox
                     checked={daySchedule.isActive}
-                    onChange={() => handleCheckboxChange(index)}
+                    onChange={(e) =>
+                      handleDayChange(index, "isActive", e.target.checked)
+                    }
+                    onBlur={() =>
+                      handleDayChange(index, "isActive", daySchedule.isActive)
+                    }
+                    // onChange={() => handleCheckboxChange(index)}
                   />
                 }
                 label={daySchedule.day}
@@ -60,9 +89,11 @@ const AvailabilityComponent: React.FC<AvailabilityComponentProps> = ({
                 type="time"
                 disabled={!daySchedule.isActive}
                 value={daySchedule.from}
-                onChange={(e) =>
-                  handleTimeChange(index, "from", e.target.value)
-                }
+                // onChange={(e) =>
+                //   handleTimeChange(index, "from", e.target.value)
+                // }
+                onChange={(e) => handleDayChange(index, "from", e.target.value)}
+                onBlur={() => handleDayChange(index, "from", daySchedule.from)}
                 InputLabelProps={{ shrink: true }}
                 inputProps={{ step: 300 }} // 5 min
                 sx={{ width: "100%" }}
@@ -76,7 +107,9 @@ const AvailabilityComponent: React.FC<AvailabilityComponentProps> = ({
                 type="time"
                 disabled={!daySchedule.isActive}
                 value={daySchedule.to}
-                onChange={(e) => handleTimeChange(index, "to", e.target.value)}
+                //onChange={(e) => handleTimeChange(index, "to", e.target.value)}
+                onChange={(e) => handleDayChange(index, "to", e.target.value)}
+                onBlur={() => handleDayChange(index, "to", daySchedule.to)}
                 InputLabelProps={{ shrink: true }}
                 inputProps={{ step: 300 }} // 5 min
                 sx={{ width: "100%" }}
