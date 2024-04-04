@@ -70,34 +70,46 @@ const payUsingStripe = async (transaction: Partial<Transaction>) => {
       userId
     );
     if (stripeCustomerId && paymentMethodId) {
-      return stripe.paymentIntents
-        .create({
+      const isCardAttached = await checkPaymentMethodAttachment(
+        paymentMethodId
+      );
+      let newPaymentMethodId: string = paymentMethodId;
+      if (!isCardAttached) {
+        const paymentMethod = await stripe.paymentMethods.attach(
+          paymentMethodId,
+          {
+            customer: stripeCustomerId.toString(),
+          }
+        );
+
+        newPaymentMethodId = paymentMethod.id;
+      }
+
+      try {
+        const paymentIntent = await stripe.paymentIntents.create({
           amount: Math.round(amount * 100),
           currency: "cad",
-          payment_method: paymentMethodId,
+          payment_method: newPaymentMethodId,
           customer: stripeCustomerId.toString(),
           confirm: true,
           automatic_payment_methods: {
             enabled: true,
             allow_redirects: "never",
           },
-        })
-        .then(async (paymentIntent) => {
-          await stripe.paymentMethods.attach(paymentMethodId, {
-            customer: stripeCustomerId.toString(),
-          });
-          const newTransaction = new TransactionModel({
-            ...transaction,
-            id: new ObjectId(),
-            stripeTransactionId: paymentIntent.id,
-          });
-          await newTransaction.save();
-          return newTransaction;
-        })
-        .catch((error: Error) => {
-          const errorMessage: string = error.message || "Unexpected error";
-          throw new Error(errorMessage);
         });
+        const newTransaction = new TransactionModel({
+          ...transaction,
+          id: new ObjectId(),
+          stripeTransactionId: paymentIntent.id,
+        });
+
+        await newTransaction.save();
+        return newTransaction;
+      } catch (error: unknown) {
+        const errorMessage: string =
+          (error as Error).message || "Unexpected error";
+        throw new Error(errorMessage);
+      }
     } else {
       throw new Error("Invalid user id");
     }
@@ -105,6 +117,25 @@ const payUsingStripe = async (transaction: Partial<Transaction>) => {
     throw new Error("Invalid request. Amount and userId required.");
   }
 };
+
+async function checkPaymentMethodAttachment(paymentMethodId: string) {
+  try {
+    const paymentMethod = await stripe.paymentMethods.retrieve(paymentMethodId);
+
+    if (paymentMethod.customer) {
+      console.log(
+        `PaymentMethod is attached to customer: ${paymentMethod.customer}`
+      );
+      return true;
+    } else {
+      console.log("PaymentMethod is not attached to any customer.");
+      return false;
+    }
+  } catch (error) {
+    console.error("Error retrieving PaymentMethod:", error);
+    return false;
+  }
+}
 
 const fetchTransactions = async (
   userId: string,
