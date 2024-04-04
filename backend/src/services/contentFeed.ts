@@ -1,3 +1,7 @@
+/**
+ * @author Suyash Jhawer B00968936
+ */
+
 import ContentFeedModel from '../models/contentFeed';
 import UserDetailsModel from '../models/userDetails';
 import { ContentFeed, Comment } from '../types';

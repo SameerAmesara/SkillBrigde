@@ -1,3 +1,7 @@
+/**
+ * @author Suyash Jhawer B00968936
+ */
+
 import { Schema, model } from 'mongoose'
 import { ContentFeed } from '../types'
 
