@@ -1,6 +1,7 @@
 import {
   BookMentor,
   BookingDetails,
+  MentorBooking,
   MentorDetails,
 } from "./../models/BookMentor.model";
 import { makeAutoObservable } from "mobx";
@@ -23,6 +24,8 @@ export class BookingStore {
     bookingDetails: { date: null, time: "" },
     bookingSuccessFull: false,
   };
+  mentorBookings: MentorBooking[] = [];
+  isBookingsLoading = false;
 
   constructor(rootStore: RootStore) {
     this.rootStore = rootStore;
@@ -49,6 +52,26 @@ export class BookingStore {
         throw new Error("Failed to book mentor");
       }
     }
+  }
+
+  async fetchMentorBookings() {
+    const userId = sessionStorage.getItem("userId");
+    this.isBookingsLoading = true;
+    await axios
+      .get<MentorBooking[]>(`${BOOKING_URL}/fetch/${userId}`)
+      .then((response) => {
+        this.mentorBookings = [...response.data];
+      })
+      .catch((error) => {
+        const axiosError = error as AxiosError<{ message: string }>;
+        if (axiosError.response?.data) {
+          const { message } = axiosError.response.data;
+          throw new Error(message);
+        } else {
+          throw new Error("Failed to fetch mentor bookings");
+        }
+      });
+    this.isBookingsLoading = false;
   }
 
   updateBookingDetails(bookingDetails: Partial<BookingDetails>) {

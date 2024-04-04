@@ -24,6 +24,7 @@ import BookMentorPage from "../pages/book-mentor-page/BookMentorPage";
 import NewJob from "../pages/jobs/newJob";
 import JobsDashboard from "../pages/jobs/jobsDashboard";
 import JobDetail from "../pages/jobs/jobDetail";
+import MentorBookingsPage from "../pages/mentor-bookings-page/MentorBookingsPage";
 
 export const router = createBrowserRouter([
   {
@@ -88,7 +89,8 @@ export const router = createBrowserRouter([
           {
             path: "/jobs/:jobId",
             element: <JobDetail />,
-          }
+          },
+          { path: "/bookings", element: <MentorBookingsPage /> },
         ],
       },
     ],
@@ -122,3 +124,15 @@ export const navigationItems: NavigationItem[] = [
   { path: "faqs", label: "FAQs", isProtected: false },
   { path: "jobs", label: "Jobs", isProtected: true },
 ];
+
+export const settings: Setting[] = [
+  { label: "User profile", path: "profile" },
+  { label: "Payments", path: "payments" },
+  { label: "Bookings", path: "bookings" },
+  { label: "Logout", path: "logout" },
+];
+
+export type Setting = {
+  label: string;
+  path: string;
+};

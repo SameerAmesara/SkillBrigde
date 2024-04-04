@@ -1,3 +1,5 @@
+import { ObjectId } from "mongoose";
+
 export interface User {
   id: string;
   name: string;
@@ -170,4 +172,16 @@ export interface MentorshipBooking {
   mentorId: string;
   transactionId: string;
   userId: string;
+  _id?: ObjectId;
+}
+
+export interface MentorshipBookingItem {
+  id: string;
+  date: Date;
+  time: string;
+  mentorId: string;
+  transactionId: string;
+  userId: string;
+  mentorName: string;
+  mentorImg: string;
 }

@@ -69,7 +69,7 @@ const payUsingStripe = async (transaction: Partial<Transaction>) => {
     const stripeCustomerId = await userService.fetchUserStripeCustomerId(
       userId
     );
-    if (stripeCustomerId) {
+    if (stripeCustomerId && paymentMethodId) {
       return stripe.paymentIntents
         .create({
           amount: Math.round(amount * 100),
@@ -83,6 +83,9 @@ const payUsingStripe = async (transaction: Partial<Transaction>) => {
           },
         })
         .then(async (paymentIntent) => {
+          await stripe.paymentMethods.attach(paymentMethodId, {
+            customer: stripeCustomerId.toString(),
+          });
           const newTransaction = new TransactionModel({
             ...transaction,
             id: new ObjectId(),

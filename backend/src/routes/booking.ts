@@ -21,4 +21,14 @@ router.post("/book-mentor", async (req: Request, res: Response) => {
   }
 });
 
+router.get("/fetch/:userId", async (req: Request, res: Response) => {
+  try {
+    const { userId } = req.params;
+    const response = await mentorshipBookingsService.fetchBookings(userId);
+    return res.status(201).json(response);
+  } catch (error: any) {
+    return res.status(500).json({ message: error.message });
+  }
+});
+
 export default router;
