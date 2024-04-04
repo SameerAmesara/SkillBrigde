@@ -1,3 +1,8 @@
+/*
+This file creates frontend for SignIn Feature
+Author: Drashti Navadiya
+Date modified: 04-04-2024
+*/
 import * as React from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";

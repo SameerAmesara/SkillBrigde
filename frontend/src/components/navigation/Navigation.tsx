@@ -1,3 +1,8 @@
+/*
+This file creates frontend for Navigation Bar
+Author: Drashti Navadiya
+Date modified: 04-04-2024
+*/
 import {
   AppBar,
   Avatar,

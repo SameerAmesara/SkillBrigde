@@ -1,3 +1,8 @@
+/*
+This file creates frontend for Landing
+Author: Drashti Navadiya
+Date modified: 04-04-2024
+*/
 import * as React from "react";
 import Footer from "../../components/Footer/Footer";
 import {

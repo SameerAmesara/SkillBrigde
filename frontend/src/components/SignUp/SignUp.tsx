@@ -1,3 +1,8 @@
+/*
+This file creates frontend for SignUp Feature
+Author: Drashti Navadiya
+Date modified: 04-04-2024
+*/
 import React, { useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import CssBaseline from "@mui/material/CssBaseline";

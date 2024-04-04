@@ -1,3 +1,8 @@
+/*
+This file creates frontend component for FAQ
+Author: Drashti Navadiya
+Date modified: 04-04-2024
+*/
 import * as React from "react";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";

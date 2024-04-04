@@ -1,3 +1,8 @@
+/*
+This file creates backend services for UserDetails
+Author: Drashti Navadiya
+Date modified: 04-04-2024
+*/
 import UserDetailsModel from "../models/userDetails";
 import { UserDetails, NewUser } from "../types";
 import { createStripeCustomer } from "../utils/stripe";

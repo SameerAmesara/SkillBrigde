@@ -1,3 +1,8 @@
+/*
+This file creates backend routes for UserDetails 
+Author: Drashti Navadiya
+Date modified: 04-04-2024
+*/
 import express, { Request, Response } from "express";
 import userService from "../services/userDetailsService";
 import UserDetailsModel from "../models/userDetails";

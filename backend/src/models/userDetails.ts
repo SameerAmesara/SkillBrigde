@@ -1,3 +1,8 @@
+/*
+This file creates backend models for UserDetails
+Author: Drashti Navadiya
+Date modified: 04-04-2024
+*/
 import { Schema, model } from "mongoose";
 import { UserDetails } from "../types";
 

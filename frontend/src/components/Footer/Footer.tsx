@@ -1,3 +1,8 @@
+/*
+This file creates frontend for Footer
+Author: Drashti Navadiya
+Date modified: 04-04-2024
+*/
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
