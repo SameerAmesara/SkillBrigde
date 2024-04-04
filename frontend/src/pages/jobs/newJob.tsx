@@ -78,18 +78,6 @@ const NewJob = () => {
         }))
     }
 
-    // function to update the user inputs
-    const handleNumberChange = (
-        event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | SelectChangeEvent<any>,
-        field: string
-    ) => {
-        const value = event.target.value
-        setFormData((prevFilter) => ({
-            ...prevFilter,
-            [field]: new Uint32Array(1)[value],
-        }))
-    }
-
     // function responsible to validate form details.
     const validateForm = () => {
         const errors: Partial<NewJobErrorData> = {}
