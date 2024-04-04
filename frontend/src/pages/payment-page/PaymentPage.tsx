@@ -24,12 +24,11 @@ const PaymentPage = observer(() => {
     const response = await paymentsStore.pay();
     if (response.status === 201) {
       setPaymentSuccessful(true);
-
-      setTimeout(() => {
-        paymentsStore.resetPayment();
-        bookingStore.resetBookMentor();
-        navigate(location?.state?.redirectUrl ?? "/");
-      }, 1000);
+      debugger;
+      await bookingStore.addMentorBooking(response.data.id);
+      paymentsStore.resetPayment();
+      bookingStore.resetBookMentor();
+      navigate(location?.state?.redirectUrl ?? "/");
     }
     return response;
   };

@@ -48,7 +48,7 @@ const NavigationDrawer = ({
         {isLoggedIn === "true" ? (
           <Box sx={{ mt: "20px", display: "flex", flexDirection: "column" }}>
             <NavLink
-              to={"user-profile"}
+              to={"profile"}
               className={({ isActive }) => {
                 return isActive
                   ? "app-nav-drawer-link app-nav-drawer-link--active"

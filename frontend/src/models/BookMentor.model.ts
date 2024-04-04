@@ -22,4 +22,5 @@ export interface MentorDetails {
 export interface BookMentor {
   mentorDetails: MentorDetails;
   bookingDetails: BookingDetails;
+  bookingSuccessFull: boolean;
 }
