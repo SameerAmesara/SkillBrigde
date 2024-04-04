@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Job from '../../components/job/jobCard'
 import { useNavigate } from 'react-router-dom'
-import { Grid, SelectChangeEvent, Stack, Typography } from '@mui/material'
+import { Button, Grid, SelectChangeEvent, Stack, Typography } from '@mui/material'
 import Search from '../../components/job/jobSearch'
 import { JobModel, experienceLevels, jobTypes, locationProvinces } from '../../models/jobs.model'
 import { getAllJobs } from './job'
@@ -69,10 +69,20 @@ const JobsDashboard: React.FC = () => {
         navigate(`/jobs/${jobId}`)
     }
 
+    // Function to navigate to create job page
+    const handleCreateJobClick = () => {
+        navigate('/jobs/new');
+    };
+
     return (
         <>
             <Grid container spacing={2} sx={{ padding: "10px" }}>
-                <Typography variant="h2">Jobs</Typography>
+                <Grid item xs={12}>
+                    <Grid container justifyContent="space-between">
+                        <Typography variant="h2">Jobs</Typography>
+                        <Button variant="contained" onClick={handleCreateJobClick} sx={{margin: "10px"}}>Create Job</Button>
+                    </Grid>
+                </Grid>
                 <Search onSearchChange={handleSearchChange} />
                 <Grid item xs={12}>
                     <Grid container sx={{ paddingBottom: "10px" }} spacing={2} justifyContent="space-evenly" >
