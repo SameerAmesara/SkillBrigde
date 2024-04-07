@@ -1,3 +1,6 @@
+/**
+ * @author Om Anand (B00947378)
+ */
 import React from 'react'
 import { Card, CardContent, Typography, Button, Grid } from '@mui/material'
 

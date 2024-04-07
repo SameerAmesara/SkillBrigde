@@ -1,3 +1,6 @@
+/**
+ * @author Om Anand (B00947378)
+ */
 import  JobModel  from '../models/job'
 import { Job, NewJobData } from '../types'
 import { v4 as uuidv4 } from 'uuid';

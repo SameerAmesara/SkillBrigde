@@ -1,3 +1,6 @@
+/**
+ * @author Om Anand (B00947378)
+ */
 import {
     Button,
     Typography,

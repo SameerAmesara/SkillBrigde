@@ -1,3 +1,6 @@
+/**
+ * @author Om Anand (B00947378)
+ */
 import React, { useEffect, useState } from 'react'
 import Job from '../../components/job/jobCard'
 import { useNavigate } from 'react-router-dom'

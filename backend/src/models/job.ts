@@ -1,3 +1,6 @@
+/**
+ * @author Om Anand (B00947378)
+ */
 import { Schema, model } from 'mongoose'
 import { Job } from '../types'
 

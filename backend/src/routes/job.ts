@@ -1,3 +1,6 @@
+/**
+ * @author Om Anand (B00947378)
+ */
 import express from 'express'
 import jobService from '../services/jobService'
 import logger from '../utils/logger'

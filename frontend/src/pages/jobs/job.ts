@@ -1,3 +1,6 @@
+/**
+ * @author Om Anand (B00947378)
+ */
 import axios from "axios"
 import { NewJobData } from "../../models/jobs.model"
 
