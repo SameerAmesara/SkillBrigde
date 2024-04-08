@@ -10,6 +10,7 @@ import paymentsRouter from "./routes/payments";
 import bookingRouter from "./routes/booking";
 import jobRouter from "./routes/job";
 import bodyParser from "body-parser";
+import networkingrouter from "./routes/networking";
 
 const app = express();
 
@@ -29,6 +30,7 @@ app.use("/discussions", discussionRouter);
 app.use("/payments", paymentsRouter);
 app.use("/job", jobRouter);
 app.use("/bookings", bookingRouter);
+app.use("/networking" , networkingrouter)
 
 app.use(middleware.errorHandler);
 app.use(middleware.unknownEndpoint);

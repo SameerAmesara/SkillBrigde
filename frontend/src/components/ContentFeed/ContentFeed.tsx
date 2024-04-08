@@ -480,7 +480,7 @@ export default function ContentFeed() {
                 {userDetails.firstName} {userDetails.lastName}
               </Typography>
               <Typography variant="body2" color="text.secondary">
-                {userDetails.profession} at {userDetails.companyName}
+                {userDetails.profession} {userDetails.companyName}
               </Typography>
               <List >
                 <ListItem style={{ padding: '0px' }} button onClick={handleExpandClick}>
@@ -530,7 +530,7 @@ export default function ContentFeed() {
                 {userDetails.firstName} {userDetails.lastName}
               </Typography>
               <Typography variant="body2" color="text.secondary" sx={{ marginBottom: 1 }}>
-                {userDetails.profession} at {userDetails.companyName}
+                {userDetails.profession}  {userDetails.companyName}
               </Typography>
             </CardContent>
           </CardActionArea>

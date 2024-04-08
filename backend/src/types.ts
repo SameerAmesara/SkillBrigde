@@ -151,10 +151,9 @@ export interface Job {
   title: string;
   description: string;
   companyDetails: string;
-  startDate: Date;
+  createDate: Date;
   experienceLevel: experienceLevels;
   type: jobTypes;
-  minimumSalary: Uint32Array;
   userId: string;
   city: string;
   province: locationProvinces;
@@ -185,4 +184,11 @@ export interface MentorshipBookingItem {
   userId: string;
   mentorName: string;
   mentorImg: string;
+}
+
+export interface UserConnections {
+  uid: string;
+  requestSent: string[];
+  requestReceived: string[];
+  myConnections: string[];
 }

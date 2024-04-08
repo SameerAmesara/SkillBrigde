@@ -1,3 +1,6 @@
+/**
+ * @author Om Anand (B00947378)
+ */
 import React from 'react'
 import { Card, CardContent, Typography, Button, Grid } from '@mui/material'
 
@@ -21,7 +24,7 @@ const Job: React.FC<JobProps> = ({ title, province, description, onButtonClick }
             <Typography color="textSecondary" gutterBottom align='right'>{province}</Typography>
           </Grid>
         </Grid>
-        <Typography variant="body2" component="p" gutterBottom >
+        <Typography variant="body2" component="p" gutterBottom style={{ wordWrap: "break-word" }} >
           {description}
         </Typography>
         <Button variant="contained" onClick={onButtonClick}>
