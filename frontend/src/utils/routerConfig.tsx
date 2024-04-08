@@ -25,6 +25,7 @@ import NewJob from "../pages/jobs/newJob";
 import JobsDashboard from "../pages/jobs/jobsDashboard";
 import JobDetail from "../pages/jobs/jobDetail";
 import MentorBookingsPage from "../pages/mentor-bookings-page/MentorBookingsPage";
+import AdvanceNetworkPage from "../pages/advanceNetworking/advanceNetwork"
 import MessageDashboard from "../pages/messages/MessageDashboard";
 
 export const router = createBrowserRouter([
@@ -92,6 +93,10 @@ export const router = createBrowserRouter([
             element: <JobDetail />,
           },
           { path: "/bookings", element: <MentorBookingsPage /> },
+          {
+            path : "/networking",
+            element : <AdvanceNetworkPage/>
+          },
           { path: "/messages", element: <MessageDashboard /> },
         ],
       },
@@ -125,6 +130,7 @@ export const navigationItems: NavigationItem[] = [
   { path: "contact-us", label: "Contact Us", isProtected: false },
   { path: "faqs", label: "FAQs", isProtected: false },
   { path: "jobs", label: "Jobs", isProtected: true },
+  { path : "networking" , label: "Networking" , isProtected : true},
 ];
 
 export const settings: Setting[] = [

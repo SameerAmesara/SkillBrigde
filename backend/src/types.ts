@@ -186,6 +186,12 @@ export interface MentorshipBookingItem {
   mentorImg: string;
 }
 
+export interface UserConnections {
+  uid: string;
+  requestSent: string[];
+  requestReceived: string[];
+  myConnections: string[];
+}
 export interface Message {
   senderId: string,
   receiverId: string,
