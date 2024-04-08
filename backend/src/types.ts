@@ -185,3 +185,10 @@ export interface MentorshipBookingItem {
   mentorName: string;
   mentorImg: string;
 }
+
+export interface UserConnections {
+  uid: string;
+  requestSent: string[];
+  requestReceived: string[];
+  myConnections: string[];
+}
