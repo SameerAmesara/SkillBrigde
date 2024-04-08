@@ -7,8 +7,11 @@ import { Availability } from "../models/BookMentor.model";
  * @param dateValue - The Dayjs date object to be formatted.
  * @returns A string representing the formatted date in the format "MMM DD, YYYY hh:mm a".
  */
-export const formatDate = (dateValue: Dayjs) => {
-  return dateValue.format("MMM DD, YYYY hh:mm a");
+export const formatDate = (
+  dateValue: Dayjs,
+  dateFormat = "MMM DD, YYYY hh:mm a"
+) => {
+  return dateValue.format(dateFormat);
 };
 
 /**
