@@ -190,41 +190,13 @@ const MentorProfile = observer(() => {
         </Typography>
         <Divider sx={{ mt: 1 }} />
         <Grid container spacing={2}>
-          <Grid item xs={12} sm={4} marginTop={2} justifyContent={"center"}>
+          <Grid item xs={12} sm={6} marginTop={2} justifyContent={"center"}>
             <Typography variant="subtitle1">Gender</Typography>
             <Typography variant="h6">{mentorData.gender}</Typography>
           </Grid>
-          <Grid item xs={12} sm={4} marginTop={2} justifyContent={"center"}>
+          <Grid item xs={12} sm={6} marginTop={2} justifyContent={"center"}>
             <Typography variant="subtitle1">Date of Birth</Typography>
             <Typography variant="h6">{mentorData.dateOfBirth}</Typography>
-          </Grid>
-          <Grid item xs={12} sm={4} marginTop={2} justifyContent={"center"}>
-            <Typography variant="subtitle1">
-              Where did you hear about us?
-            </Typography>
-            <Typography variant="h6">Through web search</Typography>
-          </Grid>
-        </Grid>
-      </Paper>
-      <Paper sx={{ mt: 2, p: 2 }}>
-        <Typography variant="h4" fontWeight={600}>
-          Qualifications
-        </Typography>
-        <Divider sx={{ mt: 1 }} />
-        <Grid container spacing={2}>
-          <Grid item xs={12} sm={6} marginTop={2} justifyContent={"center"}>
-            <Typography variant="subtitle1">Graduate Degree</Typography>
-            <Typography variant="h6">
-              Masters of Applied Computer Science
-            </Typography>
-            <Typography variant="subtitle1">Graduate College</Typography>
-            <Typography variant="h6">Dalhousie University</Typography>
-          </Grid>
-          <Grid item xs={12} sm={6} marginTop={2} justifyContent={"center"}>
-            <Typography variant="subtitle1">Undergraduate Degree</Typography>
-            <Typography variant="h6">Bachelors of Computer Science</Typography>
-            <Typography variant="subtitle1">Undergraduate College</Typography>
-            <Typography variant="h6">Conestoga College</Typography>
           </Grid>
         </Grid>
       </Paper>
