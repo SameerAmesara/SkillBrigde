@@ -10,17 +10,18 @@ import Message from "./Message"
 interface MessageContainerProps {
     recieverId: string
 }
+const BASE_URL = import.meta.env.VITE_BASE_URL
 
 const MessageContainer: React.FC<MessageContainerProps> = ({ recieverId }) => {
     const [recieverDetails, setRecieverDetails] = useState<UserDetails>()
     const [messages, setMessages] = useState<MessageModel[]>([])
     const [newMessage, setNewMessage] = useState("")
     const [socket, setSocket] = useState<Socket>()
-
+    
     useEffect(() => {
         const getMessageDetails = async () => {
             try {
-                const recieverData = await axios.get<UserDetails>(`${import.meta.env.VITE_BASE_URL}/userDetails/${recieverId}`)
+                const recieverData = await axios.get<UserDetails>(`${BASE_URL}/userDetails/${recieverId}`)
                 setRecieverDetails({ ...recieverData.data })
             } catch (error) {
                 console.error('Error fetching message details', error)
@@ -36,13 +37,13 @@ const MessageContainer: React.FC<MessageContainerProps> = ({ recieverId }) => {
         }
 
         getMessageDetails()
-        setSocket(io("http://localhost:8000", {
+        setSocket(io(BASE_URL, {
             query: {
                 userId: sessionStorage.getItem("userId"),
             },
         }))
 
-    }, [])
+    }, [recieverId])
 
     useEffect(() => {
         socket?.on("newMessage", (data) => {
@@ -75,7 +76,7 @@ const MessageContainer: React.FC<MessageContainerProps> = ({ recieverId }) => {
                 </Grid>
                 <Grid item xs={12}>
                     <Box sx={{ padding: "5px" }}>
-                        <Box style={{ maxHeight: 400, overflow: 'auto' }}>
+                        <Box style={{ height: 500, overflow: 'auto' }}>
                             {messages.map((message) => (
                                 <div key={message.createdAt.toString()}>
                                     <Message message={message.message} senderId={message.senderId} />
@@ -86,7 +87,7 @@ const MessageContainer: React.FC<MessageContainerProps> = ({ recieverId }) => {
                 </Grid>
                 <Grid item xs={12}>
                     <Grid container>
-                        <Grid item xs={11}>
+                        <Grid item xs={10}>
                             <Box>
                                 <TextField
                                     required
@@ -97,8 +98,8 @@ const MessageContainer: React.FC<MessageContainerProps> = ({ recieverId }) => {
                                 />
                             </Box>
                         </Grid>
-                        <Grid item xs={1}>
-                            <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", marginTop: " 5px", padding: "5px" }}>
+                        <Grid item xs={2}>
+                            <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", padding: "10px" }}>
                                 <Button variant="contained" onClick={handleSendMessage}>Send</Button>
                             </Box>
                         </Grid>

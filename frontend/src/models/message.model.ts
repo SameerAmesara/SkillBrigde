@@ -4,3 +4,8 @@ export interface MessageModel {
     message: string,
     createdAt: Date
 }
+
+export interface ConversationModel {
+    receiverId: string,
+    recieverName: string,
+}
