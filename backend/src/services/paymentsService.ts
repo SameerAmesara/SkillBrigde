@@ -4,8 +4,18 @@ import userService from "../services/userDetailsService";
 import { Transaction } from "../types";
 import TransactionModel from "../models/transaction";
 
+/**
+ * Saves a payment method to a user's Stripe customer account.
+ *
+ * @param paymentMethodId - The Stripe payment method ID to attach.
+ * @param userId - The ID of the user to whom the payment method belongs.
+ * @returns The Stripe payment method object after it has been attached.
+ * @throws Throws an error if the payment method could not be attached, including if the user ID is invalid.
+ */
 const saveCardToStripe = async (paymentMethodId: string, userId: string) => {
-  const stripeCustomerId = await userService.fetchUserStripeCustomerId(userId);
+  const stripeCustomerId = await userService.createOrFetchUserStripeCustomerId(
+    userId
+  );
   if (stripeCustomerId) {
     return await stripe.paymentMethods
       .attach(paymentMethodId, {
@@ -23,8 +33,17 @@ const saveCardToStripe = async (paymentMethodId: string, userId: string) => {
   }
 };
 
+/**
+ * Retrieves all saved cards from a user's Stripe customer account.
+ *
+ * @param userId - The ID of the user whose saved cards are to be fetched.
+ * @returns An array of Stripe payment method objects representing the saved cards.
+ * @throws Throws an error if there was an issue fetching the saved cards or if the user ID is invalid.
+ */
 const fetchSavedCardsFromStripe = async (userId: string) => {
-  const stripeCustomerId = await userService.fetchUserStripeCustomerId(userId);
+  const stripeCustomerId = await userService.createOrFetchUserStripeCustomerId(
+    userId
+  );
   if (stripeCustomerId) {
     return stripe.paymentMethods
       .list({
@@ -43,11 +62,21 @@ const fetchSavedCardsFromStripe = async (userId: string) => {
   }
 };
 
+/**
+ * Deletes a saved card from a user's Stripe customer account.
+ *
+ * @param userId - The ID of the user whose card is to be deleted.
+ * @param paymentMethodId - The Stripe payment method ID of the card to delete.
+ * @returns The Stripe payment method object after it has been detached.
+ * @throws Throws an error if the card could not be detached or if the user ID is invalid.
+ */
 const deleteSavedCardFromStripe = async (
   userId: string,
   paymentMethodId: string
 ) => {
-  const stripeCustomerId = await userService.fetchUserStripeCustomerId(userId);
+  const stripeCustomerId = await userService.createOrFetchUserStripeCustomerId(
+    userId
+  );
   if (stripeCustomerId) {
     return stripe.paymentMethods
       .detach(paymentMethodId)
@@ -63,12 +92,18 @@ const deleteSavedCardFromStripe = async (
   }
 };
 
+/**
+ * Processes a payment using Stripe.
+ *
+ * @param transaction - An object containing details of the transaction including userId, paymentMethodId, amount, and an optional description.
+ * @returns A newly created transaction document containing transaction details along with the Stripe transaction ID.
+ * @throws Throws an error if the payment could not be processed or if required parameters are missing.
+ */
 const payUsingStripe = async (transaction: Partial<Transaction>) => {
   const { paymentMethodId, userId, amount } = transaction;
   if (userId && amount) {
-    const stripeCustomerId = await userService.fetchUserStripeCustomerId(
-      userId
-    );
+    const stripeCustomerId =
+      await userService.createOrFetchUserStripeCustomerId(userId);
     if (stripeCustomerId && paymentMethodId) {
       const isCardAttached = await checkPaymentMethodAttachment(
         paymentMethodId
@@ -118,6 +153,13 @@ const payUsingStripe = async (transaction: Partial<Transaction>) => {
   }
 };
 
+/**
+ * Checks whether a Stripe payment method is already attached to a customer.
+ *
+ * @param paymentMethodId - The Stripe payment method ID to check.
+ * @returns True if the payment method is attached to a customer; otherwise, false.
+ * @throws Logs and returns false if there was an error during the retrieval.
+ */
 async function checkPaymentMethodAttachment(paymentMethodId: string) {
   try {
     const paymentMethod = await stripe.paymentMethods.retrieve(paymentMethodId);
@@ -137,6 +179,17 @@ async function checkPaymentMethodAttachment(paymentMethodId: string) {
   }
 }
 
+/**
+ * Fetches a paginated list of transactions for a user.
+ *
+ * Used various solutions from this stackover discussion to paginate data: https://stackoverflow.com/questions/5539955/how-to-paginate-with-mongoose-in-node-js
+ *
+ * @param userId - The ID of the user whose transactions are to be fetched.
+ * @param page - The page number of the transactions to fetch.
+ * @param limit - The number of transactions to fetch per page.
+ * @returns An object containing paginated transaction data, total number of transactions, current page, and total pages.
+ * @throws Throws an error if transactions could not be fetched.
+ */
 const fetchTransactions = async (
   userId: string,
   page: number,

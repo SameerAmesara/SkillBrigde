@@ -1,3 +1,6 @@
+/**
+ * @author Om Anand (B00947378)
+ */
 import express from 'express'
 import jobService from '../services/jobService'
 import logger from '../utils/logger'
@@ -34,6 +37,24 @@ jobRouter.post('/create', (request, response) => {
             addedEntry => response.json(addedEntry)
         ).catch(
             error => logger.error("Unable to add job", newJobEntry, error)
+        )
+})
+
+jobRouter.delete('/:id', (request, response) => {
+    jobService
+        .deleteJob(request.params.id)
+        .then(
+            deletedJob => {
+                if (deletedJob == undefined) {
+                    return response.status(404).send({ error: 'Not found!' })
+                }
+                return response.send({
+                    message: "Job deleted"
+                })
+            }
+        )
+        .catch(
+            error => console.error("Unable to delete job", request.params.id, error)
         )
 })
 

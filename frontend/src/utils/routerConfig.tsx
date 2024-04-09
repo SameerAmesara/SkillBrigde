@@ -19,12 +19,14 @@ import ProfilePage from "../pages/profile-page/ProfilePage";
 import DiscussionsPage from "../pages/discussions/discussions";
 import DiscussionView from "../pages/discussions/discussionView";
 import NewDiscussion from "../pages/discussions/newDiscussion";
-import PaymentCardsPage from "../pages/payments-cards-page/PaymentsCardsPage";
+import TranasactionsCardsPage from "../pages/transactions-cards-page/TranasactionsCardsPage";
 import BookMentorPage from "../pages/book-mentor-page/BookMentorPage";
 import NewJob from "../pages/jobs/newJob";
 import JobsDashboard from "../pages/jobs/jobsDashboard";
 import JobDetail from "../pages/jobs/jobDetail";
 import MentorBookingsPage from "../pages/mentor-bookings-page/MentorBookingsPage";
+import AdvanceNetworkPage from "../pages/advanceNetworking/advanceNetwork"
+import MessageDashboard from "../pages/messages/MessageDashboard";
 
 export const router = createBrowserRouter([
   {
@@ -61,7 +63,7 @@ export const router = createBrowserRouter([
             path: "/discussions/new",
             element: <NewDiscussion />,
           },
-          { path: "/payments", element: <PaymentCardsPage /> },
+          { path: "/payments", element: <TranasactionsCardsPage /> },
           {
             path: "/mentors",
             element: <FindMentor />,
@@ -91,6 +93,11 @@ export const router = createBrowserRouter([
             element: <JobDetail />,
           },
           { path: "/bookings", element: <MentorBookingsPage /> },
+          {
+            path : "/networking",
+            element : <AdvanceNetworkPage/>
+          },
+          { path: "/messages", element: <MessageDashboard /> },
         ],
       },
     ],
@@ -123,6 +130,8 @@ export const navigationItems: NavigationItem[] = [
   { path: "contact-us", label: "Contact Us", isProtected: false },
   { path: "faqs", label: "FAQs", isProtected: false },
   { path: "jobs", label: "Jobs", isProtected: true },
+  { path : "networking" , label: "Networking" , isProtected : true},
+  { path : "messages" , label: "Messages" , isProtected : true},
 ];
 
 export const settings: Setting[] = [

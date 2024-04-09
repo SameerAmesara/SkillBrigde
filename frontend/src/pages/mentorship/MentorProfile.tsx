@@ -12,7 +12,7 @@ import axios from "axios";
 import { observer } from "mobx-react";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { useStores } from "../../mobx/RootStore";
+import { useStores } from "../../stores/RootStore";
 import { Availability } from "../../models/BookMentor.model";
 
 type MentorDetails = {

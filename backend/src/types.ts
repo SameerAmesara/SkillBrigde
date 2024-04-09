@@ -1,4 +1,4 @@
-import { ObjectId } from "mongoose";
+import mongoose, { ObjectId } from "mongoose";
 
 export interface User {
   id: string;
@@ -151,10 +151,9 @@ export interface Job {
   title: string;
   description: string;
   companyDetails: string;
-  startDate: Date;
+  createDate: Date;
   experienceLevel: experienceLevels;
   type: jobTypes;
-  minimumSalary: Uint32Array;
   userId: string;
   city: string;
   province: locationProvinces;
@@ -185,4 +184,21 @@ export interface MentorshipBookingItem {
   userId: string;
   mentorName: string;
   mentorImg: string;
+}
+
+export interface UserConnections {
+  uid: string;
+  requestSent: string[];
+  requestReceived: string[];
+  myConnections: string[];
+}
+export interface Message {
+  senderId: string,
+  receiverId: string,
+  message: string,
+}
+
+export interface Conversation extends Document  {
+  participants: Array<string>,
+  messages: Array<mongoose.Types.ObjectId>
 }

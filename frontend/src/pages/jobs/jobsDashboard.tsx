@@ -1,7 +1,10 @@
+/**
+ * @author Om Anand (B00947378)
+ */
 import React, { useEffect, useState } from 'react'
 import Job from '../../components/job/jobCard'
 import { useNavigate } from 'react-router-dom'
-import { Grid, SelectChangeEvent, Stack, Typography } from '@mui/material'
+import { Button, Grid, SelectChangeEvent, Stack, Typography } from '@mui/material'
 import Search from '../../components/job/jobSearch'
 import { JobModel, experienceLevels, jobTypes, locationProvinces } from '../../models/jobs.model'
 import { getAllJobs } from './job'
@@ -27,7 +30,6 @@ const JobsDashboard: React.FC = () => {
         getAllJobs()
             .then((response) => {
                 if (response.status === 200) {
-                    // console.log("JObs response", response.data)
                     setJobs(response.data)
                 }
             })
@@ -37,7 +39,6 @@ const JobsDashboard: React.FC = () => {
 
     useEffect(() => {
         getJobs()
-        console.log(filter, jobs)
     }, [])
 
 
@@ -51,7 +52,6 @@ const JobsDashboard: React.FC = () => {
         event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | SelectChangeEvent<any>,
         field: string
     ) => {
-        console.log("Change in ", field, event.target.value, filter)
         const value = event.target.value
         setFilter((prevFilter) => ({
             ...prevFilter,
@@ -72,10 +72,20 @@ const JobsDashboard: React.FC = () => {
         navigate(`/jobs/${jobId}`)
     }
 
+    // Function to navigate to create job page
+    const handleCreateJobClick = () => {
+        navigate('/jobs/new');
+    };
+
     return (
         <>
             <Grid container spacing={2} sx={{ padding: "10px" }}>
-                <Typography variant="h2">Jobs</Typography>
+                <Grid item xs={12}>
+                    <Grid container justifyContent="space-between">
+                        <Typography variant="h2">Jobs</Typography>
+                        <Button variant="contained" onClick={handleCreateJobClick} sx={{margin: "10px"}}>Create Job</Button>
+                    </Grid>
+                </Grid>
                 <Search onSearchChange={handleSearchChange} />
                 <Grid item xs={12}>
                     <Grid container sx={{ paddingBottom: "10px" }} spacing={2} justifyContent="space-evenly" >
@@ -107,28 +117,28 @@ const JobsDashboard: React.FC = () => {
                 </Grid>
                 <Grid item xs={12}>
 
-                        <Stack direction='column'>
+                    <Stack direction='column'>
 
-                            {filteredJobs.length === 0 &&
-                                
-                                    <Typography variant="h5" textAlign='center'>
-                                        No jobs found with given input "{searchTerm}".<br />
-                                        Please try again.
-                                    </Typography>
-                                }
+                        {filteredJobs.length === 0 &&
 
-                            {filteredJobs && filteredJobs.map(job => (
-                                
-                                    <Job key={job.id}
-                                        title={job.title}
-                                        province={job.province}
-                                        description={job.description.substring(0, 150) + "...."}
-                                        onButtonClick={() => handleJobClick(job.id)}
-                                    />
-                                
-                            ))}
-                        </Stack>
-                    
+                            <Typography variant="h5" textAlign='center'>
+                                No jobs found with given input "{searchTerm}".<br />
+                                Please try again.
+                            </Typography>
+                        }
+
+                        {filteredJobs && filteredJobs.map(job => (
+
+                            <Job key={job.id}
+                                title={job.title}
+                                province={job.province}
+                                description={job.description}
+                                onButtonClick={() => handleJobClick(job.id)}
+                            />
+
+                        ))}
+                    </Stack>
+
                 </Grid>
             </Grid>
 

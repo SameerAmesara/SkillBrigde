@@ -472,7 +472,7 @@ export default function ContentFeed() {
           {userDetails && (
             <CardContent style={{ textAlign: 'center', padding: '0px 8px' }}>
               <img
-                src={userDetails.image || "/src/assets/placeholder.svg"}
+                src={userDetails.image || "https://dummyimage.com/300x200/a399a3/010105.jpg&text=Profile+Image"}
                 alt="Profile"
                 style={{ width: '40%', borderRadius: '40%', marginBottom: '10px' }}
               />
@@ -480,7 +480,7 @@ export default function ContentFeed() {
                 {userDetails.firstName} {userDetails.lastName}
               </Typography>
               <Typography variant="body2" color="text.secondary">
-                {userDetails.profession} at {userDetails.companyName}
+                {userDetails.profession} {userDetails.companyName}
               </Typography>
               <List >
                 <ListItem style={{ padding: '0px' }} button onClick={handleExpandClick}>
@@ -522,7 +522,7 @@ export default function ContentFeed() {
           <CardActionArea>
             <CardContent style={{ textAlign: 'center' }}>
               <img
-                 src={userDetails.image || "/src/assets/placeholder.svg"}
+                 src={userDetails.image || "https://dummyimage.com/300x200/a399a3/010105.jpg&text=Profile+Image"}
                 alt="Profile"
                 style={{ width: '100%', borderRadius: '50%', marginBottom: '10px' }}
               />
@@ -530,7 +530,7 @@ export default function ContentFeed() {
                 {userDetails.firstName} {userDetails.lastName}
               </Typography>
               <Typography variant="body2" color="text.secondary" sx={{ marginBottom: 1 }}>
-                {userDetails.profession} at {userDetails.companyName}
+                {userDetails.profession}  {userDetails.companyName}
               </Typography>
             </CardContent>
           </CardActionArea>
@@ -703,7 +703,7 @@ export default function ContentFeed() {
                           <div style={{ display: 'flex', flex: 1 }}>
                             <Avatar alt="User Avatar" src={comment.image} />
                             <div style={{ marginLeft: '0.5rem', display: 'flex', flexDirection: 'column', alignItems: 'flex-start', overflowWrap: 'anywhere' }}>
-                              <p>{comment.name}</p>
+                              <p style={{marginTop:'7px'}}>{comment.name}</p>
                               <p>{comment.comment}</p>
                             </div>
 
@@ -748,7 +748,7 @@ export default function ContentFeed() {
           {newsItems.map((item) => (
             <Accordion>
               <AccordionSummary style={{ margin: '0%', padding: '0%' }} expandIcon={<ExpandMoreIcon />}>
-                <Typography style={{ padding: '0px', overflowWrap: 'break-word', fontSize: '0.76rem', maxWidth: '80%', marginLeft: '8%' }}>{item.source_id}</Typography>
+                <Typography style={{ padding: '0px', overflowWrap: 'anywhere', fontSize: '0.76rem', maxWidth: '80%', marginLeft: '8%' }}>{item.source_id}</Typography>
               </AccordionSummary>
               <AccordionDetails>
                 <Typography

@@ -1,3 +1,6 @@
+/**
+ * @author Om Anand (B00947378)
+ */
 export enum experienceLevels {
     internship = "Internship",
     entry = "Entry",
@@ -35,10 +38,9 @@ export interface JobModel {
     title: string
     description: string
     companyDetails: string
-    startDate: Date
+    createDate: Date
     experienceLevel: experienceLevels
     type: jobTypes
-    minimumSalary: Uint32Array
     userId: string
     city: string
     province: locationProvinces
