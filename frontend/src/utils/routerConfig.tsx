@@ -26,6 +26,7 @@ import JobsDashboard from "../pages/jobs/jobsDashboard";
 import JobDetail from "../pages/jobs/jobDetail";
 import MentorBookingsPage from "../pages/mentor-bookings-page/MentorBookingsPage";
 import AdvanceNetworkPage from "../pages/advanceNetworking/advanceNetwork"
+import MessageDashboard from "../pages/messages/MessageDashboard";
 
 export const router = createBrowserRouter([
   {
@@ -96,6 +97,7 @@ export const router = createBrowserRouter([
             path : "/networking",
             element : <AdvanceNetworkPage/>
           },
+          { path: "/messages", element: <MessageDashboard /> },
         ],
       },
     ],
@@ -129,6 +131,7 @@ export const navigationItems: NavigationItem[] = [
   { path: "faqs", label: "FAQs", isProtected: false },
   { path: "jobs", label: "Jobs", isProtected: true },
   { path : "networking" , label: "Networking" , isProtected : true},
+  { path : "messages" , label: "Messages" , isProtected : true},
 ];
 
 export const settings: Setting[] = [

@@ -84,7 +84,7 @@ const NewJob = () => {
     // function responsible to validate form details.
     const validateForm = () => {
         const errors: Partial<NewJobErrorData> = {}
-        console.log("Validating form", formData)
+        
         if (formData.title.trim().length < 5 || formData.title.trim().length > 50) {
             errors.title = "Title must be at least 5 and up to 50 characters long."
         }
