@@ -131,6 +131,7 @@ export const navigationItems: NavigationItem[] = [
   { path: "faqs", label: "FAQs", isProtected: false },
   { path: "jobs", label: "Jobs", isProtected: true },
   { path : "networking" , label: "Networking" , isProtected : true},
+  { path : "messages" , label: "Messages" , isProtected : true},
 ];
 
 export const settings: Setting[] = [
