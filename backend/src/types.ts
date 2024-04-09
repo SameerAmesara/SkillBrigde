@@ -1,4 +1,4 @@
-import { ObjectId } from "mongoose";
+import mongoose, { ObjectId } from "mongoose";
 
 export interface User {
   id: string;
@@ -191,4 +191,14 @@ export interface UserConnections {
   requestSent: string[];
   requestReceived: string[];
   myConnections: string[];
+}
+export interface Message {
+  senderId: string,
+  receiverId: string,
+  message: string,
+}
+
+export interface Conversation extends Document  {
+  participants: Array<string>,
+  messages: Array<mongoose.Types.ObjectId>
 }

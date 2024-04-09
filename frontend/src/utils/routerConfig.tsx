@@ -26,6 +26,7 @@ import JobsDashboard from "../pages/jobs/jobsDashboard";
 import JobDetail from "../pages/jobs/jobDetail";
 import MentorBookingsPage from "../pages/mentor-bookings-page/MentorBookingsPage";
 import AdvanceNetworkPage from "../pages/advanceNetworking/advanceNetwork"
+import MessageDashboard from "../pages/messages/MessageDashboard";
 
 export const router = createBrowserRouter([
   {
@@ -96,6 +97,7 @@ export const router = createBrowserRouter([
             path : "/networking",
             element : <AdvanceNetworkPage/>
           },
+          { path: "/messages", element: <MessageDashboard /> },
         ],
       },
     ],

@@ -9,10 +9,11 @@ import discussionRouter from "./routes/discussion";
 import paymentsRouter from "./routes/payments";
 import bookingRouter from "./routes/booking";
 import jobRouter from "./routes/job";
+import messageRouter from "./routes/message";
 import bodyParser from "body-parser";
+import { app, server } from "./socket/socket";
 import networkingrouter from "./routes/networking";
 
-const app = express();
 
 connectToDatabase();
 
@@ -30,9 +31,10 @@ app.use("/discussions", discussionRouter);
 app.use("/payments", paymentsRouter);
 app.use("/job", jobRouter);
 app.use("/bookings", bookingRouter);
+app.use("/message", messageRouter);
 app.use("/networking" , networkingrouter)
 
 app.use(middleware.errorHandler);
 app.use(middleware.unknownEndpoint);
 
-export default app;
+export {app, server};
