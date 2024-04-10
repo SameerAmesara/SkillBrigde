@@ -57,16 +57,17 @@ const TransactionsPage = observer(() => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {isTransactionsLoading ? (
-              [1, 2].map((value, index) => (
+            {!isTransactionsLoading ? (
+              [1, 2, 3, 4, 5, 6, 7].map((value, index) => (
                 <TableRow key={value + index}>
                   <TableCell
                     colSpan={4}
                     align="center"
                     component="th"
                     padding="none"
+                    sx={{ padding: "5px" }}
                   >
-                    <Skeleton height={60}></Skeleton>
+                    <Skeleton variant="rectangular" height={45}></Skeleton>
                   </TableCell>
                 </TableRow>
               ))
