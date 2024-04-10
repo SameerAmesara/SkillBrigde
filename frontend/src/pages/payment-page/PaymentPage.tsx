@@ -85,6 +85,7 @@ const PaymentPage = observer(() => {
               isPayment={true}
               onSubmit={handleSubmit}
               clearErrors={!!payment.paymentMethodId}
+              showConfirmation={true}
             />
           </Paper>
         </Grid>

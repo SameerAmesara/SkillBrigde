@@ -88,6 +88,10 @@ const MessageDashboard: React.FC = () => {
                             display: "flex",
                             justifyContent: "left",
                             padding: "10px",
+                            cursor: "pointer",
+                            ":hover": {
+                              backgroundColor: "#e2e2e2",
+                            },
                           }}
                           key={conversation.receiverId}
                           onClick={() =>

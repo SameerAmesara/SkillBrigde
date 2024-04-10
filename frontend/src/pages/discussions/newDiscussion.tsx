@@ -19,7 +19,6 @@ import {
   NewDiscussionValidationErrorModel,
 } from "../../models/discussions.model";
 import { startDiscussion } from "./discussion";
-import Footer from "../../components/Footer/Footer";
 
 const NewDiscussion = () => {
   const navigate = useNavigate();
@@ -283,7 +282,6 @@ const NewDiscussion = () => {
       >
         <SnackbarContent message={feedbackMessage} />
       </Snackbar>
-      <Footer />
     </>
   );
 };

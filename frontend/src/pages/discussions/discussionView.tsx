@@ -38,7 +38,6 @@ import {
 import { useNavigate, useParams } from "react-router-dom";
 import ReplyCard from "../../components/Discussion/ReplyCard";
 import { theme } from "../../utils/theme";
-import Footer from "../../components/Footer/Footer";
 
 const DiscussionView = () => {
   const navigate = useNavigate();
@@ -395,7 +394,6 @@ const DiscussionView = () => {
       >
         <SnackbarContent message={feedbackMessage} />
       </Snackbar>
-      <Footer />
     </>
   );
 };

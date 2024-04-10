@@ -36,7 +36,6 @@ import { useEffect, useState } from "react";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Avatar, useMediaQuery, useTheme } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import Footer from "../../components/Footer/Footer";
 import PostAddIcon from "@mui/icons-material/PostAdd";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
@@ -997,7 +996,6 @@ export default function ContentFeed() {
           </MuiAlert>
         </Snackbar>
       </div>
-      <Footer />
     </>
   );
 }

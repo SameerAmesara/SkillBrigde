@@ -11,12 +11,16 @@ import SearchFilter from "../../components/MentorSearchFilter/SearchFilter";
 import MentorList from "../../components/MentorList/MentorList";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { observer } from "mobx-react";
+import { useStores } from "../../stores/RootStore";
+import { Mentor } from "../../models/Mentors.model";
 
-const FindMentor = () => {
+const FindMentor = observer(() => {
   const [searchInput, setSearchInput] = useState("");
   const [mentors, setMentors] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [isCurrentUserMentor, setCurrentUserMentor] = useState(false);
 
   const [filters, setFilters] = useState<Filters>({
     areaOfExpertise: [],
@@ -24,6 +28,9 @@ const FindMentor = () => {
     ratings: 0,
     gender: "",
   });
+
+  const { userStore } = useStores();
+  const { userDetails } = userStore;
 
   const navigate = useNavigate();
 
@@ -53,6 +60,16 @@ const FindMentor = () => {
     fetchMentors();
   }, []);
 
+  useEffect(() => {
+    const userMentor = mentors.find(
+      (mentor: Mentor) => mentor.email === userDetails.email
+    );
+
+    if (userMentor) {
+      setCurrentUserMentor(true);
+    }
+  }, [userDetails, mentors]);
+
   if (loading) {
     return <CircularProgress />;
   }
@@ -78,6 +95,7 @@ const FindMentor = () => {
                 m: "0 0 10px",
               }}
               onClick={handleBecomeMentor}
+              disabled={isCurrentUserMentor}
             >
               Become a mentor
             </Button>
@@ -104,6 +122,6 @@ const FindMentor = () => {
       </Box>
     </Grid>
   );
-};
+});
 
 export default FindMentor;
