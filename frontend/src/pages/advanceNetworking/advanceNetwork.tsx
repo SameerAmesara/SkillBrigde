@@ -208,7 +208,7 @@ const AdvanceNetworkPage: React.FC = () => {
   // Function to handle click event
   const handleClick = (userUid: string, flag: string) => {
     if (flag === "mc") {
-      navigate("/messages");
+      navigate("/messages", { state: { receiverId: userUid} });
     } else {
       handleSendConnection(userUid, flag);
     }
