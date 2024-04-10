@@ -13,7 +13,6 @@ const DashboardJobs = observer(() => {
 
   useEffect(() => {
     dashboardStore.getDashboardJobs();
-    dashboardStore.getDashboardNews();
   }, []);
 
   return (
@@ -41,6 +40,7 @@ const DashboardJobs = observer(() => {
                   ":hover": { backgroundColor: "#e2e2e2" },
                 }}
                 key={job.title + index}
+                onClick={() => navigate(`/jobs/${job.id}`)}
               >
                 <Typography variant="subtitle1" fontWeight={500}>
                   {job.title}
