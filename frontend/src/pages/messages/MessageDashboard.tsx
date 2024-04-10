@@ -11,15 +11,20 @@ import {
 } from "@mui/material";
 import { ConversationModel } from "../../models/message.model";
 import { getConversations } from "./Messages";
+import { useLocation } from "react-router-dom";
 
 const MessageDashboard: React.FC = () => {
   const [currentRecieverId, setCurrentRecieverId] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [conversations, setConversations] = useState<ConversationModel[]>([]);
   const [isLoading, setLoading] = useState(false);
+  const { state } = useLocation();
 
   useEffect(() => {
     setLoading(true);
+    if (state && state.receiverId) {
+      setCurrentRecieverId(state.receiverId)
+    }
     getConversations()
       .then((newConversations) => {
         setConversations(newConversations);
@@ -72,15 +77,15 @@ const MessageDashboard: React.FC = () => {
                 <Grid item xs={12}>
                   {isLoading
                     ? [1, 2].map((value, index) => {
-                        return (
-                          <Skeleton
-                            sx={{ mb: 1 }}
-                            key={"message-" + value + index}
-                            variant="rectangular"
-                            height={50}
-                          />
-                        );
-                      })
+                      return (
+                        <Skeleton
+                          sx={{ mb: 1 }}
+                          key={"message-" + value + index}
+                          variant="rectangular"
+                          height={50}
+                        />
+                      );
+                    })
                     : filteredConversations &&
                       filteredConversations.map((conversation) => (
                         <Card
