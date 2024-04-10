@@ -89,8 +89,17 @@ const TransactionsPage = observer(() => {
                       ? `**** ${transaction.cardLast4}`
                       : ""}
                   </TableCell>
-                  <TableCell align="left">
+                  <TableCell
+                    align="left"
+                    sx={{ display: { xs: "none", sm: "table-cell" } }}
+                  >
                     {formatDate(dayjs(transaction.createdAt))}
+                  </TableCell>
+                  <TableCell
+                    align="left"
+                    sx={{ display: { xs: "table-cell", sm: "none" } }}
+                  >
+                    {formatDate(dayjs(transaction.createdAt), "MM/DD/YYYY")}
                   </TableCell>
                   <TableCell
                     component="th"

@@ -2,6 +2,7 @@ import { createContext, useContext } from "react";
 import { PaymentsStore } from "./PaymentsStore";
 import { BookingStore } from "./BookingStore";
 import { UserStore } from "./UserStore";
+import { DashboardStore } from "./DashboardStore";
 
 /**
  * Centralizes the application's state management by aggregating individual MobX stores.
@@ -15,11 +16,13 @@ export class RootStore {
   paymentsStore: PaymentsStore;
   bookingStore: BookingStore;
   userStore: UserStore;
+  dashboardStore: DashboardStore;
 
   constructor() {
     this.paymentsStore = new PaymentsStore(this);
     this.bookingStore = new BookingStore(this);
     this.userStore = new UserStore(this);
+    this.dashboardStore = new DashboardStore(this);
   }
 }
 

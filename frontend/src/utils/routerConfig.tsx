@@ -25,8 +25,9 @@ import NewJob from "../pages/jobs/newJob";
 import JobsDashboard from "../pages/jobs/jobsDashboard";
 import JobDetail from "../pages/jobs/jobDetail";
 import MentorBookingsPage from "../pages/mentor-bookings-page/MentorBookingsPage";
-import AdvanceNetworkPage from "../pages/advanceNetworking/advanceNetwork"
+import AdvanceNetworkPage from "../pages/advanceNetworking/advanceNetwork";
 import MessageDashboard from "../pages/messages/MessageDashboard";
+import DashboardPage from "../pages/dashboard-page/DashboardPage";
 
 export const router = createBrowserRouter([
   {
@@ -94,8 +95,12 @@ export const router = createBrowserRouter([
           },
           { path: "/bookings", element: <MentorBookingsPage /> },
           {
-            path : "/networking",
-            element : <AdvanceNetworkPage/>
+            path: "/networking",
+            element: <AdvanceNetworkPage />,
+          },
+          {
+            path: "/dashboard",
+            element: <DashboardPage />,
           },
           { path: "/messages", element: <MessageDashboard /> },
         ],
@@ -124,14 +129,15 @@ export const router = createBrowserRouter([
 ]);
 
 export const navigationItems: NavigationItem[] = [
+  { path: "dashboard", label: "Dashboard", isProtected: true },
   { path: "discussions", label: "Discussions", isProtected: true },
   { path: "mentors", label: "Mentorship", isProtected: true },
   { path: "contentfeed", label: "Content Feed", isProtected: true },
+  { path: "jobs", label: "Jobs", isProtected: true },
+  { path: "networking", label: "Networking", isProtected: true },
+  { path: "messages", label: "Messages", isProtected: true },
   { path: "contact-us", label: "Contact Us", isProtected: false },
   { path: "faqs", label: "FAQs", isProtected: false },
-  { path: "jobs", label: "Jobs", isProtected: true },
-  { path : "networking" , label: "Networking" , isProtected : true},
-  { path : "messages" , label: "Messages" , isProtected : true},
 ];
 
 export const settings: Setting[] = [
