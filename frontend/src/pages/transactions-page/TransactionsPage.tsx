@@ -57,7 +57,7 @@ const TransactionsPage = observer(() => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {!isTransactionsLoading ? (
+            {isTransactionsLoading ? (
               [1, 2, 3, 4, 5, 6, 7].map((value, index) => (
                 <TableRow key={value + index}>
                   <TableCell
