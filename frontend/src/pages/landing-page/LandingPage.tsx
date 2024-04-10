@@ -1,5 +1,4 @@
 import * as React from "react";
-import Footer from "../../components/Footer/Footer";
 import {
   Container,
   Typography,
@@ -19,6 +18,7 @@ import ViewQuiltRoundedIcon from "@mui/icons-material/ViewQuiltRounded";
 import dashboardImage from "../../assets/dashboard.png";
 import communityImage from "../../assets/community.png";
 import learningImage from "../../assets/learning.png";
+import { useNavigate } from "react-router-dom";
 export default function LandingPage() {
   const decorative = "All-in-One";
   const title1 = "Connecting Minds, Empowering Futures";
@@ -63,7 +63,6 @@ export default function LandingPage() {
   const selectedFeature = items[selectedItemIndex];
   return (
     <Container component="main" maxWidth="lg">
-
       <Container component="section" maxWidth="lg">
         <CssBaseline />
         <Box sx={{ bgcolor: "background.default" }}>
@@ -74,7 +73,8 @@ export default function LandingPage() {
               alignItems: "center",
               flexDirection: "column",
               gap: 2,
-              my: 6,
+              mt: 6,
+              mb: 1,
               textAlign: "center",
             }}
           >
@@ -127,17 +127,39 @@ export default function LandingPage() {
             </Typography>
             <Button
               color="primary"
-              type="submit"
+              type="button"
               variant="contained"
-              href="/"
-              sx={{ mt: 3, mb: 2 }}
+              href="/sign-up"
+              sx={{ mt: 1, mb: 2 }}
             >
               Join Us
+            </Button>
+
+            <Typography
+              sx={{
+                fontSize: "lg",
+                color: "gray.500",
+                maxWidth: "54ch",
+              }}
+            >
+              Already have an account?
+            </Typography>
+            <Button
+              color="primary"
+              type="button"
+              variant="contained"
+              href="/sign-in"
+              sx={{ mt: 1, mb: 2 }}
+            >
+              Login
             </Button>
           </Box>
         </Box>
       </Container>
-      <Container id="features" sx={{ py: { xs: 8, sm: 16 } }}>
+      <Container
+        id="features"
+        sx={{ pt: { xs: 2, sm: 6 }, pb: { xs: 8, sm: 16 } }}
+      >
         <Grid container spacing={6}>
           <Grid item xs={12} md={6}>
             <div>
@@ -149,10 +171,9 @@ export default function LandingPage() {
                 color="text.secondary"
                 sx={{ mb: { xs: 2, sm: 4 } }}
               >
-                Here you can provide a brief overview of the key features of
-                the product. For example, you could list the number of
-                features, the types of features, add-ons, or the benefits of
-                the features.
+                Here you can provide a brief overview of the key features of the
+                product. For example, you could list the number of features, the
+                types of features, add-ons, or the benefits of the features.
               </Typography>
             </div>
             <Grid
@@ -173,9 +194,7 @@ export default function LandingPage() {
                           ? "primary.light"
                           : "";
                       }
-                      return selectedItemIndex === index
-                        ? "primary.light"
-                        : "";
+                      return selectedItemIndex === index ? "primary.light" : "";
                     },
                     background: (theme) => {
                       if (theme.palette.mode === "light") {
@@ -287,7 +306,7 @@ export default function LandingPage() {
                       flexDirection: { xs: "column", md: "row" },
                       alignItems: { md: "center" },
                       gap: 2.5,
-                      textTransform: 'none'
+                      textTransform: "none",
                     }}
                   >
                     <Box
@@ -378,7 +397,6 @@ export default function LandingPage() {
           </Grid>
         </Grid>
       </Container>
-      <Footer />
-    </Container >
+    </Container>
   );
 }

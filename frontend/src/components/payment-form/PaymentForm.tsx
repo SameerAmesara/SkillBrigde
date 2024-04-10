@@ -25,16 +25,24 @@ import {
   StripeCardExpiryElementChangeEvent,
   StripeCardNumberElementChangeEvent,
 } from "@stripe/stripe-js";
+import ConfirmDialog from "../confirm-dialog/ConfirmDialog";
 
 interface PaymentFormProps {
   buttonText?: string;
   onSubmit?: (paymentMethodId: string) => void;
   isPayment?: boolean;
   clearErrors?: boolean;
+  showConfirmation?: boolean;
 }
 
 const PaymentForm = observer(
-  ({ buttonText, onSubmit, isPayment, clearErrors }: PaymentFormProps) => {
+  ({
+    buttonText,
+    onSubmit,
+    isPayment,
+    clearErrors,
+    showConfirmation,
+  }: PaymentFormProps) => {
     const stripe = useStripe();
     const elements = useElements();
     const { paymentsStore } = useStores();
@@ -52,6 +60,7 @@ const PaymentForm = observer(
       cardCvc: "",
       postalCode: "",
     });
+    const [showConfirmationDialog, setShowConfirmationDialog] = useState(false);
 
     const valid = !(
       errors.cardExpiry ||
@@ -76,6 +85,15 @@ const PaymentForm = observer(
       setFormError("");
     };
 
+    const handlePayment = async () => {
+      if (onSubmit) {
+        setLoading(true);
+        await onSubmit(paymentsStore.payment.paymentMethodId);
+        setLoading(false);
+        paymentsStore.resetPayment();
+      }
+    };
+
     const handleSubmit = async (e: FormEvent) => {
       e.preventDefault();
 
@@ -88,10 +106,11 @@ const PaymentForm = observer(
         clearFormErrors();
         if (onSubmit) {
           try {
-            setLoading(true);
-            await onSubmit("");
-            setLoading(false);
-            paymentsStore.resetPayment();
+            if (showConfirmation) {
+              setShowConfirmationDialog(true);
+            } else {
+              handlePayment();
+            }
           } catch (error) {
             const axiosError = error as AxiosError<{ message: string }>;
             if (axiosError.response?.data) {
@@ -124,11 +143,12 @@ const PaymentForm = observer(
       } else {
         clearFormErrors();
         if (onSubmit) {
-          setLoading(true);
           paymentsStore.updatePayment({ paymentMethodId: paymentMethod.id });
-          await onSubmit(paymentMethod.id);
-          setLoading(false);
-          paymentsStore.resetPayment();
+          if (showConfirmation) {
+            setShowConfirmationDialog(true);
+          } else {
+            handlePayment();
+          }
         }
       }
     };
@@ -153,6 +173,13 @@ const PaymentForm = observer(
         alignItems="stretch"
         gap={2}
       >
+        <ConfirmDialog
+          open={showConfirmationDialog}
+          message={` This payment is not refundable. Do you want to proceed with payment $${paymentsStore.paymentDetails.amount}?`}
+          onSubmit={handlePayment}
+          onCancel={() => setShowConfirmationDialog(false)}
+          isLoading={isLoading}
+        />
         {isPayment ? (
           isCardsLoading ? (
             <Skeleton

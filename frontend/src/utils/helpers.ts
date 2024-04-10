@@ -50,9 +50,13 @@ export const getDayNumber = (day: string) => {
  * @returns An array of strings, each representing an available time slot in "HH:mm" format. Returns an empty array if no availability is found for the given day.
  */
 export const generateTimeSlots = (
-  date: Dayjs,
+  date: Dayjs | null,
   availabilities: Availability[]
 ): string[] => {
+  if (!date) {
+    return [];
+  }
+
   const dayOfWeek = date.format("dddd");
   const availability = availabilities.find((avail) => avail.day === dayOfWeek);
 
