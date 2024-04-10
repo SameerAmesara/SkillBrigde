@@ -40,20 +40,26 @@ export class DashboardStore {
     this.news.isLoading = true;
     const apiKey = "pub_4091311458d0a1bcc6f15104f92ec11e7ac1c";
     const apiUrl = `https://newsdata.io/api/1/news?apikey=${apiKey}&q=business&size=3&language=en`;
-    const response = await axios.get(apiUrl);
-    if (response.data && response.data.results) {
-      this.news.data = response.data.results.map(
-        (newsItem: NewsDataApiResponseinterface) => {
-          return {
-            title: newsItem.title,
-            description: newsItem.description,
-            link: newsItem.link,
-            pubDate: newsItem.pubDate,
-          };
-        }
-      );
-    }
+    try {
+      const response = await axios.get(apiUrl);
 
-    this.news.isLoading = false;
+      if (response.data && response.data.results) {
+        this.news.data = response.data.results.map(
+          (newsItem: NewsDataApiResponseinterface) => {
+            return {
+              title: newsItem.title,
+              description: newsItem.description,
+              link: newsItem.link,
+              pubDate: newsItem.pubDate,
+            };
+          }
+        );
+        this.news.isLoading = false;
+      }
+    } catch (error) {
+      console.log("Error while fetching news: ", error);
+      this.news.data = [];
+      this.news.isLoading = false;
+    }
   }
 }

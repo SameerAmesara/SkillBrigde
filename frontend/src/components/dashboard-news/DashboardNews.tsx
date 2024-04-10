@@ -3,10 +3,15 @@ import { observer } from "mobx-react";
 import { useStores } from "../../stores/RootStore";
 import { formatDate } from "../../utils/helpers";
 import dayjs from "dayjs";
+import { useEffect } from "react";
 
 const DashboardNews = observer(() => {
   const { dashboardStore } = useStores();
   const { news } = dashboardStore;
+
+  useEffect(() => {
+    dashboardStore.getDashboardNews();
+  }, []);
 
   return (
     <Stack spacing={1.5} p={3}>
