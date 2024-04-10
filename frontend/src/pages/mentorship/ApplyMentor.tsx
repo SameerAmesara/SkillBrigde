@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import {
   TextField,
@@ -39,6 +39,8 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import dayjs, { Dayjs } from "dayjs";
+import { observer } from "mobx-react";
+import { useStores } from "../../stores/RootStore";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -94,8 +96,10 @@ const initialSchedule: DaySchedule[] = [
   { day: "Sunday", from: "00:00", to: "00:00", isActive: false },
 ];
 
-const ApplyMentor = () => {
+const ApplyMentor = observer(() => {
   const navigate = useNavigate();
+  const { userStore } = useStores();
+  const { userDetails } = userStore;
 
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -129,6 +133,12 @@ const ApplyMentor = () => {
     file: "",
     terms: "",
   });
+
+  useEffect(() => {
+    setFirstName(userDetails?.firstName ?? "");
+    setLastName(userDetails?.lastName ?? "");
+    setEmail(userDetails?.email ?? "");
+  }, [userDetails]);
 
   const handleFirstNameChange = (newValue: string) => {
     setFirstName(newValue);
@@ -345,6 +355,7 @@ const ApplyMentor = () => {
                   onBlur={(e) => handleFirstNameChange(e.target.value)}
                   error={Boolean(formErrors.firstName)}
                   helperText={formErrors.firstName}
+                  disabled={!!userDetails?.firstName}
                 />
               </Grid>
               <Grid item xs={12} sm={4}>
@@ -358,6 +369,7 @@ const ApplyMentor = () => {
                   onBlur={(e) => handleLastNameChange(e.target.value)}
                   error={Boolean(formErrors.lastName)}
                   helperText={formErrors.lastName}
+                  disabled={!!userDetails?.lastName}
                 />
               </Grid>
               <Grid item xs={12} sm={4}>
@@ -391,6 +403,7 @@ const ApplyMentor = () => {
                   onBlur={(e) => handleEmailChange(e.target.value)}
                   error={Boolean(formErrors.email)}
                   helperText={formErrors.email}
+                  disabled={!!userDetails?.email}
                 />
               </Grid>
               <Grid item xs={12} sm={4}>
@@ -568,6 +581,6 @@ const ApplyMentor = () => {
       </Box>
     </Grid>
   );
-};
+});
 
 export default ApplyMentor;
