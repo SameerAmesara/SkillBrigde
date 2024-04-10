@@ -16,6 +16,8 @@ import {
 } from "@mui/material";
 import { theme } from "../../utils/theme";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+
 
 const AdvanceNetworkPage: React.FC = () => {
   const BASE_URL = import.meta.env.VITE_BASE_URL
@@ -195,8 +197,18 @@ const AdvanceNetworkPage: React.FC = () => {
       filterByRequestSent,
       filterByRequestReceived
     );
-    return () => {};
+    return () => { };
   }, [pageNumber, usersPerRow, userConnections, sendconnection]);
+
+  const navigate = useNavigate();
+  // Function to handle click event
+  const handleClick = (userUid : string , flag:string) => {
+    if (flag === "mc") {
+      navigate("/messages");
+    } else {
+      handleSendConnection(userUid, flag);
+    }
+  };
 
   const handleSendConnection = async (userUid: string, flag: string) => {
     try {
@@ -316,8 +328,8 @@ const AdvanceNetworkPage: React.FC = () => {
                         width: evenMoreSmall
                           ? "60%"
                           : isMobileSize
-                          ? "35%"
-                          : "22%",
+                            ? "35%"
+                            : "22%",
                         margin: "16px",
                         padding: "2%",
                       }}
@@ -368,15 +380,13 @@ const AdvanceNetworkPage: React.FC = () => {
                           <Button
                             variant="outlined"
                             size="small"
-                            onClick={() =>
-                              handleSendConnection(user.uid, user.flag)
-                            }
+                            onClick={() => handleClick(user.uid, user.flag)}
                           >
                             {user.flag === "f" && "Send Connection Request"}
                             {user.flag === "rs" &&
                               "Request Sent, Click Again to Cancel"}
                             {user.flag === "rc" && "Request Received"}
-                            {user.flag === "mc" && "Already a Connection"}
+                            {user.flag === "mc" && "Already a Connection, Click to message"}
                           </Button>
                         </CardActions>
                       </Box>
