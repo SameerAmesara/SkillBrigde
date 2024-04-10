@@ -74,7 +74,7 @@ const Navigation = observer(() => {
             aria-label="open drawer"
             edge="start"
             onClick={handleDrawerToggle}
-            sx={{ display: { sm: "none" } }}
+            sx={{ display: { md: "none" } }}
           >
             <MenuIcon />
           </IconButton>
@@ -86,7 +86,7 @@ const Navigation = observer(() => {
               alignItems: "center",
               cursor: "pointer",
               justifyContent: "center",
-              flexGrow: { xs: 1, sm: 0 },
+              flexGrow: { xs: 1, md: 0 },
             }}
             onClick={() => navigate("")}
           >
@@ -94,7 +94,7 @@ const Navigation = observer(() => {
           </Typography>
           <Box
             sx={{
-              display: { xs: "none", sm: "flex" },
+              display: { xs: "none", md: "flex" },
               marginLeft: "50px",
             }}
           >
@@ -118,7 +118,7 @@ const Navigation = observer(() => {
           {isLoggedIn === "true" ? (
             <Box
               sx={{
-                display: { xs: "none", sm: "flex" },
+                display: { xs: "flex" },
                 marginLeft: "auto",
                 alignItems: "center",
                 gap: 1,

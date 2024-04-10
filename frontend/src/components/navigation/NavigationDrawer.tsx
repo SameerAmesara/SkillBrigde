@@ -49,6 +49,24 @@ const NavigationDrawer = observer(
             {APP_TITLE}
           </Typography>
           <Divider />
+          <Box sx={{ mt: "20px", display: "flex", flexDirection: "column" }}>
+            {navigationItems.map((item, index) =>
+              item.isProtected && isLoggedIn !== "true" ? null : (
+                <NavLink
+                  key={item.path + index}
+                  to={item.path}
+                  className={({ isActive }) => {
+                    return isActive
+                      ? "app-nav-drawer-link app-nav-drawer-link--active"
+                      : "app-nav-drawer-link";
+                  }}
+                >
+                  {item.label}
+                </NavLink>
+              )
+            )}
+          </Box>
+          <Divider />
           {isLoggedIn === "true" ? (
             <Box sx={{ mt: "20px", display: "flex", flexDirection: "column" }}>
               <NavLink
@@ -112,24 +130,6 @@ const NavigationDrawer = observer(
               </NavLink>
             </Box>
           )}
-          <Divider />
-          <Box sx={{ mt: "20px", display: "flex", flexDirection: "column" }}>
-            {navigationItems.map((item, index) =>
-              item.isProtected && isLoggedIn !== "true" ? null : (
-                <NavLink
-                  key={item.path + index}
-                  to={item.path}
-                  className={({ isActive }) => {
-                    return isActive
-                      ? "app-nav-drawer-link app-nav-drawer-link--active"
-                      : "app-nav-drawer-link";
-                  }}
-                >
-                  {item.label}
-                </NavLink>
-              )
-            )}
-          </Box>
         </Box>
       </Drawer>
     );
