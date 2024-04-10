@@ -53,7 +53,7 @@ const DashboardNews = observer(() => {
           })}
         </>
       ) : (
-        <Typography variant="body1">No jobs available currently!</Typography>
+        <Typography variant="body1">No news feed available!</Typography>
       )}
     </Stack>
   );
