@@ -18,6 +18,8 @@ export class UserStore {
     image: "",
     uid: "",
   };
+  allUsers: UserDetails[] = [];
+  myConnections: UserDetails[] = [];
 
   constructor(rootStore: RootStore) {
     this.rootStore = rootStore;
@@ -43,5 +45,51 @@ export class UserStore {
           error?.response?.data?.message ?? "Failed to fetch user details"
         );
       });
+  }
+
+  /**
+   * Fetches all the users in the system.
+   *
+   * @throws An error if the request fails, including network issues or if the user ID does not exist.
+   */
+  async fetchAllUsers() {
+    await axios
+      .get<UserDetails[]>(`${USERS_URL}/`)
+      .then((response) => {
+        this.allUsers = [...response.data];
+      })
+      .catch((error: AxiosError<{ message: string }, unknown>) => {
+        throw new Error(
+          error?.response?.data?.message ?? "Failed to fetch users"
+        );
+      });
+  }
+
+  async fetchMyConnections() {
+    const userId = sessionStorage.getItem("userId");
+
+    try {
+      // Call the API to fetch user connections data
+
+      const response = await axios.get(
+        `${BASE_URL}/networking/userconnections`,
+        {
+          params: {
+            uid: userId,
+          },
+        }
+      );
+
+      const myConnections = response.data?.myConnections ?? [];
+
+      await this.fetchAllUsers();
+
+      const connectedUsers = this.allUsers.filter((user) =>
+        myConnections.includes(user.uid)
+      );
+      this.myConnections = connectedUsers;
+    } catch (error) {
+      console.error("Error fetching user connections:", error);
+    }
   }
 }
