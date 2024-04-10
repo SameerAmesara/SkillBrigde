@@ -18,7 +18,6 @@ import ViewQuiltRoundedIcon from "@mui/icons-material/ViewQuiltRounded";
 import dashboardImage from "../../assets/dashboard.png";
 import communityImage from "../../assets/community.png";
 import learningImage from "../../assets/learning.png";
-import { useNavigate } from "react-router-dom";
 export default function LandingPage() {
   const decorative = "All-in-One";
   const title1 = "Connecting Minds, Empowering Futures";
