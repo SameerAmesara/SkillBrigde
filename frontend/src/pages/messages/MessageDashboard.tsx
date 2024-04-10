@@ -88,7 +88,9 @@ const MessageDashboard: React.FC = () => {
                             display: "flex",
                             justifyContent: "left",
                             padding: "10px",
+                            mx: 1,
                             cursor: "pointer",
+                            mb: 1,
                             ":hover": {
                               backgroundColor: "#e2e2e2",
                             },
