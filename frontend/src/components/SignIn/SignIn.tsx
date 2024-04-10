@@ -20,15 +20,15 @@ import {
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
-import { useState } from 'react';
+import { useState } from "react";
 
 export default function SignIn() {
-  const [, setEmail] = useState('');
+  const [, setEmail] = useState("");
 
   const navigate = useNavigate();
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
-};
+  };
   const handleSubmit = async (
     event: React.FormEvent<HTMLFormElement>
   ): Promise<void> => {
@@ -38,8 +38,8 @@ export default function SignIn() {
     const password = formData.get("password") as string;
     try {
       const auth = getAuth();
-      await signInWithEmailAndPassword(auth, email, password).then(
-        (userCredential: UserCredential) => {
+      await signInWithEmailAndPassword(auth, email, password)
+        .then((userCredential: UserCredential) => {
           const user = userCredential.user;
           sessionStorage.setItem("userId", user.uid);
           user.getIdToken().then((accessToken) => {
@@ -47,14 +47,14 @@ export default function SignIn() {
           });
           sessionStorage.setItem("email", email);
           sessionStorage.setItem("isLoggedIn", "true");
-          navigate('/');
+          navigate("/dashboard");
 
           console.log("User signed in successfully!");
           toast.success("Signed in successfully!");
-        }
-      ).catch(error => {
-        toast.error(error.message);
-      });
+        })
+        .catch((error) => {
+          toast.error(error.message);
+        });
     } catch (error) {
       let errorMessage = "Error signing in:";
       if (error instanceof Error) {
@@ -89,7 +89,7 @@ export default function SignIn() {
         </Typography>
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
           <TextField
-          onChange={handleEmailChange}
+            onChange={handleEmailChange}
             margin="normal"
             required
             fullWidth
