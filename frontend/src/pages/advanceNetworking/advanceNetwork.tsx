@@ -18,6 +18,7 @@ import { theme } from "../../utils/theme";
 import axios from "axios";
 
 const AdvanceNetworkPage: React.FC = () => {
+  const BASE_URL = import.meta.env.VITE_BASE_URL
   const [searchTerm, setSearchTerm] = useState("");
   const [usersPerRow, setUsersPerRow] = useState(5); // Default value
   const [paginatedUsers, setPaginatedUsers] = useState<any[][]>([]);
@@ -47,7 +48,7 @@ const AdvanceNetworkPage: React.FC = () => {
         console.log(uid);
 
         const response = await axios.get(
-          `http://localhost:8000/networking/userconnections`,
+          `${BASE_URL}/networking/userconnections`,
           {
             params: {
               uid: uid,
@@ -101,7 +102,7 @@ const AdvanceNetworkPage: React.FC = () => {
     try {
       setLoading(true);
       window.scrollTo({ top: 0, behavior: "smooth" });
-      const response = await axios.get(`http://localhost:8000/networking`, {
+      const response = await axios.get(`${BASE_URL}/networking`, {
         params: {
           pageNumber: pageNumber,
         },
@@ -207,16 +208,16 @@ const AdvanceNetworkPage: React.FC = () => {
       let apiUrl = "";
       switch (flag) {
         case "rs":
-          apiUrl = "http://localhost:8000/networking/handleRequestSent";
+          apiUrl = `${BASE_URL}/networking/handleRequestSent`;
           break;
         case "rc":
-          apiUrl = "http://localhost:8000/networking/handleRequestReceived";
+          apiUrl = `${BASE_URL}/networking/handleRequestReceived`;
           break;
         case "mc":
-          apiUrl = "http://localhost:8000/networking/handleMyConnection";
+          apiUrl = `${BASE_URL}/networking/handleMyConnection`;
           break;
         default:
-          apiUrl = "http://localhost:8000/networking/sendConnectionRequest";
+          apiUrl = `${BASE_URL}/networking/sendConnectionRequest`;
       }
 
       const response = await axios.post(apiUrl, {
