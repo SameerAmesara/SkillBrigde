@@ -10,7 +10,6 @@ import {
   MenuItem,
   Pagination,
   Select,
-  TextField,
   Typography,
   useMediaQuery,
 } from "@mui/material";
@@ -21,7 +20,7 @@ import { useNavigate } from "react-router-dom";
 
 const AdvanceNetworkPage: React.FC = () => {
   const BASE_URL = import.meta.env.VITE_BASE_URL
-  const [searchTerm, setSearchTerm] = useState("");
+  // const [searchTerm, setSearchTerm] = useState("");
   const [usersPerRow, setUsersPerRow] = useState(5); // Default value
   const [paginatedUsers, setPaginatedUsers] = useState<any[][]>([]);
   const [pageNumber, setPageNumber] = useState<number>(1);
@@ -37,10 +36,11 @@ const AdvanceNetworkPage: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const isMobileSize = useMediaQuery(theme.breakpoints.down(1100));
   const evenMoreSmall = useMediaQuery(theme.breakpoints.down(600));
+  const [sortBy, setSortBy] = useState<string>("");
 
-  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(event.target.value);
-  };
+  // const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   setSearchTerm(event.target.value);
+  // };
 
   useEffect(() => {
     const fetchUserConnections = async () => {
@@ -158,6 +158,7 @@ const AdvanceNetworkPage: React.FC = () => {
   };
 
   const handleMyConnectionsClick = () => {
+    setSortBy("myconnections");
     setPageNumber(1);
     setFilterByMyConnections(true);
     setFilterByRequestSent(false);
@@ -167,6 +168,7 @@ const AdvanceNetworkPage: React.FC = () => {
   };
 
   const handleRequestSentClick = () => {
+    setSortBy("requestsent"); 
     setPageNumber(1);
     setFilterByMyConnections(false);
     setFilterByRequestSent(true);
@@ -175,6 +177,7 @@ const AdvanceNetworkPage: React.FC = () => {
   };
 
   const handleRequestReceivedClick = () => {
+    setSortBy("requestreceived");
     setPageNumber(1);
     setFilterByMyConnections(false);
     setFilterByRequestSent(false);
@@ -183,6 +186,7 @@ const AdvanceNetworkPage: React.FC = () => {
   };
 
   const ShowAll = () => {
+    setSortBy("showall"); 
     setPageNumber(1);
     setFilterByMyConnections(false);
     setFilterByRequestSent(false);
@@ -202,7 +206,7 @@ const AdvanceNetworkPage: React.FC = () => {
 
   const navigate = useNavigate();
   // Function to handle click event
-  const handleClick = (userUid : string , flag:string) => {
+  const handleClick = (userUid: string, flag: string) => {
     if (flag === "mc") {
       navigate("/messages");
     } else {
@@ -273,15 +277,17 @@ const AdvanceNetworkPage: React.FC = () => {
                 marginBottom: "20px",
               }}
             >
-              <TextField
+              {/* <TextField
                 label="Search"
                 variant="outlined"
                 value={searchTerm}
                 onChange={handleSearchChange}
                 sx={{ borderRadius: "20px", width: "45%", marginRight: "5%" }}
-              />
+              /> */}
               <Select
                 // onChange={handleSortChange}
+                value={sortBy} // Set value of the Select component
+                onChange={(e) => setSortBy(e.target.value as string)}
                 displayEmpty
                 inputProps={{ "aria-label": "Sort By" }}
                 sx={{ borderRadius: "20px", width: "20%" }}
@@ -294,18 +300,18 @@ const AdvanceNetworkPage: React.FC = () => {
                   My Connections
                 </MenuItem>
                 <MenuItem
-                  value="myconnections"
+                  value="requestsent"
                   onClick={handleRequestSentClick}
                 >
                   Connection Requests Sent
                 </MenuItem>
                 <MenuItem
-                  value="myconnections"
+                  value="requestreceived"
                   onClick={handleRequestReceivedClick}
                 >
                   Connections Requests Received
                 </MenuItem>
-                <MenuItem value="myconnections" onClick={ShowAll}>
+                <MenuItem value="showall" onClick={ShowAll}>
                   Show All
                 </MenuItem>
                 {/* Add more sorting options if needed */}
