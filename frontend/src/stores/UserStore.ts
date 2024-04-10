@@ -4,7 +4,7 @@ import { UserDetails } from "../models/UserDetatils.model";
 import axios, { AxiosError } from "axios";
 
 const BASE_URL = import.meta.env.VITE_BASE_URL || "http://localhost:8000";
-const USERS_URL = `${BASE_URL}/user`;
+const USERS_URL = `${BASE_URL}/userDetails`;
 
 /**
  * Manages the user state within the application, including user details.
@@ -20,6 +20,7 @@ export class UserStore {
   };
   allUsers: UserDetails[] = [];
   myConnections: UserDetails[] = [];
+  isConnectionsLoading: boolean = false;
 
   constructor(rootStore: RootStore) {
     this.rootStore = rootStore;
@@ -67,7 +68,7 @@ export class UserStore {
 
   async fetchMyConnections() {
     const userId = sessionStorage.getItem("userId");
-
+    this.isConnectionsLoading = true;
     try {
       // Call the API to fetch user connections data
 
@@ -88,8 +89,10 @@ export class UserStore {
         myConnections.includes(user.uid)
       );
       this.myConnections = connectedUsers;
+      this.isConnectionsLoading = false;
     } catch (error) {
       console.error("Error fetching user connections:", error);
+      this.isConnectionsLoading = false;
     }
   }
 }

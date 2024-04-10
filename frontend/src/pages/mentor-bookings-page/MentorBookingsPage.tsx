@@ -19,7 +19,12 @@ const MentorBookingsPage = observer(() => {
       </Box>
       {isBookingsLoading ? (
         [1, 2, 3].map((value, index) => (
-          <Skeleton key={value + index} width={250} height={500} />
+          <Skeleton
+            key={value + index}
+            width={250}
+            height={300}
+            variant="rectangular"
+          />
         ))
       ) : mentorBookings.length > 0 ? (
         mentorBookings.map((booking, index) => (
