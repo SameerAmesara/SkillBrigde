@@ -80,3 +80,7 @@ export const generateTimeSlots = (
 
   return timeSlots;
 };
+
+export const getToken = () => {
+  return sessionStorage.getItem("accessToken");
+};
