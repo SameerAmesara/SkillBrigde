@@ -1,3 +1,8 @@
+/*
+This file creates auth for firebase
+Author: Drashti Navadiya
+Date modified: 04-04-2024
+*/
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 
