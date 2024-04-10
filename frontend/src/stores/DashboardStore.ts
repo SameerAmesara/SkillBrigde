@@ -61,5 +61,6 @@ export class DashboardStore {
       this.news.data = [];
       this.news.isLoading = false;
     }
+    this.news.isLoading = false;
   }
 }
