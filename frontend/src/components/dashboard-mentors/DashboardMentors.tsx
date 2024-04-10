@@ -3,12 +3,17 @@ import { observer } from "mobx-react";
 import { useStores } from "../../stores/RootStore";
 import { useNavigate } from "react-router-dom";
 import MentorBookingCard from "../mentor-booking-card/MentorBookingCard";
+import { useEffect } from "react";
 
 const DashboardMentors = observer(() => {
   const { bookingStore } = useStores();
   const { mentorBookings, isBookingsLoading } = bookingStore;
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    bookingStore.fetchMentorBookings();
+  }, []);
 
   return (
     <Stack p={3} display="flex" gap={1}>
