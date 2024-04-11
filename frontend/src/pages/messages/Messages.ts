@@ -5,9 +5,10 @@ import { getUserIdFromSession } from "../../utils/helpers";
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 const MESSAGE_URL = `${BASE_URL}/message`;
-const userId = getUserIdFromSession();
 
 export const sendMessage = async (receiverId: string, message: string) => {
+  const userId = getUserIdFromSession();
+
   const url = `${MESSAGE_URL}/${receiverId}`;
   return await axios.post(
     url,
@@ -17,11 +18,15 @@ export const sendMessage = async (receiverId: string, message: string) => {
 };
 
 export const getMessages = async (receiverId: string) => {
+  const userId = getUserIdFromSession();
+
   const url = `${MESSAGE_URL}/${receiverId}`;
   return await axios.get(url, { headers: { userId: userId } });
 };
 
 export const getConversations = async () => {
+  const userId = getUserIdFromSession();
+
   const url = `${BASE_URL}/networking/userconnections`;
   try {
     const response = await axios.get(url, { params: { uid: userId } });
