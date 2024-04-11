@@ -19,6 +19,11 @@ import {
   Snackbar,
   SnackbarContent,
   Avatar,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle
 } from "@mui/material";
 import { ThumbUp, ThumbDown, Delete } from "@mui/icons-material";
 import moment from "moment";
@@ -51,6 +56,7 @@ const DiscussionView = () => {
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const userCanDelete = discussion?.userId === userId;
   const [feedbackMessage, setFeedbackMessage] = useState<string>("");
+  const [confirmOpen, setConfirmOpen] = useState<boolean>(false);
 
   // function to make the API call to add reply in discussion
   const addReply = () => {
@@ -167,7 +173,7 @@ const DiscussionView = () => {
           {userCanDelete && (
             <Tooltip title="Delete">
               <IconButton
-                onClick={handleDelete}
+                onClick={() => {setConfirmOpen(true)}}
                 color="primary"
                 aria-label="delete"
               >
@@ -363,12 +369,14 @@ const DiscussionView = () => {
       <Box
         sx={{
           display: "flex",
+          flexDirection: "column",
           justifyContent: "center",
           alignItems: "center",
-          height: "100vh",
+          gap: "10px",
         }}
       >
         <CircularProgress />
+        <Typography>Loading...</Typography>
       </Box>
     );
   }
@@ -394,6 +402,41 @@ const DiscussionView = () => {
       >
         <SnackbarContent message={feedbackMessage} />
       </Snackbar>
+
+      <Dialog
+        open={confirmOpen}
+        onClose={() => {
+          setConfirmOpen(false);
+        }}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">Confirm Submission</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Are you sure you want to delete this discussion?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button
+          color="error"
+            onClick={() => {
+              setConfirmOpen(false);
+            }}
+          >
+            Cancel
+          </Button>
+          <Button
+            onClick={() => {
+              setConfirmOpen(false);
+              handleDelete();
+            }}
+            autoFocus
+          >
+            Confirm
+          </Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 };
