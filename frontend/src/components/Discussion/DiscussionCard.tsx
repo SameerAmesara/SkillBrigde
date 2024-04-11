@@ -1,7 +1,7 @@
 /**
  * @author Tirth Bharatiya (B00955618)
  */
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   Box,
   Typography,
@@ -11,6 +11,7 @@ import {
   Card,
   CardContent,
   Avatar,
+  Button,
 } from "@mui/material";
 import { DiscussionModel } from "../../models/discussions.model";
 import { ThumbUp, ThumbDown } from "@mui/icons-material";
@@ -23,6 +24,7 @@ const DiscussionCard: React.FC<{ discussion: DiscussionModel }> = ({
 }) => {
   const userId = sessionStorage.getItem("userId") ?? "";
   const discussionUrl = `/discussions/${discussion.id}`;
+  const navigate = useNavigate(); 
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const formattedDate = moment(discussion?.timestamp).format("MMMM Do YYYY");
   const MAX_PREVIEW_LENGTH = 500;
@@ -46,15 +48,14 @@ const DiscussionCard: React.FC<{ discussion: DiscussionModel }> = ({
   }
 
   return (
-    <Link
-      to={discussionUrl}
-      style={{ textDecoration: "none", color: "inherit" }}
-    >
       <Card variant="outlined" sx={{ borderRadius: "10px" }}>
         <CardContent>
           <Box>
+            <Box sx={{ display: "flex", flexDirection: "row", justifyContent: "space-between", alignContent: "center" }}>
             {/* Title of discussion */}
             <Typography variant="h6">{discussion.title}</Typography>
+            <Button variant="contained" onClick={() => {navigate(discussionUrl)}}>View discussion</Button>
+            </Box>
             {/* formatted content */}
             <Typography>{formatContent(contentPreview)}</Typography>
             {/* Tags */}
@@ -163,7 +164,6 @@ const DiscussionCard: React.FC<{ discussion: DiscussionModel }> = ({
           </Box>
         </CardContent>
       </Card>
-    </Link>
   );
 };
 

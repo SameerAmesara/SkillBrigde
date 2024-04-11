@@ -10,6 +10,11 @@ import {
   SnackbarContent,
   Tooltip,
   TextField,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
 } from "@mui/material";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -36,6 +41,7 @@ const NewDiscussion = () => {
       content: "",
       tags: "",
     });
+  const [confirmOpen, setConfirmOpen] = useState<boolean>(false);
 
   // function responsible to navigate user back to discussions page.
   const navigateBackToDiscussions = () => {
@@ -114,33 +120,29 @@ const NewDiscussion = () => {
   // function responsible to create a new discussion.
   const submitDiscussion = (e: React.FormEvent) => {
     e.preventDefault();
-    // validate if all the details are valid to create a discussion.
-    const isValid = validateForm();
-    if (isValid) {
-      const newDiscussionData: NewDiscussionSubmitDataModel = {
-        title: formData.title,
-        userId: userId!,
-        content: formData.content,
-        tags: formData.tags,
-      };
+    const newDiscussionData: NewDiscussionSubmitDataModel = {
+      title: formData.title,
+      userId: userId!,
+      content: formData.content,
+      tags: formData.tags,
+    };
 
-      // make API call to backend to create a discussion.
-      startDiscussion(newDiscussionData)
-        .then((response) => {
-          // if discussion created successfully, give user feedback and redirect user to discussions page (list of discussions).
-          if (response.status === 200) {
-            setFeedbackMessage("Discussion created successfully.");
-            setTimeout(() => {
-              navigateBackToDiscussions();
-            }, 2000);
-          } else {
-            setFeedbackMessage("Something went wrong. Please try again later.");
-          }
-        })
-        .catch(() => {
+    // make API call to backend to create a discussion.
+    startDiscussion(newDiscussionData)
+      .then((response) => {
+        // if discussion created successfully, give user feedback and redirect user to discussions page (list of discussions).
+        if (response.status === 200) {
+          setFeedbackMessage("Discussion created successfully.");
+          setTimeout(() => {
+            navigateBackToDiscussions();
+          }, 2000);
+        } else {
           setFeedbackMessage("Something went wrong. Please try again later.");
-        });
-    }
+        }
+      })
+      .catch(() => {
+        setFeedbackMessage("Something went wrong. Please try again later.");
+      });
   };
 
   // keeps checking for errors for better use experience
@@ -261,7 +263,14 @@ const NewDiscussion = () => {
 
         {/* POST and CANCEL Button */}
         <Box sx={{ display: "flex", gap: "10px" }}>
-          <Button variant="contained" onClick={submitDiscussion}>
+          <Button
+            variant="contained"
+            onClick={() => {
+              if (validateForm()) {
+                setConfirmOpen(true);
+              }
+            }}
+          >
             POST
           </Button>
           <Button variant="contained" onClick={navigateBackToDiscussions}>
@@ -282,6 +291,41 @@ const NewDiscussion = () => {
       >
         <SnackbarContent message={feedbackMessage} />
       </Snackbar>
+
+      <Dialog
+        open={confirmOpen}
+        onClose={() => {
+          setConfirmOpen(false);
+        }}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">Confirm Submission</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Are you sure you want to start this discussion?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button
+          color="error"
+            onClick={() => {
+              setConfirmOpen(false);
+            }}
+          >
+            Cancel
+          </Button>
+          <Button
+            onClick={(e) => {
+              setConfirmOpen(false);
+              submitDiscussion(e);
+            }}
+            autoFocus
+          >
+            Confirm
+          </Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 };
