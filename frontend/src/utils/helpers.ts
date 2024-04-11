@@ -88,3 +88,7 @@ export const generateTimeSlots = (
 export const getToken = () => {
   return sessionStorage.getItem("accessToken");
 };
+
+export const getUserIdFromSession = () => {
+  return sessionStorage.getItem("userId");
+};
