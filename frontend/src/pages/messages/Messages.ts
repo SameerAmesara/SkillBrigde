@@ -1,10 +1,11 @@
 import axios from "axios";
 import { ConversationModel } from "../../models/message.model";
 import { UserDetails } from "../../models/UserDetatils.model";
+import { getUserIdFromSession } from "../../utils/helpers";
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 const MESSAGE_URL = `${BASE_URL}/message`;
-const userId = sessionStorage.getItem("userId") ?? "";
+const userId = getUserIdFromSession();
 
 export const sendMessage = async (receiverId: string, message: string) => {
   const url = `${MESSAGE_URL}/${receiverId}`;
