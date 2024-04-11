@@ -15,26 +15,84 @@ import {
   CardCvcElement,
 } from "@stripe/react-stripe-js";
 import { FormEvent, useEffect, useState } from "react";
-import { useStores } from "../../mobx/RootStore";
+import { useStores } from "../../stores/RootStore";
 import SavedCard from "../saved-card/SavedCard";
 import { observer } from "mobx-react";
 import { AxiosError } from "axios";
 import { toast } from "react-toastify";
+import {
+  StripeCardCvcElementChangeEvent,
+  StripeCardExpiryElementChangeEvent,
+  StripeCardNumberElementChangeEvent,
+} from "@stripe/stripe-js";
+import ConfirmDialog from "../confirm-dialog/ConfirmDialog";
 
 interface PaymentFormProps {
   buttonText?: string;
   onSubmit?: (paymentMethodId: string) => void;
   isPayment?: boolean;
+  clearErrors?: boolean;
+  showConfirmation?: boolean;
 }
 
 const PaymentForm = observer(
-  ({ buttonText, onSubmit, isPayment }: PaymentFormProps) => {
+  ({
+    buttonText,
+    onSubmit,
+    isPayment,
+    clearErrors,
+    showConfirmation,
+  }: PaymentFormProps) => {
     const stripe = useStripe();
     const elements = useElements();
     const { paymentsStore } = useStores();
     const { cards, payment, isCardsLoading } = paymentsStore;
     const [isLoading, setLoading] = useState(false);
     const [formError, setFormError] = useState("");
+    const [errors, setErrors] = useState<{
+      cardNumber: string | undefined;
+      cardExpiry: string | undefined;
+      cardCvc: string | undefined;
+      postalCode: string | undefined;
+    }>({
+      cardNumber: "",
+      cardExpiry: "",
+      cardCvc: "",
+      postalCode: "",
+    });
+    const [showConfirmationDialog, setShowConfirmationDialog] = useState(false);
+
+    const valid = !(
+      errors.cardExpiry ||
+      errors.cardCvc ||
+      errors.cardNumber ||
+      errors.postalCode
+    );
+
+    useEffect(() => {
+      if (clearErrors || valid) {
+        clearFormErrors();
+      }
+    }, [clearErrors, valid]);
+
+    const clearFormErrors = () => {
+      setErrors({
+        cardNumber: "",
+        cardExpiry: "",
+        cardCvc: "",
+        postalCode: "",
+      });
+      setFormError("");
+    };
+
+    const handlePayment = async () => {
+      if (onSubmit) {
+        setLoading(true);
+        await onSubmit(paymentsStore.payment.paymentMethodId);
+        setLoading(false);
+        paymentsStore.resetPayment();
+      }
+    };
 
     const handleSubmit = async (e: FormEvent) => {
       e.preventDefault();
@@ -45,12 +103,14 @@ const PaymentForm = observer(
       ) as HTMLInputElement;
 
       if (paymentsStore.payment.paymentMethodId) {
-        setFormError("");
+        clearFormErrors();
         if (onSubmit) {
           try {
-            setLoading(true);
-            await onSubmit("");
-            setLoading(false);
+            if (showConfirmation) {
+              setShowConfirmationDialog(true);
+            } else {
+              handlePayment();
+            }
           } catch (error) {
             const axiosError = error as AxiosError<{ message: string }>;
             if (axiosError.response?.data) {
@@ -72,28 +132,37 @@ const PaymentForm = observer(
         card: cardElement,
       });
 
-      if (error) {
-        setFormError(error.message ?? "Invalid card details");
+      if (!postalCode.value) {
+        setErrors((errors) => {
+          return { ...errors, postalCode: "Enter the postal code" };
+        });
+      }
+
+      if (error || !postalCode.value) {
+        setFormError("Invalid card details");
       } else {
-        if (!postalCode.value) {
-          setFormError("Enter valid postal code.");
-          return;
-        }
-
-        setFormError("");
-
+        clearFormErrors();
         if (onSubmit) {
-          setLoading(true);
           paymentsStore.updatePayment({ paymentMethodId: paymentMethod.id });
-          await onSubmit(paymentMethod.id);
-          setLoading(false);
+          if (showConfirmation) {
+            setShowConfirmationDialog(true);
+          } else {
+            handlePayment();
+          }
         }
       }
     };
 
-    useEffect(() => {
-      console.log(paymentsStore.transactions);
-    }, [paymentsStore]);
+    const handleCardElementChange = (
+      event:
+        | StripeCardExpiryElementChangeEvent
+        | StripeCardCvcElementChangeEvent
+        | StripeCardNumberElementChangeEvent
+    ) => {
+      setErrors((errors) => {
+        return { ...errors, [event.elementType]: event.error?.message ?? "" };
+      });
+    };
 
     return (
       <Box
@@ -104,6 +173,13 @@ const PaymentForm = observer(
         alignItems="stretch"
         gap={2}
       >
+        <ConfirmDialog
+          open={showConfirmationDialog}
+          message={` This payment is not refundable. Do you want to proceed with payment $${paymentsStore.paymentDetails.amount}?`}
+          onSubmit={handlePayment}
+          onCancel={() => setShowConfirmationDialog(false)}
+          isLoading={isLoading}
+        />
         {isPayment ? (
           isCardsLoading ? (
             <Skeleton
@@ -131,25 +207,87 @@ const PaymentForm = observer(
             ))
           )
         ) : null}
-        <Box sx={INPUT_WRAPPER_STYLE}>
-          <CardNumberElement
-            onFocus={() => paymentsStore.updatePayment({ paymentMethodId: "" })}
-            options={{ ...CARD_OPTIONS, showIcon: true, iconStyle: "solid" }}
-          />
+        <Box>
+          <Box
+            sx={
+              errors.cardNumber
+                ? ERROR_INPUT_WRAPPER_STYLE
+                : INPUT_WRAPPER_STYLE
+            }
+          >
+            <CardNumberElement
+              onFocus={() =>
+                paymentsStore.updatePayment({ paymentMethodId: "" })
+              }
+              options={{ ...CARD_OPTIONS, showIcon: true, iconStyle: "solid" }}
+              onChange={handleCardElementChange}
+            />
+          </Box>
+          {errors.cardNumber ? (
+            <Typography fontSize={12} color="#fa755a">
+              {errors.cardNumber}
+            </Typography>
+          ) : null}
         </Box>
-        <Grid container gap={1}>
-          <Grid item sx={INPUT_WRAPPER_STYLE} flexGrow={1}>
-            <CardExpiryElement options={CARD_OPTIONS} />
+
+        <Grid container spacing={1}>
+          <Grid item xs={6}>
+            <Box
+              sx={
+                errors.cardExpiry
+                  ? ERROR_INPUT_WRAPPER_STYLE
+                  : INPUT_WRAPPER_STYLE
+              }
+            >
+              <CardExpiryElement
+                options={CARD_OPTIONS}
+                onChange={handleCardElementChange}
+              />
+            </Box>
+            {errors.cardExpiry ? (
+              <Typography fontSize={12} color="#fa755a">
+                {errors.cardExpiry}
+              </Typography>
+            ) : null}
           </Grid>
-          <Grid item sx={INPUT_WRAPPER_STYLE} flexGrow={1}>
-            <CardCvcElement options={CARD_OPTIONS} />
+          <Grid item xs={6}>
+            <Box
+              sx={
+                errors.cardCvc ? ERROR_INPUT_WRAPPER_STYLE : INPUT_WRAPPER_STYLE
+              }
+            >
+              <CardCvcElement
+                options={CARD_OPTIONS}
+                onChange={handleCardElementChange}
+              />
+            </Box>
+            {errors.cardCvc ? (
+              <Typography fontSize={12} color="#fa755a">
+                {errors.cardCvc}
+              </Typography>
+            ) : null}
           </Grid>
         </Grid>
         <FormControl>
-          <OutlinedInput placeholder="Postal code" name="postalCode" />
+          <OutlinedInput
+            placeholder="Postal code"
+            name="postalCode"
+            onChange={(e) => {
+              if (e.target.value) {
+                setErrors((errors) => {
+                  return { ...errors, postalCode: "" };
+                });
+              }
+            }}
+          />
+          {errors.postalCode ? (
+            <Typography fontSize={12} color="#fa755a">
+              {errors.postalCode}
+            </Typography>
+          ) : null}
         </FormControl>
         {formError ? (
-          <Typography variant="subtitle1" color="red">
+          <Typography fontSize={12} color="#fa755a" m="0 auto">
             {formError}
           </Typography>
         ) : null}
@@ -159,6 +297,14 @@ const PaymentForm = observer(
           fullWidth
           sx={{ maxWidth: "300px", m: "0 auto" }}
           loading={isLoading}
+          disabled={
+            !!(
+              errors.cardExpiry ||
+              errors.cardCvc ||
+              errors.cardNumber ||
+              errors.postalCode
+            )
+          }
         >
           {buttonText ?? "Pay"}
         </LoadingButton>
@@ -167,6 +313,7 @@ const PaymentForm = observer(
   }
 );
 
+// Styles for Grid containing Stripe card elements
 const INPUT_WRAPPER_STYLE = {
   p: "18px 10px",
   border: "1px solid #a6a6a6",
@@ -179,11 +326,17 @@ const INPUT_WRAPPER_STYLE = {
   },
 };
 
+const ERROR_INPUT_WRAPPER_STYLE = {
+  ...INPUT_WRAPPER_STYLE,
+  border: "1px solid #fa755a",
+};
+
+// Styling each stripe element referenced from https://www.linkedin.com/pulse/stripe-custom-styled-card-elements-tanjir-antu/
 const CARD_OPTIONS = {
   style: {
     base: {
       color: "#32325d",
-      fontFamily: "Arial, sans-serif",
+      fontFamily: "Roboto, sans-serif",
       fontSmoothing: "antialiased",
       fontSize: "16px",
       "::placeholder": {

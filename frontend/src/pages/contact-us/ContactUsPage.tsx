@@ -1,21 +1,20 @@
-import * as React from 'react';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import Paper from '@mui/material/Paper';
-import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
-import PhoneIcon from '@mui/icons-material/Phone';
-import MailOutlineIcon from '@mui/icons-material/MailOutline';
-import LocationOnIcon from '@mui/icons-material/LocationOn';
-import Typography from '@mui/material/Typography';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import Footer from '../../components/Footer/Footer';
+import * as React from "react";
+import Avatar from "@mui/material/Avatar";
+import Button from "@mui/material/Button";
+import CssBaseline from "@mui/material/CssBaseline";
+import TextField from "@mui/material/TextField";
+import Paper from "@mui/material/Paper";
+import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
+import PhoneIcon from "@mui/icons-material/Phone";
+import MailOutlineIcon from "@mui/icons-material/MailOutline";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
+import Typography from "@mui/material/Typography";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 function ContactUsPage() {
-  const [email, setEmail] = React.useState('');
-  const [errorMessage, setErrorMessage] = React.useState('');
+  const [email, setEmail] = React.useState("");
+  const [errorMessage, setErrorMessage] = React.useState("");
   const [isSubmitDisabled, setIsSubmitDisabled] = React.useState(true);
 
   const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -26,15 +25,21 @@ function ContactUsPage() {
 
   const validateEmail = (email: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const username = email.split('@')[0];
+    const username = email.split("@")[0];
     const startsWithSpecialChar = /^[^a-zA-Z0-9]/.test(username);
     const endsWithSpecialChar = /[^a-zA-Z0-9]$/.test(username);
 
-    if (!emailRegex.test(email) || startsWithSpecialChar || endsWithSpecialChar) {
-      setErrorMessage('Please enter a valid email address without special characters at the beginning or end of the username.');
+    if (
+      !emailRegex.test(email) ||
+      startsWithSpecialChar ||
+      endsWithSpecialChar
+    ) {
+      setErrorMessage(
+        "Please enter a valid email address without special characters at the beginning or end of the username."
+      );
       setIsSubmitDisabled(true);
     } else {
-      setErrorMessage('');
+      setErrorMessage("");
       setIsSubmitDisabled(false);
     }
   };
@@ -43,19 +48,25 @@ function ContactUsPage() {
     event.preventDefault();
     console.log({
       email,
-      message: (event.currentTarget.elements.namedItem('message') as HTMLTextAreaElement).value,
+      message: (
+        event.currentTarget.elements.namedItem("message") as HTMLTextAreaElement
+      ).value,
     });
 
     // Show popup
-    alert('We will contact you soon.');
+    alert("We will contact you soon.");
 
     // Clear input fields
-    setEmail('');
-    const emailField = event.currentTarget.elements.namedItem('email') as HTMLInputElement;
-    const messageField = event.currentTarget.elements.namedItem('message') as HTMLTextAreaElement;
+    setEmail("");
+    const emailField = event.currentTarget.elements.namedItem(
+      "email"
+    ) as HTMLInputElement;
+    const messageField = event.currentTarget.elements.namedItem(
+      "message"
+    ) as HTMLTextAreaElement;
     if (emailField && messageField) {
-      emailField.value = '';
-      messageField.value = '';
+      emailField.value = "";
+      messageField.value = "";
     }
   };
 
@@ -63,7 +74,9 @@ function ContactUsPage() {
 
   return (
     <ThemeProvider theme={defaultTheme}>
-      <Box sx={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+      <Box
+        sx={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}
+      >
         <CssBaseline />
         <Grid container component="main" sx={{ flexGrow: 1 }}>
           <Grid
@@ -72,27 +85,33 @@ function ContactUsPage() {
             sm={4}
             md={7}
             sx={{
-              backgroundColor: '#cfd6db',
+              backgroundColor: "#cfd6db",
               py: 8,
               px: 6,
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'center',
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
             }}
           >
-            <Typography variant="h4" component="h2" gutterBottom sx={{ fontWeight: 'bold', fontFamily: 'Arial, sans-serif' }}>
+            <Typography
+              variant="h4"
+              component="h2"
+              gutterBottom
+              sx={{ fontWeight: "bold", fontFamily: "Arial, sans-serif" }}
+            >
               Welcome to SkillBridge
             </Typography>
             <Typography variant="body1" gutterBottom>
-              We're here to help you enhance your skills and connect with professionals.
+              We're here to help you enhance your skills and connect with
+              professionals.
             </Typography>
-            <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+            <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
               <LocationOnIcon sx={{ mr: 1 }} />
               <Typography variant="body1" gutterBottom>
                 SkillRidge HQ - 123 SkillRidge Ave.
               </Typography>
             </Box>
-            <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+            <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
               <PhoneIcon sx={{ mr: 1 }} />
               <Typography variant="body1" gutterBottom>
                 555-123-456
@@ -100,11 +119,11 @@ function ContactUsPage() {
             </Box>
             <Box
               sx={{
-                display: 'flex',
-                alignItems: 'center',
+                display: "flex",
+                alignItems: "center",
                 mb: 2,
-                flexWrap: 'wrap',
-                maxWidth: { xs: '100%', sm: 300 },
+                flexWrap: "wrap",
+                maxWidth: { xs: "100%", sm: 300 },
               }}
             >
               <MailOutlineIcon sx={{ mr: 1 }} />
@@ -112,25 +131,37 @@ function ContactUsPage() {
                 support @ skillBridge.com
               </Typography>
             </Box>
-
           </Grid>
-          <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+          <Grid
+            item
+            xs={12}
+            sm={8}
+            md={5}
+            component={Paper}
+            elevation={6}
+            square
+          >
             <Box
               sx={{
                 my: 8,
                 mx: 4,
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
               }}
             >
-              <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+              <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
                 <MailOutlineIcon />
               </Avatar>
               <Typography component="h1" variant="h5">
                 Contact Us
               </Typography>
-              <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
+              <Box
+                component="form"
+                noValidate
+                onSubmit={handleSubmit}
+                sx={{ mt: 1 }}
+              >
                 <TextField
                   margin="normal"
                   required
@@ -158,7 +189,7 @@ function ContactUsPage() {
                   type="submit"
                   fullWidth
                   variant="contained"
-                  sx={{ mt: 3, mb: 2, bgcolor: '#071541' }}
+                  sx={{ mt: 3, mb: 2, bgcolor: "#071541" }}
                   disabled={isSubmitDisabled}
                 >
                   Submit
@@ -167,7 +198,6 @@ function ContactUsPage() {
             </Box>
           </Grid>
         </Grid>
-        <Footer />
       </Box>
     </ThemeProvider>
   );

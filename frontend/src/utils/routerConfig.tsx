@@ -19,12 +19,15 @@ import ProfilePage from "../pages/profile-page/ProfilePage";
 import DiscussionsPage from "../pages/discussions/discussions";
 import DiscussionView from "../pages/discussions/discussionView";
 import NewDiscussion from "../pages/discussions/newDiscussion";
-import PaymentCardsPage from "../pages/payments-cards-page/PaymentsCardsPage";
+import TranasactionsCardsPage from "../pages/transactions-cards-page/TranasactionsCardsPage";
 import BookMentorPage from "../pages/book-mentor-page/BookMentorPage";
 import NewJob from "../pages/jobs/newJob";
 import JobsDashboard from "../pages/jobs/jobsDashboard";
 import JobDetail from "../pages/jobs/jobDetail";
 import MentorBookingsPage from "../pages/mentor-bookings-page/MentorBookingsPage";
+import AdvanceNetworkPage from "../pages/advanceNetworking/advanceNetwork";
+import MessageDashboard from "../pages/messages/MessageDashboard";
+import DashboardPage from "../pages/dashboard-page/DashboardPage";
 
 export const router = createBrowserRouter([
   {
@@ -61,7 +64,7 @@ export const router = createBrowserRouter([
             path: "/discussions/new",
             element: <NewDiscussion />,
           },
-          { path: "/payments", element: <PaymentCardsPage /> },
+          { path: "/payments", element: <TranasactionsCardsPage /> },
           {
             path: "/mentors",
             element: <FindMentor />,
@@ -91,6 +94,15 @@ export const router = createBrowserRouter([
             element: <JobDetail />,
           },
           { path: "/bookings", element: <MentorBookingsPage /> },
+          {
+            path: "/networking",
+            element: <AdvanceNetworkPage />,
+          },
+          {
+            path: "/dashboard",
+            element: <DashboardPage />,
+          },
+          { path: "/messages", element: <MessageDashboard /> },
         ],
       },
     ],
@@ -117,12 +129,15 @@ export const router = createBrowserRouter([
 ]);
 
 export const navigationItems: NavigationItem[] = [
+  { path: "dashboard", label: "Dashboard", isProtected: true },
   { path: "discussions", label: "Discussions", isProtected: true },
   { path: "mentors", label: "Mentorship", isProtected: true },
   { path: "contentfeed", label: "Content Feed", isProtected: true },
+  { path: "jobs", label: "Jobs", isProtected: true },
+  { path: "networking", label: "Networking", isProtected: true },
+  { path: "messages", label: "Messages", isProtected: true },
   { path: "contact-us", label: "Contact Us", isProtected: false },
   { path: "faqs", label: "FAQs", isProtected: false },
-  { path: "jobs", label: "Jobs", isProtected: true },
 ];
 
 export const settings: Setting[] = [

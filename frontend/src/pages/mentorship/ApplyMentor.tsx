@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import {
   TextField,
@@ -23,16 +23,24 @@ import { CloudUploadOutlined } from "@mui/icons-material";
 import AvailabilityComponent from "../../components/AvailabilityComponent/AvailabilityComponent";
 import {
   validateAreaOfExpertise,
+  validateDateOfBirth,
   validateEmail,
   validateExperience,
   validateFile,
   validateFirstName,
+  validateGender,
   validateLastName,
   validatePhoneNumber,
   validateTerms,
 } from "../../utils/MentorFormValidations";
 import PaymentSuccessDialog from "../../components/payment-success-dialog/PaymentSuccessDialog";
 import { useNavigate } from "react-router-dom";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import dayjs, { Dayjs } from "dayjs";
+import { observer } from "mobx-react";
+import { useStores } from "../../stores/RootStore";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -88,12 +96,15 @@ const initialSchedule: DaySchedule[] = [
   { day: "Sunday", from: "00:00", to: "00:00", isActive: false },
 ];
 
-const ApplyMentor = () => {
+const ApplyMentor = observer(() => {
   const navigate = useNavigate();
+  const { userStore } = useStores();
+  const { userDetails } = userStore;
 
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
+  const [bio, setBio] = useState("");
   const [phoneNumber, setPhoneNumber] = useState(0);
   const [experience, setExperience] = useState(0);
   const [pay, setPay] = useState(0);
@@ -104,11 +115,16 @@ const ApplyMentor = () => {
   const [gender, setGender] = useState("");
   const [availability, setAvailability] =
     useState<DaySchedule[]>(initialSchedule);
+  const [selectedDate, setSelectedDate] = React.useState<Dayjs | null>(
+    dayjs("")
+  );
   const [register, setRegister] = useState(false);
 
   const [formErrors, setFormErrors] = useState<FormErrors>({
     firstName: "",
     lastName: "",
+    gender: "",
+    dateOfBirth: "",
     email: "",
     phoneNumber: "",
     experience: "",
@@ -117,6 +133,12 @@ const ApplyMentor = () => {
     file: "",
     terms: "",
   });
+
+  useEffect(() => {
+    setFirstName(userDetails?.firstName ?? "");
+    setLastName(userDetails?.lastName ?? "");
+    setEmail(userDetails?.email ?? "");
+  }, [userDetails]);
 
   const handleFirstNameChange = (newValue: string) => {
     setFirstName(newValue);
@@ -134,9 +156,25 @@ const ApplyMentor = () => {
     }));
   };
 
+  const handleGenderChange = (newValue: string) => {
+    setGender(newValue);
+    setFormErrors((errors) => ({
+      ...errors,
+      gender: validateGender(newValue),
+    }));
+  };
+
   const handleEmailChange = (newValue: string) => {
     setEmail(newValue);
     setFormErrors((errors) => ({ ...errors, email: validateEmail(newValue) }));
+  };
+
+  const handleDateChange = (newValue: Dayjs | null) => {
+    setSelectedDate(newValue);
+    setFormErrors((errors) => ({
+      ...errors,
+      dateOfBirth: validateDateOfBirth(newValue),
+    }));
   };
 
   const handlePhoneNumberChange = (value: string) => {
@@ -223,6 +261,10 @@ const ApplyMentor = () => {
           endTime: a.to,
         }));
 
+      const formattedDate = selectedDate
+        ? dayjs(selectedDate).format("DD - MM - YYYY")
+        : "";
+
       let imageURL = "";
       if (gender == "Male") {
         imageURL =
@@ -237,13 +279,12 @@ const ApplyMentor = () => {
       }
 
       const ratings = "0";
-      const bio =
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi molestie, metus quis blandit mattis, ligula augue molestie lectus, id volutpat sem diam nec arcu. Sed vel tincidunt lacus, a sodales nisi. Vestibulum ac enim felis.";
 
       const mentorData = {
         firstName: firstName,
         lastName: lastName,
         gender: gender,
+        dateOfBirth: formattedDate,
         imageUrl: imageURL,
         ratings: ratings,
         bio: bio,
@@ -314,6 +355,7 @@ const ApplyMentor = () => {
                   onBlur={(e) => handleFirstNameChange(e.target.value)}
                   error={Boolean(formErrors.firstName)}
                   helperText={formErrors.firstName}
+                  disabled={!!userDetails?.firstName}
                 />
               </Grid>
               <Grid item xs={12} sm={4}>
@@ -327,6 +369,7 @@ const ApplyMentor = () => {
                   onBlur={(e) => handleLastNameChange(e.target.value)}
                   error={Boolean(formErrors.lastName)}
                   helperText={formErrors.lastName}
+                  disabled={!!userDetails?.lastName}
                 />
               </Grid>
               <Grid item xs={12} sm={4}>
@@ -337,14 +380,19 @@ const ApplyMentor = () => {
                     id="gender"
                     value={gender}
                     label="Gender"
-                    onChange={(e) => setGender(e.target.value)}
+                    onChange={(e) => handleGenderChange(e.target.value)}
+                    onBlur={(e) => handleGenderChange(e.target.value)}
+                    error={Boolean(formErrors.areaOfExpertise)}
                   >
                     <MenuItem value={"Male"}>Male</MenuItem>
                     <MenuItem value={"Female"}>Female</MenuItem>
                   </Select>
+                  <FormHelperText color="error">
+                    {formErrors.gender}
+                  </FormHelperText>
                 </FormControl>
               </Grid>
-              <Grid item xs={12}>
+              <Grid item xs={12} sm={4}>
                 <TextField
                   required
                   fullWidth
@@ -355,9 +403,22 @@ const ApplyMentor = () => {
                   onBlur={(e) => handleEmailChange(e.target.value)}
                   error={Boolean(formErrors.email)}
                   helperText={formErrors.email}
+                  disabled={!!userDetails?.email}
                 />
               </Grid>
-              <Grid item xs={12}>
+              <Grid item xs={12} sm={4}>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <DatePicker
+                    sx={{ width: "100%" }}
+                    value={selectedDate}
+                    onChange={(newValue) => handleDateChange(newValue)}
+                  />
+                  <FormHelperText color="error">
+                    {formErrors.dateOfBirth}
+                  </FormHelperText>
+                </LocalizationProvider>
+              </Grid>
+              <Grid item xs={12} sm={4}>
                 <TextField
                   required
                   fullWidth
@@ -374,6 +435,15 @@ const ApplyMentor = () => {
               </Grid>
               <Grid item xs={12}>
                 <TextField
+                  fullWidth
+                  id="bio"
+                  label="Bio"
+                  value={bio}
+                  onChange={(e) => setBio(e.target.value)}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
                   required
                   fullWidth
                   name="experience"
@@ -387,7 +457,7 @@ const ApplyMentor = () => {
                   helperText={formErrors.experience}
                 />
               </Grid>
-              <Grid item xs={12}>
+              <Grid item xs={12} sm={6}>
                 <FormControl fullWidth>
                   <InputLabel id="expertise-label">
                     Area of Expertise
@@ -511,6 +581,6 @@ const ApplyMentor = () => {
       </Box>
     </Grid>
   );
-};
+});
 
 export default ApplyMentor;

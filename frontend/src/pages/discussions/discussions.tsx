@@ -22,7 +22,6 @@ import {
   DiscussionSearchAndFilterModel,
 } from "../../models/discussions.model";
 import DiscussionCard from "../../components/Discussion/DiscussionCard";
-import Footer from "../../components/Footer/Footer";
 import { theme } from "../../utils/theme";
 
 const DiscussionsPage = () => {
@@ -39,7 +38,7 @@ const DiscussionsPage = () => {
   // Fetch list of discussions based on search and sort criteria
   useEffect(() => {
     updateDiscussions();
-    window.scrollTo({ top: 0, behavior: 'smooth' })
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }, [sortBy, page]);
 
   // function responsible to update the discussions
@@ -206,7 +205,6 @@ const DiscussionsPage = () => {
           <Pagination count={totalPage} page={page} onChange={changePage} />
         </Box>
       </Box>
-      <Footer />
     </>
   );
 };

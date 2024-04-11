@@ -1,12 +1,13 @@
 import { Button, Container, Grid, Paper, Typography } from "@mui/material";
 import PaymentForm from "../../components/payment-form/PaymentForm";
 import { observer } from "mobx-react";
-import { useStores } from "../../mobx/RootStore";
+import { useStores } from "../../stores/RootStore";
 import { useEffect, useState } from "react";
-import { ToastContainer } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import { ArrowBack } from "@mui/icons-material";
 import { useLocation, useNavigate } from "react-router-dom";
 import PaymentSuccessDialog from "../../components/payment-success-dialog/PaymentSuccessDialog";
+import { AxiosError } from "axios";
 
 const PaymentPage = observer(() => {
   const { paymentsStore, bookingStore } = useStores();
@@ -21,17 +22,24 @@ const PaymentPage = observer(() => {
   }, []);
 
   const handleSubmit = async () => {
-    const response = await paymentsStore.pay();
-    if (response.status === 201) {
-      setPaymentSuccessful(true);
-      await bookingStore.addMentorBooking(response.data.id);
-      paymentsStore.resetPayment();
-      bookingStore.resetBookMentor();
-      setTimeout(() => {
-        navigate(location?.state?.redirectUrl ?? "/");
-      }, 1000);
+    try {
+      const response = await paymentsStore.pay();
+      if (response.status === 201) {
+        setPaymentSuccessful(true);
+        await bookingStore.addMentorBooking(response.data.id);
+        paymentsStore.resetPayment();
+        bookingStore.resetBookMentor();
+        setTimeout(() => {
+          navigate(location?.state?.redirectUrl ?? "/");
+        }, 1000);
+      }
+      return response;
+    } catch (error) {
+      toast.error(
+        (error as AxiosError<{ message: string }, unknown>).response?.data
+          ?.message ?? "Invalid card details"
+      );
     }
-    return response;
   };
 
   const handleBack = () => {
@@ -73,7 +81,12 @@ const PaymentPage = observer(() => {
         </Grid>
         <Grid item xs={12} sm={5}>
           <Paper elevation={2} sx={{ px: 2, py: 3 }}>
-            <PaymentForm isPayment={true} onSubmit={handleSubmit} />
+            <PaymentForm
+              isPayment={true}
+              onSubmit={handleSubmit}
+              clearErrors={!!payment.paymentMethodId}
+              showConfirmation={true}
+            />
           </Paper>
         </Grid>
       </Grid>

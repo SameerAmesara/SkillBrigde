@@ -3,7 +3,7 @@ import { useState } from "react";
 import AddCardDialog from "../../components/add-card-dialog/AddCardDialog";
 import SavedCard from "../../components/saved-card/SavedCard";
 import { AddCircle } from "@mui/icons-material";
-import { useStores } from "../../mobx/RootStore";
+import { useStores } from "../../stores/RootStore";
 import { observer } from "mobx-react";
 
 const SavedCardsPage = observer(() => {
@@ -43,7 +43,7 @@ const SavedCardsPage = observer(() => {
           Add Card
         </Button>
       </Box>
-      <Box display="flex" flexDirection="column" gap={2}>
+      <Box display="flex" flexDirection="column" gap={2} minHeight={400}>
         {isCardsLoading ? (
           [1, 2, 3].map((value) => (
             <Skeleton
@@ -63,7 +63,9 @@ const SavedCardsPage = observer(() => {
             />
           ))
         ) : (
-          <Typography>No saved cards available!</Typography>
+          <Box minHeight={300}>
+            <Typography>No saved cards available!</Typography>
+          </Box>
         )}
       </Box>
     </Box>

@@ -1,3 +1,6 @@
+/**
+ * @author Om Anand (B00947378)
+ */
 import { Schema, model } from 'mongoose'
 import { Job } from '../types'
 
@@ -6,10 +9,9 @@ const jobSchema = new Schema<Job>({
     title: { type: String, required: true },
     description: { type: String, required: true },
     companyDetails: { type: String, required: true },
-    startDate: { type: Date, required: true },
+    createDate: { type: Date, required: true },
     experienceLevel: { type: String, required: true },
     type: { type: String, required: true },
-    minimumSalary: { type: String, required: true },
     userId: { type: String, required: true },
     city: { type: String, required: true },
     province: { type: String, required: true },

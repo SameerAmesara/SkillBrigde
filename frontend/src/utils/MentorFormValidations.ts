@@ -1,5 +1,7 @@
 // Validation utility functions for ApplyMentor form
 
+import dayjs from "dayjs";
+
 export const validateFirstName = (value: string): string => {
   if (!value.trim()) return "First name is required.";
   return "";
@@ -7,6 +9,11 @@ export const validateFirstName = (value: string): string => {
 
 export const validateLastName = (value: string): string => {
   if (!value.trim()) return "Last name is required.";
+  return "";
+};
+
+export const validateGender = (value: string): string => {
+  if (!value.trim()) return "Gender is required.";
   return "";
 };
 
@@ -51,5 +58,18 @@ export const validateFile = (file: File | null): string => {
 
 export const validateTerms = (isChecked: boolean): string => {
   if (!isChecked) return "You must accept the terms and conditions.";
+  return "";
+};
+
+export const validateDateOfBirth = (value: dayjs.Dayjs | null): string => {
+  if (!value) return "Date of birth is required.";
+
+  const currentDate = dayjs();
+  const minimumAgeDate = currentDate.subtract(18, "year");
+
+  if (value.isAfter(minimumAgeDate)) {
+    return "You must be at least 18 years old.";
+  }
+
   return "";
 };

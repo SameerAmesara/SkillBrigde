@@ -141,7 +141,7 @@ export default function SignUp() {
                 sessionStorage.setItem("email", email);
                 sessionStorage.setItem("isLoggedIn", "true");
                 reset();
-                navigate("/");
+                navigate("/dashboard");
                 setLoading(false);
               } else {
                 toast.error(
@@ -317,9 +317,7 @@ export default function SignUp() {
               </LocalizationProvider>
 
               {errors.dob && (
-                <Typography color="error">
-                  {errors.dob.message}
-                </Typography>
+                <Typography color="error">{errors.dob.message}</Typography>
               )}
             </Grid>
             <Grid item xs={12}>
