@@ -13,6 +13,7 @@ import {
   Pagination,
   SelectChangeEvent,
   useMediaQuery,
+  CircularProgress,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import { Link } from "react-router-dom";
@@ -25,6 +26,7 @@ import DiscussionCard from "../../components/Discussion/DiscussionCard";
 import { theme } from "../../utils/theme";
 
 const DiscussionsPage = () => {
+  const [loading, setloading] = useState(false);
   const [discussions, setDiscussions] = useState<DiscussionModel[]>([]);
   const [searchText, setSearchText] = useState("");
   const [sortBy, setSortBy] = useState<"newest" | "oldest" | "mostLiked">(
@@ -47,6 +49,7 @@ const DiscussionsPage = () => {
       searchText,
       sortBy,
     };
+    setloading(true);
     fetchDiscussions(searchAndFilter, page)
       .then((response) => {
         if (response.status === 200) {
@@ -55,8 +58,10 @@ const DiscussionsPage = () => {
         } else {
           setError(true);
         }
+        setloading(false);
       })
       .catch(() => {
+        setloading(false);
         setError(true);
       });
   };
@@ -186,7 +191,25 @@ const DiscussionsPage = () => {
             gap: "20px",
           }}
         >
-          {/* Conditionally rendering error and list of discussions */}
+          {/* Conditionally rendering loading, error and list of discussions */}
+          {loading && (
+            <Box
+            sx={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+              gap: "10px",
+            }}
+          >
+              <CircularProgress />
+              <Typography>Loading...</Typography>
+            </Box>
+          )}
           {error ? (
             <Box>
               <Typography variant="h5">

@@ -1,9 +1,6 @@
 /**
  * @author Tirth Bharatiya (B00955618)
  */
-/**
- * @author Tirth Bharatiya (B00955618)
- */
 import {
   Card,
   CardContent,
@@ -13,12 +10,18 @@ import {
   IconButton,
   Tooltip,
   Avatar,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Button,
 } from "@mui/material";
 import moment from "moment";
 import { DiscussionReplyModel } from "../../models/discussions.model";
 import { theme } from "../../utils/theme";
 import { Delete } from "@mui/icons-material";
-import React from "react";
+import React, { useState } from "react";
 import { formatContent } from "../../pages/discussions/discussion";
 
 const ReplyCard: React.FC<{
@@ -31,6 +34,7 @@ const ReplyCard: React.FC<{
   const formattedDate = moment(discussionReply.timestamp).format(
     "MMMM Do YYYY"
   );
+  const [confirmOpen, setConfirmOpen] = useState<boolean>(false);
 
   // This function will call the callback function from props to delete the reply.
   const delteReply = () => {
@@ -38,6 +42,7 @@ const ReplyCard: React.FC<{
   };
 
   return (
+    <>
     <Card variant="outlined" sx={{ marginBottom: "10px" }}>
       <CardContent>
         {/* User information and delete option if user is author of reply */}
@@ -95,7 +100,7 @@ const ReplyCard: React.FC<{
             <Box>
               <Tooltip title="Delete">
                 <IconButton
-                  onClick={delteReply}
+                  onClick={() => {setConfirmOpen(true)}}
                   color="primary"
                   aria-label="delete"
                 >
@@ -121,6 +126,42 @@ const ReplyCard: React.FC<{
         </Box>
       </CardContent>
     </Card>
+
+    <Dialog
+        open={confirmOpen}
+        onClose={() => {
+          setConfirmOpen(false);
+        }}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">Confirm Submission</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Are you sure you want to delete this reply?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button
+          color="error"
+            onClick={() => {
+              setConfirmOpen(false);
+            }}
+          >
+            Cancel
+          </Button>
+          <Button
+            onClick={() => {
+              setConfirmOpen(false);
+              delteReply();
+            }}
+            autoFocus
+          >
+            Confirm
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </>
   );
 };
 
