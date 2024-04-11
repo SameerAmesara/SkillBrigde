@@ -197,7 +197,7 @@ const NewDiscussion = () => {
           </Typography>
           <TextField
             required
-            placeholder="Choose a title 5 to 20 characters long."
+            placeholder="Choose a title 5 to 50 characters long."
             value={formData.title}
             error={!!validationErrors.title}
             helperText={validationErrors.title}
