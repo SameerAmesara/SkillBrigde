@@ -1,3 +1,6 @@
+/**
+ * @author Drashti Navadiya (B00948838)
+ */
 import * as React from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";

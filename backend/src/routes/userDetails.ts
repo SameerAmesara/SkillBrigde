@@ -1,9 +1,16 @@
+/**
+ * @author Drashti Navadiya (B00948838)
+ */
 import express, { Request, Response } from "express";
 import userService from "../services/userDetailsService";
 import UserDetailsModel from "../models/userDetails";
 
 const router = express.Router();
 
+/**
+ * @param {Request} req - The request object containing user data.
+ * @param {Response} res - The response object for sending back data or errors.
+ */
 router.get("/", async (_req: Request, res: Response) => {
   try {
     const users = await userService.getAllUsers();
@@ -13,6 +20,10 @@ router.get("/", async (_req: Request, res: Response) => {
   }
 });
 
+/**
+ * @param {Request} req - The request object containing the user ID.
+ * @param {Response} res - The response object for sending back data or errors.
+ */
 router.get("/:uid", async (req: Request, res: Response) => {
   try {
     const uid = req.params.uid;
@@ -27,6 +38,10 @@ router.get("/:uid", async (req: Request, res: Response) => {
   }
 });
 
+/**
+ * @param {Request} req - The request object containing user data to be added.
+ * @param {Response} res - The response object for sending back data or errors.
+ */
 router.post("/add", async (req: Request, res: Response) => {
   try {
     const {
@@ -71,6 +86,11 @@ router.post("/add", async (req: Request, res: Response) => {
   }
 });
 
+
+/**
+ * @param {Request} req - The request object containing the user ID to be updated.
+ * @param {Response} res - The response object for sending back data or errors.
+ */
 router.put("/:uid", async (req: Request, res: Response) => {
   try {
     const uid = req.params.uid;
@@ -94,6 +114,10 @@ router.put("/:uid", async (req: Request, res: Response) => {
   }
 });
 
+/**
+ * @param {Request} req - The request object containing the user ID to be deleted.
+ * @param {Response} res - The response object for sending back data or errors.
+ */
 router.delete("/:id", async (req: Request, res: Response) => {
   try {
     const _id = req.params.id;
