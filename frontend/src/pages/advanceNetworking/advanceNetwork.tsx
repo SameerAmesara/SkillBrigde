@@ -46,6 +46,7 @@ const AdvanceNetworkPage: React.FC = () => {
   const [selectedUserId, setSelectedUserId] = useState("");
   const [selectedAction, setSelectedAction] = useState("");
   const [showMessage, setShowMessage] = useState(false);
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
   // function to handle search bar.
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -325,8 +326,10 @@ const AdvanceNetworkPage: React.FC = () => {
             <Box
               sx={{
                 display: "flex",
+                flexDirection: isSmallScreen ? "column" : "row",
                 justifyContent: "center",
                 marginBottom: "20px",
+                gap: "10px"
               }}
             >
               {/* Search bar */}
@@ -335,7 +338,7 @@ const AdvanceNetworkPage: React.FC = () => {
                 variant="outlined"
                 value={searchTerm}
                 onChange={handleSearchChange}
-                sx={{ borderRadius: "20px", width: "45%", marginRight: "5%" }}
+                sx={{ borderRadius: "4px", width: "100%"}}
               />
 
               {/* Sort By filter */}
@@ -344,7 +347,7 @@ const AdvanceNetworkPage: React.FC = () => {
                 onChange={(e) => setSortBy(e.target.value as string)}
                 displayEmpty
                 inputProps={{ "aria-label": "Sort By" }}
-                sx={{ borderRadius: "20px", width: "20%" }}
+                sx={{ borderRadius: "4px", minWidth: isSmallScreen ? "0px" : "300px" }}
               >
                 <MenuItem
                   value="myconnections"
@@ -381,11 +384,7 @@ const AdvanceNetworkPage: React.FC = () => {
                     <Card
                       key={user.uid}
                       sx={{
-                        width: evenMoreSmall
-                          ? "60%"
-                          : isMobileSize
-                          ? "35%"
-                          : "22%",
+                        width: "300px",
                         margin: "16px",
                         padding: "2%",
                       }}

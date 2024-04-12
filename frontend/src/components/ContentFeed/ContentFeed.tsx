@@ -653,7 +653,7 @@ export default function ContentFeed() {
           }}
         >
           <TextField
-            placeholder="Search by feed..."
+            placeholder="Search"
             fullWidth
             variant="outlined"
             style={{
@@ -674,7 +674,7 @@ export default function ContentFeed() {
                 </InputAdornment>
               ),
               style: {
-                borderRadius: "48px",
+                borderRadius: "4px",
                 height: "100%",
               },
             }}

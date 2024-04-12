@@ -135,7 +135,7 @@ const DiscussionsPage = () => {
               display: "flex",
               flexDirection: "row",
               border: "1px solid #ccc",
-              borderRadius: "10px",
+              borderRadius: "4px",
               width: "100%",
               padding: "5px",
               paddingLeft: "10px",
