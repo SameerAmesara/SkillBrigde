@@ -14,11 +14,6 @@ export const faqContentContact: { question: string; answer: string }[] = [
     answer:
       "Currently, we offer support primarily via email and our faq page. We aim to respond to all inquiries within 24 hours.",
   },
-  {
-    question: "Where does it come from?",
-    answer:
-      "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source.",
-  },
 ];
 
 export const faqContentAbout: { question: string; answer: string }[] = [
@@ -91,5 +86,11 @@ export const faqContentGetStarted: { question: string; answer: string }[] = [
     question: "Can I use SkillBridge for finding a mentor?",
     answer:
       "Yes, our Mentorship Program feature enables you to connect with experienced professionals willing to provide guidance and support. You can apply to become a mentor or find a mentor by accessing the Mentorship Program section in the app.",
+  },
+  {
+    question:
+      "What is the difference between the Content Feed and Discussions on SkillBridge?",
+    answer:
+      "The Content Feed is a dynamic stream where you can find the latest updates, posts from other users, and news relevant to your interests and field. It's a place for quick browsing to stay informed and engaged with what's happening in your professional community. \n \nOn the other hand, Discussions is a feature dedicated to deeper engagement through conversation. Here, you can start or participate in discussions on a variety of topics, ask questions, and share your insights. Discussions are typically more focused and thematic, allowing for a more in-depth exchange of ideas and knowledge.\n \nIn short, the Content Feed is your go-to for quick updates and browsing, while Discussions is where you connect with others to dive deeper into specific subjects.",
   },
 ];
