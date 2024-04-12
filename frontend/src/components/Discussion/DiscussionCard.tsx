@@ -51,7 +51,7 @@ const DiscussionCard: React.FC<{ discussion: DiscussionModel }> = ({
       <Card variant="outlined" sx={{ borderRadius: "10px" }}>
         <CardContent>
           <Box>
-            <Box sx={{ display: "flex", flexDirection: "row", justifyContent: "space-between", alignContent: "center" }}>
+            <Box sx={{ display: "flex", flexDirection: isSmallScreen ? "column" : "row", justifyContent: "space-between", alignContent: "center" }}>
             {/* Title of discussion */}
             <Typography variant="h6">{discussion.title}</Typography>
             <Button variant="contained" onClick={() => {navigate(discussionUrl)}}>View discussion</Button>

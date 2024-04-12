@@ -1,9 +1,6 @@
 /**
  * @author Tirth Bharatiya (B00955618)
  */
-/**
- * @author Tirth Bharatiya (B00955618)
- */
 import {
   Box,
   Card,
