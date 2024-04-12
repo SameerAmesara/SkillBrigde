@@ -1,3 +1,6 @@
+/**
+ * @author Drashti Navadiya (B00948838)
+ */
 import { Schema, model } from "mongoose";
 import { UserDetails } from "../types";
 

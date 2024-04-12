@@ -39,13 +39,6 @@ export default function Footer() {
           }}
         >
           <Box sx={{ width: { xs: "100%", sm: "60%" } }}>
-            {/* <Box sx={{ ml: "-15px" }}>
-              <img
-                src={"src/assets/logo.png"}
-                style={logoStyle}
-                alt="logo of sitemark"
-              />
-            </Box> */}
             <Typography variant="body2" fontWeight={600} gutterBottom>
               Newsletter
             </Typography>
@@ -119,26 +112,6 @@ export default function Footer() {
             Press
           </Link>
         </Box>
-        <Box
-          sx={{
-            display: { xs: "none", sm: "flex" },
-            flexDirection: "column",
-            gap: 1,
-          }}
-        >
-          <Typography variant="body2" fontWeight={600}>
-            Legal
-          </Typography>
-          <Link color="text.secondary" href="#">
-            Terms
-          </Link>
-          <Link color="text.secondary" href="#">
-            Privacy
-          </Link>
-          <Link color="text.secondary" href="#">
-            Contact
-          </Link>
-        </Box>
       </Box>
       <Box
         sx={{
@@ -150,17 +123,6 @@ export default function Footer() {
           borderColor: "divider",
         }}
       >
-        <div>
-          <Link color="text.secondary" href="#">
-            Privacy Policy
-          </Link>
-          <Typography display="inline" sx={{ mx: 0.5, opacity: 0.5 }}>
-            &nbsp;•&nbsp;
-          </Typography>
-          <Link color="text.secondary" href="#">
-            Terms of Service
-          </Link>
-        </div>
         <Stack
           direction="row"
           justifyContent="left"
