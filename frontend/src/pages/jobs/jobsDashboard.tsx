@@ -4,7 +4,7 @@
 import React, { useEffect, useState } from 'react'
 import Job from '../../components/job/jobCard'
 import { useNavigate } from 'react-router-dom'
-import { Button, Grid, SelectChangeEvent, Stack, Typography } from '@mui/material'
+import { Box, Button, CircularProgress, Grid, SelectChangeEvent, Stack, Switch, Typography } from '@mui/material'
 import Search from '../../components/job/jobSearch'
 import { JobModel, experienceLevels, jobTypes, locationProvinces } from '../../models/jobs.model'
 import { getAllJobs } from './job'
@@ -25,6 +25,9 @@ const JobsDashboard: React.FC = () => {
         experienceLevel: "",
         jobType: "",
     })
+    const [showMyJobs, setShowMyJobs] = useState<boolean>(false);
+    const [userId, setUserId] = useState("");
+    const [isLoading, setLoading] = useState(false);
 
     const getJobs = () => {
         getAllJobs()
@@ -38,7 +41,11 @@ const JobsDashboard: React.FC = () => {
     }
 
     useEffect(() => {
+        setLoading(true)
         getJobs()
+        const storedUserId = sessionStorage.getItem("userId")!;
+        setUserId(storedUserId);
+        setLoading(false)
     }, [])
 
 
@@ -65,6 +72,7 @@ const JobsDashboard: React.FC = () => {
         && (filter.province === '' || job.province === filter.province)
         && (filter.experienceLevel === '' || job.experienceLevel === filter.experienceLevel)
         && (filter.jobType === '' || job.type === filter.jobType)
+        && ((showMyJobs ? job.userId === userId : true))
     )
 
     // Function to handle job click event, navigate to job details page
@@ -83,7 +91,7 @@ const JobsDashboard: React.FC = () => {
                 <Grid item xs={12}>
                     <Grid container justifyContent="space-between">
                         <Typography variant="h2">Jobs</Typography>
-                        <Button variant="contained" onClick={handleCreateJobClick} sx={{margin: "10px"}}>Create Job</Button>
+                        <Button variant="contained" onClick={handleCreateJobClick} sx={{ margin: "10px" }}>Create Job</Button>
                     </Grid>
                 </Grid>
                 <Search onSearchChange={handleSearchChange} />
@@ -113,30 +121,48 @@ const JobsDashboard: React.FC = () => {
                                 enumValues={experienceLevels}
                             />
                         </Grid>
+                        <Grid item>
+                            <Box sx={{ width: 200, display: 'flex', justifyContent: 'center' }}>
+                                <Box>
+                                    <Typography variant="h6">My Jobs</Typography>
+                                    <Switch
+                                        checked={showMyJobs}
+                                        onChange={() => setShowMyJobs(!showMyJobs)}
+                                    />
+                                </Box>
+                            </Box>
+                        </Grid>
                     </Grid>
                 </Grid>
                 <Grid item xs={12}>
 
                     <Stack direction='column'>
+                        {isLoading
+                            ? (
+                                <Box sx={{ width: '100%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                                    <CircularProgress />
+                                </Box>
+                            ) : (
+                                <>
+                                    {filteredJobs && filteredJobs.map(job => (
 
-                        {filteredJobs.length === 0 &&
+                                        <Job key={job.id}
+                                            title={job.title}
+                                            province={job.province}
+                                            description={job.description}
+                                            onButtonClick={() => handleJobClick(job.id)}
+                                        />
 
-                            <Typography variant="h5" textAlign='center'>
-                                No jobs found with given input "{searchTerm}".<br />
-                                Please try again.
-                            </Typography>
-                        }
-
-                        {filteredJobs && filteredJobs.map(job => (
-
-                            <Job key={job.id}
-                                title={job.title}
-                                province={job.province}
-                                description={job.description}
-                                onButtonClick={() => handleJobClick(job.id)}
-                            />
-
-                        ))}
+                                    ))}
+                                    {
+                                        filteredJobs.length === 0 &&
+                                        <Typography variant="h5" textAlign='center'>
+                                            No jobs found with given input "{searchTerm}".<br />
+                                            Please try again.
+                                        </Typography>
+                                    }
+                                </>
+                            )}
                     </Stack>
 
                 </Grid>
