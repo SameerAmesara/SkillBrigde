@@ -4,7 +4,7 @@
 import React, { useEffect, useState } from 'react'
 import Job from '../../components/job/jobCard'
 import { useNavigate } from 'react-router-dom'
-import { Button, Grid, SelectChangeEvent, Stack, Switch, Typography } from '@mui/material'
+import { Box, Button, Grid, SelectChangeEvent, Stack, Switch, Typography } from '@mui/material'
 import Search from '../../components/job/jobSearch'
 import { JobModel, experienceLevels, jobTypes, locationProvinces } from '../../models/jobs.model'
 import { getAllJobs } from './job'
@@ -119,11 +119,15 @@ const JobsDashboard: React.FC = () => {
                             />
                         </Grid>
                         <Grid item>
-                            <Typography variant="h6">My Jobs</Typography>
-                            <Switch
-                                checked={showMyJobs}
-                                onChange={() => setShowMyJobs(!showMyJobs)}
-                            />
+                            <Box sx={{ width: 200, display: 'flex', justifyContent: 'center' }}>
+                                <Box>
+                                    <Typography variant="h6">My Jobs</Typography>
+                                    <Switch
+                                        checked={showMyJobs}
+                                        onChange={() => setShowMyJobs(!showMyJobs)}
+                                    />
+                                </Box>
+                            </Box>
                         </Grid>
                     </Grid>
                 </Grid>
