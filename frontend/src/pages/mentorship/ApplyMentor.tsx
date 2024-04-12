@@ -115,9 +115,8 @@ const ApplyMentor = observer(() => {
   const [gender, setGender] = useState("");
   const [availability, setAvailability] =
     useState<DaySchedule[]>(initialSchedule);
-  const [selectedDate, setSelectedDate] = React.useState<Dayjs | null>(
-    dayjs("")
-  );
+  const [selectedDate, setSelectedDate] = React.useState<Dayjs | null>(null);
+
   const [register, setRegister] = useState(false);
 
   const [formErrors, setFormErrors] = useState<FormErrors>({
@@ -411,6 +410,7 @@ const ApplyMentor = observer(() => {
                   <DatePicker
                     sx={{ width: "100%" }}
                     value={selectedDate}
+                    label="Date of Birth"
                     onChange={(newValue) => handleDateChange(newValue)}
                   />
                   <FormHelperText color="error">
