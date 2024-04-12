@@ -189,6 +189,7 @@ const DiscussionsPage = () => {
             justifyContent: "center",
             alignItems: "center",
             gap: "20px",
+            minHeight: "100vh"
           }}
         >
           {/* Conditionally rendering loading, error and list of discussions */}

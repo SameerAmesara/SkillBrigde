@@ -158,7 +158,7 @@ const DiscussionView = () => {
     */
   const DiscussionHeader = () => {
     return (
-      <Box sx={{ marginBottom: 2 }}>
+      <Box sx={{ marginBottom: 2}}>
         <Box
           sx={{
             display: "flex",
@@ -373,6 +373,7 @@ const DiscussionView = () => {
           justifyContent: "center",
           alignItems: "center",
           gap: "10px",
+          minHeight: "100vh"
         }}
       >
         <CircularProgress />
