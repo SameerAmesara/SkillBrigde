@@ -71,7 +71,10 @@ const FindMentor = observer(() => {
   }, [userDetails, mentors]);
 
   if (loading) {
-    return <CircularProgress />;
+    return (
+      <Box sx={{minHeight: "100vh"}}>
+        <CircularProgress />
+      </Box>);
   }
 
   if (error) {
