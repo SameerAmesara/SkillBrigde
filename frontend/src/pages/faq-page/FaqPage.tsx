@@ -43,7 +43,9 @@ const FaqPage = () => {
               <Typography fontWeight={500}>{faq.question}</Typography>
             </AccordionSummary>
             <AccordionDetails>
-              <Typography>{faq.answer}</Typography>
+              <Typography sx={{ whiteSpace: "pre-line" }}>
+                {faq.answer}
+              </Typography>
             </AccordionDetails>
           </Accordion>
         );
