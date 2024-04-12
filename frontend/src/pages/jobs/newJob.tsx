@@ -10,6 +10,10 @@ import {
   TextField,
   SelectChangeEvent,
   Stack,
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogActions,
 } from "@mui/material";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -29,6 +33,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { InputSelect } from "../../components/inputs/select";
 import { InputTextSingleLine } from "../../components/inputs/singleLine";
 import { InputTextMultiLine } from "../../components/inputs/multiLine";
+import JobDetailComponent from "../../components/job/jobDetailComponent";
 
 const NewJob = () => {
   const navigate = useNavigate();
@@ -56,6 +61,7 @@ const NewJob = () => {
     city: "",
     province: "",
   });
+  const [confirmCreateOpen, setConfirmCreateOpen] = useState(false)
 
   const navigateBackToJobs = () => {
     navigate("/jobs");
@@ -112,26 +118,30 @@ const NewJob = () => {
     return Object.keys(errors).length === 0;
   };
 
-  const submitJob = (e: React.FormEvent) => {
+  const handleInitialSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const isValid = validateForm();
     if (isValid) {
-      createJob(formData)
-        .then((response) => {
-          if (response.status === 200) {
-            setFeedbackMessage("Job created successfully.");
-            setTimeout(() => {
-              navigateBackToJobs();
-            }, 2000);
-          } else {
-            console.log("Error while saving ", formData);
-            setFeedbackMessage("Something went wrong. Please try again later.");
-          }
-        })
-        .catch(() => {
-          setFeedbackMessage("Something went wrong. Please try again later.");
-        });
+      setConfirmCreateOpen(true)
     }
+  }
+
+  const submitJob = () => {
+    createJob(formData)
+      .then((response) => {
+        if (response.status === 200) {
+          setFeedbackMessage("Job created successfully.");
+          setTimeout(() => {
+            navigateBackToJobs();
+          }, 2000);
+        } else {
+          console.log("Error while saving ", formData);
+          setFeedbackMessage("Something went wrong. Please try again later.");
+        }
+      })
+      .catch(() => {
+        setFeedbackMessage("Something went wrong. Please try again later.");
+      });
   };
 
   return (
@@ -255,9 +265,23 @@ const NewJob = () => {
         </Box>
 
         <Box sx={{ display: "flex", gap: "10px" }}>
-          <Button variant="contained" onClick={submitJob}>
+          <Button variant="contained" onClick={handleInitialSubmit}>
             Create
           </Button>
+          <Dialog open={confirmCreateOpen} onClose={() => setConfirmCreateOpen(false)}>
+            <DialogTitle>Confirm job details</DialogTitle>
+            <DialogContent>
+              <JobDetailComponent job={formData} />
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={() => setConfirmCreateOpen(false)} color="primary">
+                Cancel
+              </Button>
+              <Button color="primary" autoFocus onClick={submitJob} >
+                Create
+              </Button>
+            </DialogActions>
+          </Dialog>
           <Button variant="outlined" onClick={navigateBackToJobs}>
             Cancel
           </Button>
