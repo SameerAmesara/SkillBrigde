@@ -69,7 +69,7 @@ networkingrouter.post("/handleRequestSent", async (req: Request, res: Response) 
   }
 });
 
-networkingrouter.post("/handleRequestReceived", async (req: Request, res: Response) => {
+networkingrouter.post("/handleRequestReceivedAccept", async (req: Request, res: Response) => {
   try {
     const { userUid, loggedInUserId } = req.body;
 
@@ -79,7 +79,26 @@ networkingrouter.post("/handleRequestReceived", async (req: Request, res: Respon
     }
 
     // Call networking service to handle request received
-    await networkingService.handleRequestReceived(userUid, loggedInUserId);
+    await networkingService.handleRequestReceivedAccept(userUid, loggedInUserId);
+
+    res.status(200).json({ message: "Request received handled successfully" });
+    return;
+  } catch (error: any) {
+    return res.status(500).json({ error: error.message });
+  }
+});
+
+networkingrouter.post("/handleRequestReceivedReject", async (req: Request, res: Response) => {
+  try {
+    const { userUid, loggedInUserId } = req.body;
+    console.log(userUid , loggedInUserId)
+    // Check if userUid and loggedInUserId are provided
+    if (!userUid || !loggedInUserId) {
+      return res.status(400).json({ error: "userUid and loggedInUserId are required" });
+    }
+
+    // Call networking service to handle request received
+    await networkingService.handleRequestReceivedReject(userUid, loggedInUserId);
 
     res.status(200).json({ message: "Request received handled successfully" });
     return;

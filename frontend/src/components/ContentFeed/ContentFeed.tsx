@@ -17,6 +17,7 @@ import {
   AccordionSummary,
   Button,
   CardActionArea,
+  CircularProgress,
   Collapse,
   Dialog,
   DialogActions,
@@ -42,6 +43,7 @@ import MuiAlert from "@mui/material/Alert";
 import DeleteIcon from "@mui/icons-material/Delete";
 import axios from "axios";
 import { getToken } from "../../utils/helpers";
+import Skeleton from '@mui/material/Skeleton';
 
 //function to render content
 function renderContent(content: any) {
@@ -170,9 +172,11 @@ export default function ContentFeed() {
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const handleCloseSnackbar = () => {
     setOpenSnackbar(false);
+    setSnackBarLike(false)
   };
   //SnackBarEnds
 
+  const [loading, setLoading] = useState<boolean>(false);
   //Content Feed Starts
   const handlePost = () => {
     const textareaElement = document.querySelector("textarea");
@@ -211,6 +215,7 @@ export default function ContentFeed() {
         return response.json();
       })
       .then((data) => {
+        setLoading(true);
         console.log("Post successful:", data);
         setOpenSnackbar(true); // Open snackbar for successful post
         setSnackbarMessage("Post successful");
@@ -225,6 +230,7 @@ export default function ContentFeed() {
               const dateB = new Date(b.datePublish).getTime();
               return dateB - dateA; // Sort in descending order
             });
+            setLoading(false);
             setContentFeeds(data); // Update contentFeeds state with fetched data
             setCurrentPage(1);
           })
@@ -251,7 +257,7 @@ export default function ContentFeed() {
     setCommentInput(e.target.value);
   };
   const [selectedFeedIndices, setSelectedFeedIndices] = useState<number[]>([]);
-
+  const [SnackBarLike, setSnackBarLike] = useState(false)
   const handleThumbClick = async (
     feedId: string,
     userId: string,
@@ -266,6 +272,7 @@ export default function ContentFeed() {
         setSelectedFeedIndices([...selectedFeedIndices, index]);
         updatedLikes += 1;
         apiEndpoint = "likes";
+        setSnackBarLike(true)
       } else {
         const updatedIndices = [...selectedFeedIndices];
         updatedIndices.splice(selectedIndex, 1);
@@ -293,6 +300,8 @@ export default function ContentFeed() {
           });
           setContentFeeds(data);
         });
+
+
     } catch (error) {
       console.error("Error toggling like:", error);
     }
@@ -403,6 +412,7 @@ export default function ContentFeed() {
         });
       // Handle successful deletion, e.g., update UI or fetch updated data
       console.log("Feed deleted successfully");
+      setFeedDelete(false)
     } catch (error) {
       console.error("Error deleting feed:", error);
       // Handle error, show error message to user, etc.
@@ -495,6 +505,20 @@ export default function ContentFeed() {
     setCurrentPage(page);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
+
+
+  const [showConfirmation, setShowConfirmation] = useState(false); // State to control dialog visibility
+
+  const handleConfirmPost = (feedId: any, userId: any) => {
+    handleAddComment(feedId, userId);
+    setShowConfirmation(false); // Close dialog after confirming
+  };
+
+  const [deleteComment, setDeleteComment] = useState(false)
+
+  const [feedDelete, setFeedDelete] = useState(false)
+
+
 
   return (
     <>
@@ -608,6 +632,12 @@ export default function ContentFeed() {
         </Card>
       )}
 
+      {loading && (
+        <CircularProgress
+          style={{ position: "absolute", top: "50%", left: "50%"  , zIndex:'5'}}
+        />
+      )}
+
       {/* COntent feed , searching and sorting bars */}
       <div
         style={{
@@ -688,7 +718,7 @@ export default function ContentFeed() {
                 value={"Current User"}
                 onClick={() => handleFilterBasedOnId(userId)}
               >
-                Current User
+                Filter by Current User
               </MenuItem>
             </Select>
           </FormControl>
@@ -756,164 +786,247 @@ export default function ContentFeed() {
           </Dialog>
         </div>
 
-        {currentItems.map((feed, index) => (
-          <div
-            key={index}
-            style={{
-              border: "2px solid rgb(204, 204, 204)",
-              padding: "10px",
-              marginLeft: "0%",
-              width: "100%",
-              textAlign: "center",
-              marginBottom: "3%",
-              borderRadius: "10px",
-            }}
-          >
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-              }}
-            >
-              <div style={{ display: "flex", alignItems: "center" }}>
-                <Avatar alt="User Avatar" src={feed.image} />
-                <Typography
-                  style={{ textAlign: "left", marginLeft: "10px" }}
-                  variant="h6"
-                >
-                  {feed.name}
-                </Typography>
-              </div>
-
-              {/* Conditionally render delete icon on the right */}
-              {feed.id === userId && (
-                <IconButton
-                  style={{
-                    zIndex: 1,
-                  }}
-                  onClick={() => handleDeleteFeed(feed._id)}
-                  aria-label="delete-feed"
-                >
-                  <DeleteIcon style={{ color: "primary" }} />
-                </IconButton>
-              )}
-            </div>
-
-            <div style={{ textAlign: "left", margin: "2%" }}>
-              {renderContent(feed.feed)}
-            </div>
-            <div
-              style={{
-                display: "flex",
-                textAlign: "center",
-                justifyContent: "space-around",
-                marginBottom: "2%",
-              }}
-            >
-              <ThumbUpIcon
+        {currentItems.length === 0 ? (
+          // Skeleton Loader
+          <>
+            {[...Array(5)].map((_, index) => (
+              <div
+                key={index}
                 style={{
-                  margin: "0 10px",
-                  cursor: "pointer",
-                  color: feed.likes.userIds.includes(userId)
-                    ? "#071541"
-                    : "grey", // Check if tempId is in the user likes
-                }}
-                onClick={() => handleThumbClick(feed._id, userId, index)} // Pass necessary parameters to handleThumbClick
-              />
-              <span
-                style={{
-                  marginLeft: evenMoreSmall
-                    ? "-32%"
-                    : isMobileSize
-                    ? "-41%"
-                    : "-43%",
+                  border: "2px solid rgb(204, 204, 204)",
+                  padding: "10px",
+                  marginLeft: "0%",
+                  width: "100%",
+                  textAlign: "center",
+                  marginBottom: "3%",
+                  borderRadius: "10px",
                 }}
               >
-                {feed.likes.count}
-              </span>
-              <CommentIcon
-                style={{ margin: "0 10px", cursor: "pointer" }}
-                onClick={() => handleCommentClick(index)}
-              />
-            </div>
-            {expandedIndex === index && (
-              <div>
-                <div style={{ position: "relative", width: "100%" }}>
-                  <input
-                    style={{
-                      width: "calc(100%)", // Adjust icon button width (56px) from input width
-                      border: "1px solid rgb(204, 204, 204)",
-                      padding: "3%",
-                      borderRadius: "10px",
-                    }}
-                    type="text"
-                    value={commentInput}
-                    onChange={handleCommentInputChange}
-                    placeholder="Add a comment"
-                  />
-                  <IconButton
-                    style={{
-                      position: "absolute",
-                      top: "-3px",
-                      right: 0,
-                      padding: "2.5%",
-                    }}
-                    onClick={() => handleAddComment(feed._id, userId)}
-                    aria-label="add-comment"
+                <Skeleton width={40} height={40} />
+                <Skeleton width={100} />
+                <Skeleton width={40} height={40} />
+                <Skeleton width={"80%"} height={50} />
+                <Skeleton width={40} height={40} />
+                <Skeleton width={30} />
+                <Skeleton width={40} height={40} />
+              </div>
+            ))}
+          </>
+        ) : (
+          // Display actual content
+          currentItems.map((feed, index) => (
+            <div
+              key={index}
+              style={{
+                border: "2px solid rgb(204, 204, 204)",
+                padding: "10px",
+                marginLeft: "0%",
+                width: "100%",
+                textAlign: "center",
+                marginBottom: "3%",
+                borderRadius: "10px",
+              }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                }}
+              >
+                <div style={{ display: "flex", alignItems: "center" }}>
+                  <Avatar alt="User Avatar" src={feed.image} />
+                  <Typography
+                    style={{ textAlign: "left", marginLeft: "10px" }}
+                    variant="h6"
                   >
-                    <PostAddIcon />
-                  </IconButton>
+                    {feed.name}
+                  </Typography>
                 </div>
 
-                {feed.comments.length > 0 ? (
-                  <div style={{ padding: "1%", margin: "2% 0%" }}>
-                    {feed.comments.map((comment: any) => (
-                      <div
+                {
+                  feed.id === userId &&
+                  (
+                    <div>
+                      <IconButton
                         style={{
-                          border: "1px solid #ccc",
-                          padding: "1%",
-                          position: "relative",
+                          zIndex: 1,
                         }}
+                        onClick={() => setFeedDelete(true)}
+                        aria-label="delete-feed"
                       >
-                        <div key={comment.id} style={{ display: "flex" }}>
-                          <div style={{ display: "flex", flex: 1 }}>
-                            <Avatar alt="User Avatar" src={comment.image} />
+                        <DeleteIcon style={{ color: "primary" }} />
+                      </IconButton>
+
+                      <Dialog
+                        open={feedDelete}
+                        onClose={() => setFeedDelete(false)}
+                      >
+                        <DialogTitle>Confirm Post</DialogTitle>
+                        <DialogContent>
+                          <Typography variant="body1">Are you sure you want to delete this Feed?</Typography>
+                        </DialogContent>
+                        <DialogActions>
+                          <Button onClick={() => setFeedDelete(false)} color="primary">Cancel</Button>
+                          <Button onClick={() => handleDeleteFeed(feed._id)} color="primary">Delete</Button>
+                        </DialogActions>
+                      </Dialog>
+                    </div>
+
+                  )
+                }
+              </div>
+
+              <div style={{ textAlign: "left", margin: "2%" }}>
+                {renderContent(feed.feed)}
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  textAlign: "center",
+                  justifyContent: "space-around",
+                  marginBottom: "2%",
+                }}
+              >
+                <ThumbUpIcon
+                  style={{
+                    margin: "0 10px",
+                    cursor: "pointer",
+                    color: feed.likes.userIds.includes(userId)
+                      ? "#071541"
+                      : "grey",
+                    transition: "color 0.3s ease", // Check if tempId is in the user likes
+                  }}
+                  onClick={() => handleThumbClick(feed._id, userId, index)} // Pass necessary parameters to handleThumbClick
+                />
+                <span
+                  style={{
+                    marginLeft: evenMoreSmall
+                      ? "-32%"
+                      : isMobileSize
+                        ? "-41%"
+                        : "-43%",
+                  }}
+                >
+                  {feed.likes.count}
+                </span>
+                <CommentIcon
+                  style={{ margin: "0 10px", cursor: "pointer" }}
+                  onClick={() => handleCommentClick(index)}
+                />
+              </div>
+              {expandedIndex === index && (
+                <div>
+                  <div style={{ position: "relative", width: "100%" }}>
+                    <input
+                      style={{
+                        width: "calc(100%)", // Adjust icon button width (56px) from input width
+                        border: "1px solid rgb(204, 204, 204)",
+                        padding: "3%",
+                        borderRadius: "10px",
+                      }}
+                      type="text"
+                      value={commentInput}
+                      onChange={handleCommentInputChange}
+                      placeholder="Add a comment"
+                    />
+                    <IconButton
+                      style={{
+                        position: "absolute",
+                        top: "-3px",
+                        right: 0,
+                        padding: "2.5%",
+                      }}
+                      onClick={() => setShowConfirmation(true)}
+                      aria-label="add-comment"
+                    >
+                      <PostAddIcon />
+                    </IconButton>
+                  </div>
+
+                  {/* Dialog for confirmation */}
+                  <Dialog
+                    open={showConfirmation}
+                    onClose={() => setShowConfirmation(false)}
+                  >
+                    <DialogTitle>Confirm Post</DialogTitle>
+                    <DialogContent>
+                      <Typography variant="body1">Are you sure you want to post this comment?</Typography>
+                    </DialogContent>
+                    <DialogActions>
+                      <Button onClick={() => setShowConfirmation(false)} color="primary">Cancel</Button>
+                      <Button onClick={() => handleConfirmPost(feed._id, userId)} color="primary">Post</Button>
+                    </DialogActions>
+                  </Dialog>
+
+
+
+                  {feed.comments.length > 0 ? (
+                    <div style={{ padding: "1%", margin: "2% 0%" }}>
+                      {
+                        feed.comments.map(
+                          (comment: any, commentIndex: any) => (
                             <div
+                              key={commentIndex}
                               style={{
-                                marginLeft: "0.5rem",
-                                display: "flex",
-                                flexDirection: "column",
-                                alignItems: "flex-start",
-                                overflowWrap: "anywhere",
+                                border: "1px solid #ccc",
+                                padding: "1%",
+                                position: "relative",
                               }}
                             >
-                              <p style={{ marginTop: "7px" }}>{comment.name}</p>
-                              <p>{comment.comment}</p>
+                              <div style={{ display: "flex" }}>
+                                <div style={{ display: "flex", flex: 1 }}>
+                                  <Avatar alt="User Avatar" src={comment.image} />
+                                  <div
+                                    style={{
+                                      marginLeft: "0.5rem",
+                                      display: "flex",
+                                      flexDirection: "column",
+                                      alignItems: "flex-start",
+                                      overflowWrap: "anywhere",
+                                    }}
+                                  >
+                                    <p style={{ marginTop: "7px" }}>{comment.name}</p>
+                                    <p>{comment.comment}</p>
+                                  </div>
+                                </div>
+                                <div style={{ position: "absolute", top: 0, right: 0 }}>
+                                  {comment.userId === userId && (
+                                    <IconButton onClick={() => setDeleteComment(true)}>
+                                      <DeleteIcon style={{ color: "primary" }} />
+                                    </IconButton>
+                                  )}
+                                </div>
+
+                                {/* Dialog for confirmation */}
+                                <Dialog
+                                  open={deleteComment}
+                                  onClose={() => setDeleteComment(false)}
+                                >
+                                  <DialogTitle>Confirm Post</DialogTitle>
+                                  <DialogContent>
+                                    <Typography variant="body1">Are you sure you want to delete this comment?</Typography>
+                                  </DialogContent>
+                                  <DialogActions>
+                                    <Button onClick={() => setDeleteComment(false)} color="primary">Cancel</Button>
+                                    <Button onClick={() => handleDelete(feed._id, comment.id)} color="primary">Delete</Button>
+                                  </DialogActions>
+                                </Dialog>
+
+                              </div>
                             </div>
-                          </div>
-                          <div
-                            style={{ position: "absolute", top: 0, right: 0 }}
-                          >
-                            {comment.userId === userId && (
-                              <IconButton
-                                onClick={() =>
-                                  handleDelete(feed._id, comment.id)
-                                }
-                              >
-                                <DeleteIcon style={{ color: "primary" }} />
-                              </IconButton>
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                ) : null}
-              </div>
-            )}
-          </div>
-        ))}
+                          )
+                        )
+                      }
+                    </div>
+                  ) : null}
+
+                </div>
+              )}
+            </div>
+          ))
+        )}
+
       </div>
 
       {/* Pagination */}
@@ -944,7 +1057,7 @@ export default function ContentFeed() {
             News
           </Typography>
           {newsItems.map((item) => (
-            <Accordion>
+            <Accordion style={{ boxShadow: "10 10px 10px rgba(1, 2, 2, 1)" }}>
               <AccordionSummary
                 style={{ margin: "0%", padding: "0%" }}
                 expandIcon={<ExpandMoreIcon />}
@@ -995,7 +1108,22 @@ export default function ContentFeed() {
             {snackbarMessage}
           </MuiAlert>
         </Snackbar>
+
+        {/* Snackbar */}
+        <Snackbar
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+          open={SnackBarLike}
+          autoHideDuration={3000} // Adjust as needed
+          onClose={handleCloseSnackbar}
+          message="Thanks for liking the post"
+          action={
+            <IconButton size="small" color="inherit" onClick={handleCloseSnackbar}>
+              {/* Add close icon here if needed */}
+            </IconButton>
+          }
+        />
       </div>
     </>
   );
 }
+

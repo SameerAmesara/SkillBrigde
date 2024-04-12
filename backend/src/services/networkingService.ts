@@ -91,7 +91,7 @@ const handleRequestSent = async (userUid: string, loggedInUserId: string): Promi
     }
 };
 
-const handleRequestReceived = async (userUid: string, loggedInUserId: string): Promise<void> => {
+const handleRequestReceivedAccept = async (userUid: string, loggedInUserId: string): Promise<void> => {
     try {
         // Find the user connections for the logged-in user
         const loggedInUserConnections = await UserConnectionsModel.findOne({ uid: loggedInUserId });
@@ -116,6 +116,34 @@ const handleRequestReceived = async (userUid: string, loggedInUserId: string): P
 
         // Add loggedInUserId to the myConnections of the user
         userConnections.myConnections.push(loggedInUserId);
+
+        // Save the changes to the database
+        await loggedInUserConnections.save();
+        await userConnections.save();
+    } catch (error: unknown) {
+        throw new Error("Unable to handle request received");
+    }
+};
+
+const handleRequestReceivedReject = async (userUid: string, loggedInUserId: string): Promise<void> => {
+    try {
+        // Find the user connections for the logged-in user
+        const loggedInUserConnections = await UserConnectionsModel.findOne({ uid: loggedInUserId });
+        if (!loggedInUserConnections) {
+            throw new Error("User connections not found for the logged-in user");
+        }
+
+        // Find the user connections for the user to handle the request
+        const userConnections = await UserConnectionsModel.findOne({ uid: userUid });
+        if (!userConnections) {
+            throw new Error("User connections not found for the specified user");
+        }
+
+        // Remove userUid from the requestReceived of the logged-in user
+        loggedInUserConnections.requestReceived = loggedInUserConnections.requestReceived.filter(uid => uid !== userUid);
+
+        // Remove loggedInUserId from the requestSent of the user
+        userConnections.requestSent = userConnections.requestSent.filter(uid => uid !== loggedInUserId);
 
         // Save the changes to the database
         await loggedInUserConnections.save();
@@ -158,6 +186,7 @@ export default {
     getConnectiondetails,
     sendConnectionRequest,
     handleRequestSent,
-    handleRequestReceived,
+    handleRequestReceivedAccept,
+    handleRequestReceivedReject ,
     handleMyConnection
 };

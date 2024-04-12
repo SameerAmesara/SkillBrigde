@@ -7,9 +7,14 @@ import {
   CardActions,
   CardContent,
   CircularProgress,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
   MenuItem,
   Pagination,
   Select,
+  TextField,
   Typography,
   useMediaQuery,
 } from "@mui/material";
@@ -20,7 +25,7 @@ import { useNavigate } from "react-router-dom";
 
 const AdvanceNetworkPage: React.FC = () => {
   const BASE_URL = import.meta.env.VITE_BASE_URL
-  // const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
   const [usersPerRow, setUsersPerRow] = useState(5); // Default value
   const [paginatedUsers, setPaginatedUsers] = useState<any[][]>([]);
   const [pageNumber, setPageNumber] = useState<number>(1);
@@ -36,11 +41,11 @@ const AdvanceNetworkPage: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const isMobileSize = useMediaQuery(theme.breakpoints.down(1100));
   const evenMoreSmall = useMediaQuery(theme.breakpoints.down(600));
-  const [sortBy, setSortBy] = useState<string>("");
+  const [sortBy, setSortBy] = useState<string>("showall");
 
-  // const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   setSearchTerm(event.target.value);
-  // };
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value);
+  };
 
   useEffect(() => {
     const fetchUserConnections = async () => {
@@ -95,6 +100,9 @@ const AdvanceNetworkPage: React.FC = () => {
     };
   }, []); // Empty dependency array means this effect runs once after the initial render
 
+
+  const [showMessage, setShowMessage] = useState(false)
+
   const fetchData = async (
     pageNumber: number,
     filterByMyConnections: boolean,
@@ -103,7 +111,7 @@ const AdvanceNetworkPage: React.FC = () => {
   ) => {
     try {
       setLoading(true);
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      const loggedInUserId = sessionStorage.getItem("userId");
       const response = await axios.get(`${BASE_URL}/networking`, {
         params: {
           pageNumber: pageNumber,
@@ -118,14 +126,34 @@ const AdvanceNetworkPage: React.FC = () => {
         filteredUsers = users.filter((user: any) =>
           userConnections.myConnections.includes(user.uid)
         );
+        window.scrollTo({ top: 0, behavior: "smooth" });
       } else if (filterByRequestSent) {
         filteredUsers = users.filter((user: any) =>
           userConnections.requestSent.includes(user.uid)
         );
+        window.scrollTo({ top: 0, behavior: "smooth" });
       } else if (filterByRequestReceived) {
         filteredUsers = users.filter((user: any) =>
           userConnections.requestReceived.includes(user.uid)
         );
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+
+      if (filteredUsers.length == 0) {
+        setShowMessage(true)
+      }
+
+      if (loggedInUserId) {
+        filteredUsers = filteredUsers.filter((user: any) => user.uid !== loggedInUserId);
+      }
+
+
+      // Additional condition to filter users based on search term
+      if (searchTerm.trim() !== "") {
+        filteredUsers = filteredUsers.filter((user: any) =>
+          `${user.firstName} ${user.lastName}`.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+        window.scrollTo({ top: 0, behavior: "smooth" });
       }
 
       const updatedSortedUsers = filteredUsers.map((user: any) => {
@@ -168,7 +196,7 @@ const AdvanceNetworkPage: React.FC = () => {
   };
 
   const handleRequestSentClick = () => {
-    setSortBy("requestsent"); 
+    setSortBy("requestsent");
     setPageNumber(1);
     setFilterByMyConnections(false);
     setFilterByRequestSent(true);
@@ -186,7 +214,7 @@ const AdvanceNetworkPage: React.FC = () => {
   };
 
   const ShowAll = () => {
-    setSortBy("showall"); 
+    setSortBy("showall");
     setPageNumber(1);
     setFilterByMyConnections(false);
     setFilterByRequestSent(false);
@@ -202,16 +230,39 @@ const AdvanceNetworkPage: React.FC = () => {
       filterByRequestReceived
     );
     return () => { };
-  }, [pageNumber, usersPerRow, userConnections, sendconnection]);
+  }, [pageNumber, usersPerRow, userConnections, sendconnection, searchTerm]);
 
   const navigate = useNavigate();
   // Function to handle click event
-  const handleClick = (userUid: string, flag: string) => {
-    if (flag === "mc") {
-      navigate("/messages", { state: { receiverId: userUid} });
+  // const handleClick = (userUid: string, flag: string) => {
+  //   if (flag === "mc") {
+  //     navigate("/messages", { state: { receiverId: userUid } });
+  //   } else {
+  //     handleSendConnection(userUid, flag);
+  //   }
+  // };
+
+  const [confirmationOpen, setConfirmationOpen] = useState(false);
+  const [selectedUserId, setSelectedUserId] = useState("");
+  const [selectedAction, setSelectedAction] = useState("");
+
+  const handleClick = (userId: string, flag: string) => {
+    setSelectedUserId(userId);
+    setSelectedAction(flag);
+    setConfirmationOpen(true);
+  };
+
+  const handleConfirmationClose = () => {
+    setConfirmationOpen(false);
+  };
+
+  const handleProceed = () => {
+    if (selectedAction === "mc") {
+      navigate("/messages", { state: { receiverId: selectedUserId } });
     } else {
-      handleSendConnection(userUid, flag);
+      handleSendConnection(selectedUserId, selectedAction);
     }
+    setConfirmationOpen(false);
   };
 
   const handleSendConnection = async (userUid: string, flag: string) => {
@@ -227,10 +278,13 @@ const AdvanceNetworkPage: React.FC = () => {
           apiUrl = `${BASE_URL}/networking/handleRequestSent`;
           break;
         case "rc":
-          apiUrl = `${BASE_URL}/networking/handleRequestReceived`;
+          apiUrl = `${BASE_URL}/networking/handleRequestReceivedAccept`;
           break;
-        case "mc":
+        case "rm":
           apiUrl = `${BASE_URL}/networking/handleMyConnection`;
+          break;
+        case "rj":
+          apiUrl = `${BASE_URL}/networking/handleRequestReceivedReject`;
           break;
         default:
           apiUrl = `${BASE_URL}/networking/sendConnectionRequest`;
@@ -250,7 +304,8 @@ const AdvanceNetworkPage: React.FC = () => {
   };
 
   const handlePageChange = (page: number) => {
-    setPageNumber(page); // Update the page number state
+    setPageNumber(page);
+    window.scrollTo({ top: 0, behavior: "smooth" }); // Update the page number state
   };
 
   return (
@@ -277,13 +332,13 @@ const AdvanceNetworkPage: React.FC = () => {
                 marginBottom: "20px",
               }}
             >
-              {/* <TextField
+              <TextField
                 label="Search"
                 variant="outlined"
                 value={searchTerm}
-                onChange={handleSearchChange}
+                onChange={handleSearchChange} // Attach onChange event handler
                 sx={{ borderRadius: "20px", width: "45%", marginRight: "5%" }}
-              /> */}
+              />
               <Select
                 // onChange={handleSortChange}
                 value={sortBy} // Set value of the Select component
@@ -292,7 +347,7 @@ const AdvanceNetworkPage: React.FC = () => {
                 inputProps={{ "aria-label": "Sort By" }}
                 sx={{ borderRadius: "20px", width: "20%" }}
               >
-                <MenuItem value="">Sort By</MenuItem>
+                {/* <MenuItem value="">Sort By</MenuItem> */}
                 <MenuItem
                   value="myconnections"
                   onClick={handleMyConnectionsClick}
@@ -383,18 +438,61 @@ const AdvanceNetworkPage: React.FC = () => {
                           </Typography>
                         </CardContent>
                         <CardActions sx={{ justifyContent: "center" }}>
-                          <Button
-                            variant="outlined"
-                            size="small"
-                            onClick={() => handleClick(user.uid, user.flag)}
-                          >
-                            {user.flag === "f" && "Send Connection Request"}
-                            {user.flag === "rs" &&
-                              "Request Sent, Click Again to Cancel"}
-                            {user.flag === "rc" && "Request Received"}
-                            {user.flag === "mc" && "Already a Connection, Click to message"}
-                          </Button>
+                          {user.flag === "rc" && (
+                            <>
+                              <Button
+                                variant="outlined"
+                                size="small"
+                                style={{ color: "green", borderColor: "green", marginRight: "8px" }}
+                                onClick={() => handleClick(user.uid, user.flag)}
+                              >
+                                Accept
+                              </Button>
+                              <Button
+                                variant="outlined"
+                                size="small"
+                                style={{ color: "red", borderColor: "red" }}
+                                onClick={() => handleClick(user.uid, "rj")}
+                              >
+                                Reject
+                              </Button>
+                            </>
+                          )}
+
+                          {user.flag === "mc" && (
+                            <>
+                              <Button
+                                variant="outlined"
+                                size="small"
+                                style={{ marginRight: "8px" }}
+                                onClick={() => handleClick(user.uid, user.flag)}
+                              >
+                                Message
+                              </Button>
+                              <Button
+                                variant="outlined"
+                                size="small"
+                                style={{ color: "red", borderColor: "red" }}
+                                onClick={() => handleClick(user.uid, "rm")}
+                              >
+                                Remove 
+                              </Button>
+                            </>
+                          )}
+                          {user.flag !== "rc" && user.flag !== "mc" && (
+                            <Button
+                              variant="outlined"
+                              size="small"
+                              onClick={() => handleClick(user.uid, user.flag)}
+                            >
+                              {user.flag === "f" && "Send Connection Request"}
+                              {user.flag === "rs" &&
+                                "Request Sent, Click Again to Cancel"}
+                              {/* {user.flag === "mc" && "Already a Connection, Click to message"} */}
+                            </Button>
+                          )}
                         </CardActions>
+
                       </Box>
                     </Card>
                   ))
@@ -402,15 +500,38 @@ const AdvanceNetworkPage: React.FC = () => {
             </Box>
           </Box>
 
-          <Pagination
-            style={{
-              display: "flex",
-              justifyContent: "center",
-            }}
-            count={Math.ceil(totalCount / 12)} // Calculate total pages using total count
-            page={pageNumber}
-            onChange={(_event, page) => handlePageChange(page)}
-          />
+          <Dialog open={confirmationOpen} onClose={() => setConfirmationOpen(false)}>
+            <DialogTitle>Confirmation</DialogTitle>
+            <DialogContent>
+              <p>Are you sure you want to proceed with this action?</p>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleConfirmationClose} color="primary">
+                Cancel
+              </Button>
+              <Button onClick={handleProceed} color="primary" autoFocus>
+                Proceed
+              </Button>
+            </DialogActions>
+          </Dialog>
+
+          {paginatedUsers.length > 0 ? (
+            <Pagination
+              style={{
+                display: "flex",
+                justifyContent: "center",
+              }}
+              count={Math.ceil(totalCount / 12)} // Calculate total pages using total count
+              page={pageNumber}
+              onChange={(_event, page) => handlePageChange(page)}
+            />
+          ) : (null
+          )}
+
+          {showMessage &&
+            <Typography variant="h4" align="center" style={{ marginTop: "15%" }}>
+              No users available for the selected filter criteria.
+            </Typography>}
         </div>
       </div>
     </>
