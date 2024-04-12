@@ -4,7 +4,7 @@
 import React, { useEffect, useState } from 'react'
 import Job from '../../components/job/jobCard'
 import { useNavigate } from 'react-router-dom'
-import { Button, Grid, SelectChangeEvent, Stack, Typography } from '@mui/material'
+import { Button, Grid, SelectChangeEvent, Stack, Switch, Typography } from '@mui/material'
 import Search from '../../components/job/jobSearch'
 import { JobModel, experienceLevels, jobTypes, locationProvinces } from '../../models/jobs.model'
 import { getAllJobs } from './job'
@@ -25,6 +25,8 @@ const JobsDashboard: React.FC = () => {
         experienceLevel: "",
         jobType: "",
     })
+    const [showMyJobs, setShowMyJobs] = useState<boolean>(false); 
+    const [userId, setUserId] = useState("");
 
     const getJobs = () => {
         getAllJobs()
@@ -34,11 +36,13 @@ const JobsDashboard: React.FC = () => {
                 }
             })
             .catch((error) => console.error("Unable to update jobs", error))
-
+            
     }
 
     useEffect(() => {
         getJobs()
+        const storedUserId = sessionStorage.getItem("userId")!;
+        setUserId(storedUserId);
     }, [])
 
 
@@ -65,6 +69,7 @@ const JobsDashboard: React.FC = () => {
         && (filter.province === '' || job.province === filter.province)
         && (filter.experienceLevel === '' || job.experienceLevel === filter.experienceLevel)
         && (filter.jobType === '' || job.type === filter.jobType)
+        && ((showMyJobs ? job.userId === userId : true))
     )
 
     // Function to handle job click event, navigate to job details page
@@ -111,6 +116,13 @@ const JobsDashboard: React.FC = () => {
                                 value={filter.experienceLevel}
                                 onChange={(e) => handleInputChange(e, "experienceLevel")}
                                 enumValues={experienceLevels}
+                            />
+                        </Grid>
+                        <Grid item>
+                            <Typography variant="h6">My Jobs</Typography>
+                            <Switch
+                                checked={showMyJobs}
+                                onChange={() => setShowMyJobs(!showMyJobs)}
                             />
                         </Grid>
                     </Grid>
