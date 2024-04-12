@@ -11,6 +11,8 @@ interface MessageContainerProps {
     recieverId: string
 }
 
+const BASE_URL = import.meta.env.VITE_BASE_URL
+
 const Conversations: React.FC<MessageContainerProps> = ({ recieverId }) => {
     const [recieverDetails, setRecieverDetails] = useState<UserDetails>()
     const [messages, setMessages] = useState<MessageModel[]>([])
@@ -20,7 +22,7 @@ const Conversations: React.FC<MessageContainerProps> = ({ recieverId }) => {
     useEffect(() => {
         const getMessageDetails = async () => {
             try {
-                const recieverData = await axios.get<UserDetails>(`${import.meta.env.VITE_BASE_URL}/userDetails/${recieverId}`)
+                const recieverData = await axios.get<UserDetails>(`${BASE_URL}/userDetails/${recieverId}`)
                 setRecieverDetails({ ...recieverData.data })
             } catch (error) {
                 console.error('Error fetching message details', error)
@@ -36,7 +38,7 @@ const Conversations: React.FC<MessageContainerProps> = ({ recieverId }) => {
         }
 
         getMessageDetails()
-        setSocket(io("http://localhost:8000", {
+        setSocket(io(BASE_URL, {
             query: {
                 userId: sessionStorage.getItem("userId"),
             },
