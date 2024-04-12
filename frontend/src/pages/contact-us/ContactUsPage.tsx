@@ -10,7 +10,8 @@ import PhoneIcon from "@mui/icons-material/Phone";
 import MailOutlineIcon from "@mui/icons-material/MailOutline";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import Typography from "@mui/material/Typography";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { ThemeProvider } from "@mui/material/styles";
+import { theme } from "../../utils/theme";
 
 function ContactUsPage() {
   const [email, setEmail] = React.useState("");
@@ -70,7 +71,7 @@ function ContactUsPage() {
     }
   };
 
-  const defaultTheme = createTheme();
+  const defaultTheme = theme;
 
   return (
     <ThemeProvider theme={defaultTheme}>
