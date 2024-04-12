@@ -38,8 +38,6 @@ const AdvanceNetworkPage: React.FC = () => {
   const [filterByRequestReceived, setFilterByRequestReceived] =
     useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
-  const isMobileSize = useMediaQuery(theme.breakpoints.down(1100));
-  const evenMoreSmall = useMediaQuery(theme.breakpoints.down(600));
   const [sortBy, setSortBy] = useState<string>("showall");
   const navigate = useNavigate();
   const [confirmationOpen, setConfirmationOpen] = useState(false);
@@ -329,7 +327,7 @@ const AdvanceNetworkPage: React.FC = () => {
                 flexDirection: isSmallScreen ? "column" : "row",
                 justifyContent: "center",
                 marginBottom: "20px",
-                gap: "10px"
+                gap: "10px",
               }}
             >
               {/* Search bar */}
@@ -338,7 +336,7 @@ const AdvanceNetworkPage: React.FC = () => {
                 variant="outlined"
                 value={searchTerm}
                 onChange={handleSearchChange}
-                sx={{ borderRadius: "4px", width: "100%"}}
+                sx={{ borderRadius: "4px", width: "100%" }}
               />
 
               {/* Sort By filter */}
@@ -347,7 +345,10 @@ const AdvanceNetworkPage: React.FC = () => {
                 onChange={(e) => setSortBy(e.target.value as string)}
                 displayEmpty
                 inputProps={{ "aria-label": "Sort By" }}
-                sx={{ borderRadius: "4px", minWidth: isSmallScreen ? "0px" : "300px" }}
+                sx={{
+                  borderRadius: "4px",
+                  minWidth: isSmallScreen ? "0px" : "300px",
+                }}
               >
                 <MenuItem
                   value="myconnections"
