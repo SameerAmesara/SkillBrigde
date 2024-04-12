@@ -14,6 +14,7 @@ import {
   DialogContent,
   DialogTitle,
   DialogActions,
+  CircularProgress
 } from "@mui/material";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -62,6 +63,7 @@ const NewJob = () => {
     province: "",
   });
   const [confirmCreateOpen, setConfirmCreateOpen] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
 
   const navigateBackToJobs = () => {
     navigate("/jobs");
@@ -127,8 +129,10 @@ const NewJob = () => {
   }
 
   const submitJob = () => {
+    setIsLoading(true)
     createJob(formData)
       .then((response) => {
+        setIsLoading(false)
         if (response.status === 200) {
           setFeedbackMessage("Job created successfully.");
           setTimeout(() => {
@@ -140,6 +144,7 @@ const NewJob = () => {
         }
       })
       .catch(() => {
+        setIsLoading(false)
         setFeedbackMessage("Something went wrong. Please try again later.");
       });
   };
@@ -272,6 +277,11 @@ const NewJob = () => {
             <DialogTitle>Confirm job details</DialogTitle>
             <DialogContent>
               <JobDetailComponent job={formData} />
+              {isLoading && (
+                <Box sx={{ position: 'fixed', top: '0', left: '0', width: '100%', height: '100%', backgroundColor: 'rgba(0, 0, 0, 0.5)', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                  <CircularProgress />
+                </Box>
+              )}
             </DialogContent>
             <DialogActions>
               <Button onClick={() => setConfirmCreateOpen(false)} color="primary">
@@ -286,20 +296,21 @@ const NewJob = () => {
             Cancel
           </Button>
         </Box>
-      </Box>
+      </Box >
 
       {/* Snackbar to provide user feedback */}
-      <Snackbar
+      < Snackbar
         anchorOrigin={{
           vertical: "top",
           horizontal: "center",
-        }}
+        }
+        }
         open={!!feedbackMessage}
         autoHideDuration={6000}
         onClose={() => setFeedbackMessage("")}
       >
         <SnackbarContent message={feedbackMessage} />
-      </Snackbar>
+      </Snackbar >
     </>
   );
 };
