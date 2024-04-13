@@ -104,6 +104,85 @@ Changes Made:
 2. Messaging
    - Real-time Chat with connected users
 
+_In backend/src/socket/socket.ts_
+*Lines 1 - 39*
+
+```javascript
+const app = express();
+
+const server = http.createServer(app);
+const io = new Server(server, {
+	cors: {
+		origin: [config.FRONTEND_ORIGIN],
+		methods: ["GET", "POST"],
+	},
+});
+
+export const getReceiverSocketId = (receiverId: string): any => {
+	return userSocketMap[receiverId];
+};
+
+interface Dic {
+    [key: string]: Object
+}
+
+let userSocketMap: Dic = {}
+
+io.on("connection", (socket) => {
+	const userId = socket.handshake.query.userId!! as string
+	if (userId != "undefined") userSocketMap[userId] = socket.id;
+
+	io.emit("getOnlineUsers", Object.keys(userSocketMap));
+
+	socket.on("disconnect", () => {
+		console.log("user disconnected", socket.id);
+		delete userSocketMap[userId];
+		io.emit("getOnlineUsers", Object.keys(userSocketMap));
+	});
+});
+
+export { app, io, server };
+```
+
+The code above was created by adapting the code in [MERN Chat App, Github](https://github.com/burakorkmez/mern-chat-app/blob/master/backend/socket/socket.js) as shown below: 
+
+```javascript
+const app = express();
+
+const server = http.createServer(app);
+const io = new Server(server, {
+	cors: {
+		origin: ["http://localhost:3000"],
+		methods: ["GET", "POST"],
+	},
+});
+
+export const getReceiverSocketId = (receiverId) => {
+	return userSocketMap[receiverId];
+};
+
+const userSocketMap = {}; // {userId: socketId}
+
+io.on("connection", (socket) => {
+	console.log("a user connected", socket.id);
+
+	const userId = socket.handshake.query.userId;
+	if (userId != "undefined") userSocketMap[userId] = socket.id;
+
+	// io.emit() is used to send events to all the connected clients
+	io.emit("getOnlineUsers", Object.keys(userSocketMap));
+
+	// socket.on() is used to listen to the events. can be used both on client and server side
+	socket.on("disconnect", () => {
+		console.log("user disconnected", socket.id);
+		delete userSocketMap[userId];
+		io.emit("getOnlineUsers", Object.keys(userSocketMap));
+	});
+});
+
+export { app, io, server };
+```
+
 ## Features worked on by Suyash Jhawer
 
 1. Content feed [23]
