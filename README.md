@@ -407,9 +407,18 @@ npm run dev
 [16] [StripeElement-Styling-LinkedIn](https://www.linkedin.com/pulse/stripe-custom-styled-card-elements-tanjir-antu/) - Referenced solution for styling stripe elements <br />
 [17] [Combining-stores-DevCommunity](https://dev.to/cakasuma/using-mobx-hooks-with-multiple-stores-in-react-3dk4 ) - Referenced for combining various stores in mobx <br/>
 [18] [Axios](https://axios-http.com/docs/api_intro) - Library used for making api calls to backend <br/>
+<<<<<<< Updated upstream
 [19] D. Bhat, "Assignment 2" Dalhousie University, [online document], 2024. [Accessed 09-Apr-2024] <br/>
 [20] S. Amesara, "Assignment 2" Dalhousie University, [online document], 2024. [Accessed 09-Apr-2024] <br/>
 [21] D.M. Navadiya, "Assignment 2" Dalhousie University, [online document], 2024. [Accessed 09-Apr-2024] <br/> 
 [22] O. Anand, "Assignment 2" Dalhousie University, [online document], 2024. [Accessed 09-Apr-2024] <br/>
 [23] S. Jhawer, "Assignment 2" Dalhousie University, [online document], 2024. [Accessed 09-Apr-2024] <br/>
 [24] T. Bharatiya, "Assignment 2" Dalhousie University, [online document], 2024. [Accessed 09-Apr-2024] <br/>
+=======
+[19] D. Bhat, "CSCI 5709 - Assignment 3" Dalhousie University, [online document], 2024. [Accessed 09-Apr-2024] <br/>
+[20] S. Amesara, "CSCI 5709 - Assignment 3" Dalhousie University, [online document], 2024. [Accessed 09-Apr-2024] <br/>
+[21] D.M. Navadiya, "CSCI 5709 - Assignment 3" Dalhousie University, [online document], 2024. [Accessed 09-Apr-2024] <br/> 
+[22] O. Anand, "CSCI 5709 - Assignment 3" Dalhousie University, [online document], 2024. [Accessed 09-Apr-2024] <br/>
+[23] S. Jhawer, "CSCI 5709 - Assignment 3" Dalhousie University, [online document], 2024. [Accessed 09-Apr-2024] <br/>
+[24] T. Bharatiya, "CSCI 5709 - Assignment 3" Dalhousie University, [online document], 2024. [Accessed 09-Apr-2024] <br/>
+>>>>>>> Stashed changes
