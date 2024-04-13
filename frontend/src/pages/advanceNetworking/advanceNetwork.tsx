@@ -316,7 +316,7 @@ const AdvanceNetworkPage: React.FC = () => {
         {/* Loading spinner */}
         {loading && (
           <CircularProgress
-            style={{ position: "absolute", top: "50%", left: "50%" }}
+            style={{ position: "absolute", top: "50%", left: "50%" , zIndex : "5"}}
           />
         )}
         <div>
