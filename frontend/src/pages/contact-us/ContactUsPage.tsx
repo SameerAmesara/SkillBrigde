@@ -12,19 +12,22 @@ import LocationOnIcon from "@mui/icons-material/LocationOn";
 import Typography from "@mui/material/Typography";
 import { ThemeProvider } from "@mui/material/styles";
 import { theme } from "../../utils/theme";
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert from "@mui/material/Alert";
 
 function ContactUsPage() {
+  const [showSnackbar, setShowSnackbar] = React.useState(false);
   const [email, setEmail] = React.useState("");
   const [errorMessage, setErrorMessage] = React.useState("");
   const [isSubmitDisabled, setIsSubmitDisabled] = React.useState(true);
 
-  const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleEmailChange = (event: any) => {
     const newEmail = event.target.value;
     setEmail(newEmail);
     validateEmail(newEmail);
   };
 
-  const validateEmail = (email: string) => {
+  const validateEmail = (email: any) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const username = email.split("@")[0];
     const startsWithSpecialChar = /^[^a-zA-Z0-9]/.test(username);
@@ -45,30 +48,28 @@ function ContactUsPage() {
     }
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (event: any) => {
     event.preventDefault();
     console.log({
       email,
-      message: (
-        event.currentTarget.elements.namedItem("message") as HTMLTextAreaElement
-      ).value,
+      message: event.currentTarget.elements.namedItem("message").value,
     });
 
-    // Show popup
-    alert("We will contact you soon.");
+    // Show snackbar
+    setShowSnackbar(true);
 
     // Clear input fields
     setEmail("");
-    const emailField = event.currentTarget.elements.namedItem(
-      "email"
-    ) as HTMLInputElement;
-    const messageField = event.currentTarget.elements.namedItem(
-      "message"
-    ) as HTMLTextAreaElement;
+    const emailField = event.currentTarget.elements.namedItem("email");
+    const messageField = event.currentTarget.elements.namedItem("message");
     if (emailField && messageField) {
       emailField.value = "";
       messageField.value = "";
     }
+  };
+
+  const handleSnackbarClose = () => {
+    setShowSnackbar(false);
   };
 
   const defaultTheme = theme;
@@ -82,9 +83,10 @@ function ContactUsPage() {
         <Grid container component="main" sx={{ flexGrow: 1 }}>
           <Grid
             item
-            xs={false}
+            xs={12}
             sm={4}
             md={7}
+
             sx={{
               backgroundColor: "#cfd6db",
               py: 8,
@@ -129,7 +131,7 @@ function ContactUsPage() {
             >
               <MailOutlineIcon sx={{ mr: 1 }} />
               <Typography variant="body1" gutterBottom>
-                support @ skillBridge.com
+                support@skillBridge.com
               </Typography>
             </Box>
           </Grid>
@@ -200,6 +202,20 @@ function ContactUsPage() {
           </Grid>
         </Grid>
       </Box>
+      {/* Snackbar */}
+      <Snackbar
+        open={showSnackbar}
+        autoHideDuration={6000}
+        onClose={handleSnackbarClose}
+      >
+        <MuiAlert
+          onClose={handleSnackbarClose}
+          severity="success"
+          sx={{ width: "100%" }}
+        >
+          Thanks for contacting us! We will get back to you soon.
+        </MuiAlert>
+      </Snackbar>
     </ThemeProvider>
   );
 }

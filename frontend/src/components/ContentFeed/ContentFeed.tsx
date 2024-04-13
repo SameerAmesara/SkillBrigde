@@ -22,6 +22,7 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
+  DialogContentText,
   DialogTitle,
   FormControl,
   IconButton,
@@ -306,6 +307,17 @@ export default function ContentFeed() {
       console.error("Error toggling like:", error);
     }
   };
+
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const [feedIdToDeleteComment, setFeedIdToDeleteComment] = useState("");
+  const [commentIdToDelete, setCommentIdToDelete] = useState("");
+
+  const confirmDelete = (feedId: any, commentId: any) => {
+    setFeedIdToDeleteComment(feedId);
+    setCommentIdToDelete(commentId);
+    setShowDeleteDialog(true);
+  };
+
   const handleDelete = async (feedId: string, commentId: string) => {
     try {
       const response = await fetch(`${BASE_URL}/contentfeed/commentdelete`, {
@@ -339,6 +351,15 @@ export default function ContentFeed() {
       console.error("Error deleting feed:", error);
       // Handle error, show error message to user, etc.
     }
+  };
+
+  const handleConfirmDeleteComment = () => {
+    handleDelete(feedIdToDeleteComment, commentIdToDelete);
+    setShowDeleteDialog(false);
+  };
+
+  const handleCancelDeleteComment = () => {
+    setShowDeleteDialog(false);
   };
   const handleAddComment = async (
     idWhereThishasToStore: string,
@@ -383,9 +404,17 @@ export default function ContentFeed() {
   };
   //comment and likes ends
 
+  const [showDialog, setShowDialog] = useState(false);
+  const [feedIdToDelete, setFeedIdToDelete] = useState("");
+
+  const handleDeleteConfirmation = (feedId: any) => {
+    setFeedIdToDelete(feedId);
+    setShowDialog(true);
+  };
   //Content feed delete
   const handleDeleteFeed = async (feedId: string) => {
     try {
+      console.log(feedId)
       const response = await fetch(`${BASE_URL}/contentfeed/delete`, {
         method: "DELETE",
         headers: {
@@ -412,11 +441,19 @@ export default function ContentFeed() {
         });
       // Handle successful deletion, e.g., update UI or fetch updated data
       console.log("Feed deleted successfully");
-      setFeedDelete(false)
     } catch (error) {
       console.error("Error deleting feed:", error);
       // Handle error, show error message to user, etc.
     }
+  };
+
+  const handleConfirmDelete = () => {
+    handleDeleteFeed(feedIdToDelete);
+    setShowDialog(false);
+  };
+
+  const handleCancelDelete = () => {
+    setShowDialog(false);
   };
 
   //Sorting
@@ -514,9 +551,6 @@ export default function ContentFeed() {
     setShowConfirmation(false); // Close dialog after confirming
   };
 
-  const [deleteComment, setDeleteComment] = useState(false)
-
-  const [feedDelete, setFeedDelete] = useState(false)
 
 
 
@@ -634,7 +668,7 @@ export default function ContentFeed() {
 
       {loading && (
         <CircularProgress
-          style={{ position: "absolute", top: "50%", left: "50%"  , zIndex:'5'}}
+          style={{ position: "absolute", top: "50%", left: "50%", zIndex: '5' }}
         />
       )}
 
@@ -844,38 +878,37 @@ export default function ContentFeed() {
                   </Typography>
                 </div>
 
-                {
-                  feed.id === userId &&
-                  (
-                    <div>
-                      <IconButton
-                        style={{
-                          zIndex: 1,
-                        }}
-                        onClick={() => setFeedDelete(true)}
-                        aria-label="delete-feed"
-                      >
-                        <DeleteIcon style={{ color: "primary" }} />
-                      </IconButton>
+                {feed.id === userId && (
+                  <IconButton
+                    style={{
+                      zIndex: 1,
+                    }}
+                    onClick={() => handleDeleteConfirmation(feed._id)}
+                    aria-label="delete-feed"
+                  >
+                    <DeleteIcon style={{ color: "primary" }} />
+                  </IconButton>
+                )}
 
-                      <Dialog
-                        open={feedDelete}
-                        onClose={() => setFeedDelete(false)}
-                      >
-                        <DialogTitle>Confirm Post</DialogTitle>
-                        <DialogContent>
-                          <Typography variant="body1">Are you sure you want to delete this Feed?</Typography>
-                        </DialogContent>
-                        <DialogActions>
-                          <Button onClick={() => setFeedDelete(false)} color="primary">Cancel</Button>
-                          <Button onClick={() => handleDeleteFeed(feed._id)} color="primary">Delete</Button>
-                        </DialogActions>
-                      </Dialog>
-                    </div>
-
-                  )
-                }
               </div>
+
+              {/* Confirmation Dialog */}
+              <Dialog open={showDialog} onClose={handleCancelDelete}>
+                <DialogTitle>Confirm Delete</DialogTitle>
+                <DialogContent>
+                  <DialogContentText>
+                    Are you sure you want to delete this feed?
+                  </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={handleCancelDelete} color="primary">
+                    Cancel
+                  </Button>
+                  <Button onClick={handleConfirmDelete} color="primary">
+                    Delete
+                  </Button>
+                </DialogActions>
+              </Dialog>
 
               <div style={{ textAlign: "left", margin: "2%" }}>
                 {renderContent(feed.feed)}
@@ -990,28 +1023,41 @@ export default function ContentFeed() {
                                     <p>{comment.comment}</p>
                                   </div>
                                 </div>
-                                <div style={{ position: "absolute", top: 0, right: 0 }}>
+                                <div
+                                  style={{ position: "absolute", top: 0, right: 0 }}
+                                >
                                   {comment.userId === userId && (
-                                    <IconButton onClick={() => setDeleteComment(true)}>
+                                    <IconButton
+                                      onClick={() =>
+                                        confirmDelete(feed._id, comment.id)
+                                      }
+                                    >
                                       <DeleteIcon style={{ color: "primary" }} />
                                     </IconButton>
                                   )}
                                 </div>
 
-                                {/* Dialog for confirmation */}
+                                {/* Confirmation Dialog */}
                                 <Dialog
-                                  open={deleteComment}
-                                  onClose={() => setDeleteComment(false)}
+                                  open={showDeleteDialog}
+                                  onClose={handleCancelDeleteComment}
                                 >
-                                  <DialogTitle>Confirm Post</DialogTitle>
+                                  <DialogTitle>Confirm Delete</DialogTitle>
                                   <DialogContent>
-                                    <Typography variant="body1">Are you sure you want to delete this comment?</Typography>
+                                    <DialogContentText>
+                                      Are you sure you want to delete this comment?
+                                    </DialogContentText>
                                   </DialogContent>
                                   <DialogActions>
-                                    <Button onClick={() => setDeleteComment(false)} color="primary">Cancel</Button>
-                                    <Button onClick={() => handleDelete(feed._id, comment.id)} color="primary">Delete</Button>
+                                    <Button onClick={handleCancelDeleteComment} color="primary">
+                                      Cancel
+                                    </Button>
+                                    <Button onClick={handleConfirmDeleteComment} color="primary">
+                                      Delete
+                                    </Button>
                                   </DialogActions>
                                 </Dialog>
+
 
                               </div>
                             </div>
