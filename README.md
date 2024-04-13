@@ -104,85 +104,6 @@ Changes Made:
 2. Messaging
    - Real-time Chat with connected users
 
-_In backend/src/socket/socket.ts_
-*Lines 1 - 39*
-
-```javascript
-const app = express();
-
-const server = http.createServer(app);
-const io = new Server(server, {
-	cors: {
-		origin: [config.FRONTEND_ORIGIN],
-		methods: ["GET", "POST"],
-	},
-});
-
-export const getReceiverSocketId = (receiverId: string): any => {
-	return userSocketMap[receiverId];
-};
-
-interface Dic {
-    [key: string]: Object
-}
-
-let userSocketMap: Dic = {}
-
-io.on("connection", (socket) => {
-	const userId = socket.handshake.query.userId!! as string
-	if (userId != "undefined") userSocketMap[userId] = socket.id;
-
-	io.emit("getOnlineUsers", Object.keys(userSocketMap));
-
-	socket.on("disconnect", () => {
-		console.log("user disconnected", socket.id);
-		delete userSocketMap[userId];
-		io.emit("getOnlineUsers", Object.keys(userSocketMap));
-	});
-});
-
-export { app, io, server };
-```
-
-The code above was created by adapting the code in [MERN Chat App, Github](https://github.com/burakorkmez/mern-chat-app/blob/master/backend/socket/socket.js) as shown below: 
-
-```javascript
-const app = express();
-
-const server = http.createServer(app);
-const io = new Server(server, {
-	cors: {
-		origin: ["http://localhost:3000"],
-		methods: ["GET", "POST"],
-	},
-});
-
-export const getReceiverSocketId = (receiverId) => {
-	return userSocketMap[receiverId];
-};
-
-const userSocketMap = {}; // {userId: socketId}
-
-io.on("connection", (socket) => {
-	console.log("a user connected", socket.id);
-
-	const userId = socket.handshake.query.userId;
-	if (userId != "undefined") userSocketMap[userId] = socket.id;
-
-	// io.emit() is used to send events to all the connected clients
-	io.emit("getOnlineUsers", Object.keys(userSocketMap));
-
-	// socket.on() is used to listen to the events. can be used both on client and server side
-	socket.on("disconnect", () => {
-		console.log("user disconnected", socket.id);
-		delete userSocketMap[userId];
-		io.emit("getOnlineUsers", Object.keys(userSocketMap));
-	});
-});
-
-export { app, io, server };
-```
-
 ## Features worked on by Suyash Jhawer
 
 1. Content feed [23]
@@ -194,6 +115,139 @@ export { app, io, server };
    - View and search users to connect with.
    - Request to connect with users.
    - Accept connection requests.
+
+_In ContentFeed.tsx_
+
+The below code was inspired using [MaterialUi_Cards](https://mui.com/material-ui/react-card/)
+```
+{isMobileSize ? (
+        <Card sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '2%', width: '88%', marginLeft: '6%' }}>
+          {userDetails && (
+            <CardContent style={{ textAlign: 'center', padding: '0px 8px' }}>
+              <img
+                src={userDetails.image}
+                alt="Profile"
+                style={{ width: '40%', borderRadius: '40%', marginBottom: '10px' }}
+              />
+              <Typography style={{ padding: '0px' }} variant="h5" component="div">
+                {userDetails.firstName} {userDetails.lastName}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                {userDetails.profession} at {userDetails.companyName}
+              </Typography>
+              <List >
+                <ListItem style={{ padding: '0px' }} button onClick={handleExpandClick}>
+                  <ListItemText primary="News" />
+                  <IconButton
+                    aria-label={expanded ? 'Collapse' : 'Expand'}
+                    onClick={handleExpandClick}
+                  >
+                    <ExpandMoreIcon />
+                  </IconButton>
+                </ListItem>
+                <Collapse in={expanded} timeout="auto" unmountOnExit>
+                  {newsItems.map((item) => (
+                    <List component="div" disablePadding>
+                      <ListItem style={{ padding: '0px' }}>
+                        <ListItemText secondary={item.source_id} onClick={() => handleRedirect(item.link)} />
+                      </ListItem>
+                    </List>
+                  ))}
+                </Collapse>
+              </List>
+            </CardContent>
+          )}
+        </Card>
+
+      ) : (
+        <Card
+          sx={{
+            maxWidth: '14%',
+            position: 'absolute',
+            top: theme.spacing(15),
+            left: '1.5%',
+            display: 'block',
+            boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
+            borderRadius: 4,
+          }}
+        >  {userDetails && (
+
+          <CardActionArea>
+            <CardContent style={{ textAlign: 'center' }}>
+              <img
+                src={userDetails.image}
+                alt="Profile"
+                style={{ width: '100%', borderRadius: '50%', marginBottom: '10px' }}
+              />
+              <Typography gutterBottom variant="h5" component="div">
+                {userDetails.firstName} {userDetails.lastName}
+              </Typography>
+              <Typography variant="body2" color="text.secondary" sx={{ marginBottom: 1 }}>
+                {userDetails.profession} at {userDetails.companyName}
+              </Typography>
+            </CardContent>
+          </CardActionArea>
+        )}
+        </Card>
+)}
+```      
+The section below was inspired by [LinkedIn](https://www.linkedin.com/)
+```
+<div style={{ border: '1px solid #e0e0e0', borderRadius: '8px', padding: '16px', marginBottom: '1.5%' }}>
+          <Typography variant="h6" style={{ marginBottom: '16px', color: '#333' }}>Start a Post</Typography>
+          <div
+            id="postInput"
+            style={{
+              padding: '16px',
+              marginBottom: '3%',
+              border: '1px solid rgb(224, 224, 224)',
+              borderRadius: '8px',
+              backgroundColor: '',
+              width: '100%',
+              cursor: 'text', // Show text cursor on hover
+            }}
+            onClick={handleOpen}
+          >
+            <span>What's on your mind?</span>
+          </div>
+          <Dialog
+            open={open}
+            onClose={handleClose}
+            PaperProps={{
+              style: {
+                minWidth: '30%',
+              },
+            }}
+          >
+            <DialogTitle>Compose Post</DialogTitle>
+            <DialogContent>
+              <textarea
+                placeholder="Write your post here..."
+                style={{ width: '100%', minHeight: '200px', padding: '5px', resize: 'vertical' }}
+                spellCheck={false}
+              />
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleClose} color="primary">
+                Cancel
+              </Button>
+              <Button onClick={handlePost} color="primary">
+                Post
+              </Button>
+            </DialogActions>
+          </Dialog>
+        </div>
+```    
+The code below was inspired using [Snackbar](https://mui.com/material-ui/react-snackbar/)
+```
+<div style={{ display: 'flex', justifyContent: 'center' }}>
+        <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleCloseSnackbar}>
+          <MuiAlert onClose={handleCloseSnackbar} severity="success" sx={{ width: '100%' }}>
+            {snackbarMessage}
+          </MuiAlert>
+        </Snackbar>
+</div>
+```
 
 ## Features worked on by Tirth Bharatiya
 
@@ -407,18 +461,9 @@ npm run dev
 [16] [StripeElement-Styling-LinkedIn](https://www.linkedin.com/pulse/stripe-custom-styled-card-elements-tanjir-antu/) - Referenced solution for styling stripe elements <br />
 [17] [Combining-stores-DevCommunity](https://dev.to/cakasuma/using-mobx-hooks-with-multiple-stores-in-react-3dk4 ) - Referenced for combining various stores in mobx <br/>
 [18] [Axios](https://axios-http.com/docs/api_intro) - Library used for making api calls to backend <br/>
-<<<<<<< Updated upstream
-[19] D. Bhat, "Assignment 2" Dalhousie University, [online document], 2024. [Accessed 09-Apr-2024] <br/>
-[20] S. Amesara, "Assignment 2" Dalhousie University, [online document], 2024. [Accessed 09-Apr-2024] <br/>
-[21] D.M. Navadiya, "Assignment 2" Dalhousie University, [online document], 2024. [Accessed 09-Apr-2024] <br/> 
-[22] O. Anand, "Assignment 2" Dalhousie University, [online document], 2024. [Accessed 09-Apr-2024] <br/>
-[23] S. Jhawer, "Assignment 2" Dalhousie University, [online document], 2024. [Accessed 09-Apr-2024] <br/>
-[24] T. Bharatiya, "Assignment 2" Dalhousie University, [online document], 2024. [Accessed 09-Apr-2024] <br/>
-=======
 [19] D. Bhat, "CSCI 5709 - Assignment 3" Dalhousie University, [online document], 2024. [Accessed 09-Apr-2024] <br/>
 [20] S. Amesara, "CSCI 5709 - Assignment 3" Dalhousie University, [online document], 2024. [Accessed 09-Apr-2024] <br/>
 [21] D.M. Navadiya, "CSCI 5709 - Assignment 3" Dalhousie University, [online document], 2024. [Accessed 09-Apr-2024] <br/> 
 [22] O. Anand, "CSCI 5709 - Assignment 3" Dalhousie University, [online document], 2024. [Accessed 09-Apr-2024] <br/>
 [23] S. Jhawer, "CSCI 5709 - Assignment 3" Dalhousie University, [online document], 2024. [Accessed 09-Apr-2024] <br/>
 [24] T. Bharatiya, "CSCI 5709 - Assignment 3" Dalhousie University, [online document], 2024. [Accessed 09-Apr-2024] <br/>
->>>>>>> Stashed changes
