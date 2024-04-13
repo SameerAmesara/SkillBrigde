@@ -104,6 +104,44 @@ Changes Made:
 2. Messaging
    - Real-time Chat with connected users
 
+#### Conversations.tsx
+The below code was inspired from [socket.io-chat, Github](socket.io-chat): 
+```
+
+    useEffect(() => {
+        const getMessageDetails = async () => {
+            try {
+                const recieverData = await axios.get<UserDetails>(`${BASE_URL}/userDetails/${recieverId}`)
+                setRecieverDetails({ ...recieverData.data })
+            } catch (error) {
+                console.error('Error fetching message details', error)
+            }
+
+            getMessages(recieverId)
+                .then((response) => {
+                    if (response.status === 200) {
+                        setMessages(response.data)
+                    }
+                })
+                .catch((error) => console.error("Unable to update mesages", error))
+        }
+
+        getMessageDetails()
+        setSocket(io(BASE_URL, {
+            query: {
+                userId: sessionStorage.getItem("userId"),
+            },
+        }))
+
+    }, [])
+
+    useEffect(() => {
+        socket?.on("newMessage", (data) => {
+            setMessages([...messages!, data]);
+        });
+    }, [socket, messages]);
+
+```
 ## Features worked on by Suyash Jhawer
 
 1. Content feed [23]
